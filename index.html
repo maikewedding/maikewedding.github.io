@@ -1432,34 +1432,33 @@ document.getElementById('honeymoonModal').addEventListener('click',e=>{if(e.targ
 // REGISTRY
 const REGISTRY_ITEMS=[
   // Furniture
-  {id:'sofa',cat:'Furniture',emoji:'🛋',name:'Living room sofa',desc:'A cosy sofa to come home to after long days exploring Zürich — the heart of our new living room.',target:600},
-  {id:'dining_table',cat:'Furniture',emoji:'🪑',name:'Dining table & chairs',desc:'Somewhere to host friends over Swiss raclette and far too much wine.',target:400},
-  {id:'bed_frame',cat:'Furniture',emoji:'🛏',name:'Bed frame',desc:'A proper bed frame to make our bedroom feel like home.',target:350},
-  {id:'coffee_table',cat:'Furniture',emoji:'🪵',name:'Coffee table',desc:'The centrepiece of lazy Sunday mornings.',target:150},
+  {id:'sofa',cat:'Furniture',emoji:'🛋',name:'Living room sofa',desc:'A cosy sofa for movie nights at home, watching our wedding video back, and for us to say "no, I\'m not falling asleep — you are." The heart of the new place.',target:400},
+  {id:'dining_table',cat:'Furniture',emoji:'🪑',name:'Dining table & chairs',desc:'So we can finally upgrade from trays on laps on the sofa or in bed. Don\'t judge. Also, we fully intend to be amazing hosts when you come to visit.',target:300},
+  {id:'bed_frame',cat:'Furniture',emoji:'🛏',name:'Bed frame',desc:'Maike\'s dream of owning an ottoman bed finally becomes a reality. Tommy has been outvoted. It\'s happening.',target:350},
+  {id:'coffee_table',cat:'Furniture',emoji:'🪵',name:'Coffee table',desc:'Coffee table? Board game table? Glorified foot rest? All of the above, probably.',target:150},
   // Kitchen
-  {id:'coffee_machine',cat:'Kitchen',emoji:'☕',name:'Coffee machine',desc:'Our current one has had a good run — time for an upgrade. Switzerland takes its coffee seriously and so do we.',target:200},
-  {id:'kitchen_aid',cat:'Kitchen',emoji:'🍰',name:'KitchenAid mixer',desc:'So Tommy can finally stop complaining we don\'t have the right equipment and flex those baking skills.',target:450},
-  {id:'frying_pans',cat:'Kitchen',emoji:'🍳',name:'New frying pan set',desc:'So we can fry an egg and actually eat more than half of it. A humble but important goal.',target:80},
+  {id:'coffee_machine',cat:'Kitchen',emoji:'☕',name:'Coffee machine',desc:'Our current one has had a good run — time for an upgrade. Switzerland takes its coffee seriously, and so do we.',target:100},
+  {id:'kitchen_aid',cat:'Kitchen',emoji:'🍰',name:'KitchenAid mixer',desc:'So Tommy can finally stop complaining we don\'t have the right equipment and flex those baking skills. Please suggest a colour — or Tommy will order the Liverpool FC edition.',target:200},
+  {id:'frying_pans',cat:'Kitchen',emoji:'🍳',name:'New frying pan set',desc:'So we can fry an egg and actually eat more than half of it. A humble but deeply important goal.',target:60},
   {id:'utensils',cat:'Kitchen',emoji:'🥄',name:'Cooking utensils',desc:'Our silicone ones are sadly falling apart — nothing fancy, just a solid little set to see us through.',target:25},
   {id:'serving',cat:'Kitchen',emoji:'🫕',name:'Serving bowls & boards',desc:'For when friends and family come to visit — we fully intend to host well.',target:70},
-  {id:'kettle',cat:'Kitchen',emoji:'🫖',name:'Kettle',desc:'One that isn\'t full of limescale build-up. A fresh start deserves a fresh kettle.',target:40},
+  {id:'kettle',cat:'Kitchen',emoji:'🫖',name:'Kettle',desc:'One that isn\'t full of limescale build-up. A fresh start deserves a fresh kettle.',target:20},
   {id:'toaster',cat:'Kitchen',emoji:'🍞',name:'4-slice toaster',desc:'For Tommy\'s toast obsession. Four slices. Non-negotiable.',target:35},
   // Decorations
-  {id:'picture_frames',cat:'Decorations',emoji:'🖼',name:'Picture frames',desc:'To fill with photos from the wedding, travels, and everything in between.',target:50},
-  {id:'plants',cat:'Decorations',emoji:'🌿',name:'House plants',desc:'To bring some green into our new space.',target:40},
+  {id:'picture_frames',cat:'Decorations',emoji:'🖼',name:'Picture frames, art & decorations',desc:'Frames, posters, prints — anything to fill our walls with things we love. Wedding photos very much included.',target:100},
+  {id:'plants',cat:'Decorations',emoji:'🌿',name:'House plants',desc:'To add to the collection. Someone please stop enabling Maike before she single-handedly owns an entire rainforest.',target:40},
   {id:'candles',cat:'Decorations',emoji:'🕯',name:'Candles & holders',desc:'For cosy evenings in when the Swiss winter arrives.',target:35},
   // Bedroom
-  {id:'bedding_main',cat:'Bedroom',emoji:'🛌',name:'Bedding — our room',desc:'Fresh bedding for our new bedroom. Suggestions very welcome — we\'re open to recommendations!',target:90},
-  {id:'bedding_spare',cat:'Bedroom',emoji:'🛏',name:'Bedding — spare room',desc:'For when you come to visit us in Zürich. Suggest a set you\'d want to sleep in!',target:70},
-  {id:'lamps',cat:'Bedroom',emoji:'🪔',name:'Comforting lamps',desc:'Maike refuses to use the main lights, so good lamps are essential. Warm, cosy, non-negotiable.',target:70},
-  {id:'bath_mat',cat:'Bedroom',emoji:'🛁',name:'Bathroom mat',desc:'The small things that make a house a home.',target:25},
+  {id:'bedding_main',cat:'Bedroom',emoji:'🛌',name:'Bedding — our room',desc:'Fresh bedding for our new bedroom. Suggestions very welcome — we\'re completely open to recommendations!',target:90},
+  {id:'bedding_spare',cat:'Bedroom',emoji:'🛏',name:'Bedding — spare room',desc:'For when you come to visit us in Zürich. Suggest a set you\'d actually want to sleep in!',target:70},
+  {id:'lamps',cat:'Bedroom',emoji:'🪔',name:'Comforting lamps',desc:'Maike refuses to use the main lights — warm, cosy lamps are non-negotiable. Good recommendations very gratefully received.',target:70},
   // Experiences
   {id:'coffee_voucher',cat:'Experiences',emoji:'☕',name:'Zürich coffee crawl',desc:'Help us discover the best coffee and matcha spots the city has to offer.',target:80},
   {id:'lake_day',cat:'Experiences',emoji:'🏊',name:'Lake Zürich day out',desc:'Boat hire, swimming, and an afternoon by the water.',target:100},
-  {id:'ski_day',cat:'Experiences',emoji:'⛷',name:'Ski day in the Alps',desc:'We\'ll be an hour from the slopes — a ski day fund would go a long way.',target:200},
+  {id:'ski_day',cat:'Experiences',emoji:'⛷',name:'Ski day in the Alps',desc:'We\'ll be an hour from the slopes — a ski day fund would go a very long way.',target:200},
   {id:'restaurant',cat:'Experiences',emoji:'🍽',name:'Special dinner out',desc:'A memorable first restaurant meal together as a married couple in Zürich.',target:120},
   // Other
-  {id:'other',cat:'Other',emoji:'🎁',name:'Something of your choosing',desc:'These are just suggestions — things we\'ll be buying for ourselves anyway. If you\'d like to put something towards our new life in Zürich more generally, we\'re grateful for every contribution, whatever it\'s for.',target:50},
+  {id:'other',cat:'Other',emoji:'🎁',name:'Something of your choosing',desc:'These are simply suggestions — things we\'ll be buying for ourselves anyway. If you\'d like to put something towards our new life in Zürich more generally, every contribution means the world, whatever it\'s for.',target:null},
 ];
 
 let regFilter='All';
@@ -1489,22 +1488,25 @@ function renderRegistry(){
   items.forEach(item=>{
     const contribs=regContribs[item.id]||[];
     const raised=contribs.reduce((s,c)=>s+(Number(c.amount)||0),0);
-    const pct=Math.min(100,Math.round(raised/item.target*100));
-    const funded=raised>=item.target;
+    const hasGoal=item.target!==null&&item.target>0;
+    const pct=hasGoal?Math.min(100,Math.round(raised/item.target*100)):0;
+    const funded=hasGoal&&raised>=item.target;
     const card=document.createElement('div');
     card.className='reg-card'+(funded?' funded':'');
     const contribHtml=contribs.length?'<div class="reg-contrib-list">'+contribs.slice(-3).reverse().map(c=>{
       const msg=c.message?` &mdash; <em>${esc(c.message)}</em>`:'';
       return`<div class="reg-contrib-item"><strong>${esc(c.name)}</strong> put &pound;${Number(c.amount).toFixed(0)} towards this${msg}</div>`;
     }).join('')+(contribs.length>3?`<p style="font-size:.7rem;color:var(--text-muted);margin-top:.3rem;">+ ${contribs.length-3} more contribution${contribs.length-3>1?'s':''}</p>`:'')+`</div>`:'';
+    const progressHtml=hasGoal?`
+      <div class="reg-bar-wrap"><div class="reg-bar" style="width:${pct}%"></div></div>
+      <div class="reg-amounts"><span>&pound;${raised.toFixed(0)} raised</span><span>Goal: &pound;${item.target}</span></div>`:'';
     card.innerHTML=`
       <span class="reg-emoji">${item.emoji}</span>
       <p class="reg-cat">${esc(item.cat)}</p>
       <p class="reg-name">${esc(item.name)}</p>
       <p class="reg-desc">${esc(item.desc)}</p>
       ${contribHtml}
-      <div class="reg-bar-wrap"><div class="reg-bar" style="width:${pct}%"></div></div>
-      <div class="reg-amounts"><span>&pound;${raised.toFixed(0)} raised</span><span>Goal: &pound;${item.target}</span></div>
+      ${progressHtml}
       ${funded
         ?'<button class="reg-btn funded-btn">&#10003; Fully funded &mdash; thank you!</button>'
         :`<button class="reg-btn" onclick="openRegModal('${item.id}')">Contribute towards this &rarr;</button>`}
