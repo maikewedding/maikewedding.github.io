@@ -607,14 +607,29 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
         <div class="gift-card" style="background:var(--olive);border-color:var(--olive);">
           <span class="gift-emoji">&#127474;&#127485;</span>
           <h3 class="gift-title" style="color:var(--cream);">Honeymoon Fund</h3>
-          <p class="gift-desc" style="color:rgba(245,240,232,.75);">We're heading to Canc&uacute;n and plan to make the most of every second &mdash; snorkelling in cenotes, cliff jumping, exploring Mayan ruins, sunset sailing, the best street tacos we can find, and probably one very questionable adventure we haven't planned yet. Leave us a note if you'd like your contribution to go towards something specific!</p>
-          <textarea id="honeymoonNote" placeholder="Leave a note for how you'd like us to spend it (optional)..." style="width:100%;padding:.6rem .75rem;border:1px solid rgba(232,200,64,.3);background:rgba(255,255,255,.08);color:rgba(245,240,232,.85);font-family:'Jost',sans-serif;font-size:.82rem;resize:vertical;min-height:70px;margin-bottom:.85rem;outline:none;" onfocus="this.style.borderColor='rgba(232,200,64,.7)'" onblur="this.style.borderColor='rgba(232,200,64,.3)'"></textarea>
-          <button class="gift-btn" style="border-color:var(--lemon);color:var(--lemon);" onmouseover="this.style.background='rgba(232,200,64,.15)'" onmouseout="this.style.background='none'" onclick="openGiftLink('honeymoon')">Contribute &rarr;</button>
+          <p class="gift-desc" style="color:rgba(245,240,232,.75);">We're heading to Canc&uacute;n and plan to make the most of every second &mdash; snorkelling in cenotes, cliff jumping, exploring Mayan ruins, sunset sailing, the best street tacos we can find, and probably one very questionable adventure we haven't planned yet. Leave us a note if you'd like to earmark it for something specific!</p>
+          <button class="gift-btn" style="border-color:var(--lemon);color:var(--lemon);" onmouseover="this.style.background='rgba(232,200,64,.15)'" onmouseout="this.style.background='none'" onclick="openHoneymoonModal()">Contribute &rarr;</button>
         </div>
       </div>
     </div>
   </div>
   <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- HONEYMOON MODAL -->
+<div id="honeymoonModal" style="display:none;position:fixed;inset:0;background:rgba(30,28,24,.6);z-index:500;align-items:center;justify-content:center;padding:1.5rem;">
+  <div style="background:var(--cream);max-width:420px;width:100%;padding:2rem;position:relative;" id="honeymoonModalInner">
+    <button onclick="closeHoneymoonModal()" style="position:absolute;top:.75rem;right:.9rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);">&#10005;</button>
+    <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.4rem;">Canc&uacute;n, Mexico</p>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--text-dark);margin-bottom:.3rem;">Honeymoon Fund</h3>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6;">Every contribution goes towards making our honeymoon unforgettable &mdash; whether that's a sunset sailing trip, the best tacos in Canc&uacute;n, or that one questionable adventure we haven't planned yet.</p>
+    <p style="font-size:.75rem;color:var(--olive);background:rgba(125,142,114,.1);border:1px solid rgba(125,142,114,.25);padding:.6rem .85rem;margin-bottom:1.25rem;line-height:1.6;">&#128161; Suggested amounts: £20 for cocktails on the beach, £50 for a cenote trip, £100 for a sunset sailing experience</p>
+    <div style="margin-bottom:.85rem;"><label class="fl">Your name</label><input class="fi" type="text" id="hmName" placeholder="e.g. Sarah"></div>
+    <div style="margin-bottom:.85rem;"><label class="fl">Contribution amount (&#163;)</label><input class="fi" type="number" id="hmAmount" placeholder="e.g. 50" min="1"></div>
+    <div style="margin-bottom:1.25rem;"><label class="fl">Leave a note <span style="font-weight:400;color:var(--text-muted);">(optional)</span></label><textarea class="fi" id="hmMsg" rows="2" placeholder="e.g. Put this towards the best street tacos you can find!" style="resize:vertical;"></textarea></div>
+    <button onclick="submitHoneymoon()" style="width:100%;padding:.8rem;background:var(--olive);color:white;border:none;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;" onmouseover="this.style.background='var(--terracotta)'" onmouseout="this.style.background='var(--olive)'">Contribute &amp; pay via PayPal &rarr;</button>
+    <p style="font-size:.72rem;color:var(--text-muted);margin-top:.85rem;line-height:1.6;text-align:center;">You'll be taken to PayPal with the amount pre-filled &mdash; please include your name in the PayPal note so we know it's from you!</p>
+  </div>
 </div>
 
 <!-- REGISTRY -->
@@ -1356,6 +1371,63 @@ function saveGuestActivity(patch){
     setDoc(doc(window._db,'guests',normId(currentGuest.name)),updates,{merge:true}).catch(e=>console.warn('saveGuestActivity:',e));
   });
 }
+
+// HONEYMOON MODAL
+function openHoneymoonModal(){
+  if(currentGuest)document.getElementById('hmName').value=currentGuest.name.split(' ')[0];
+  document.getElementById('hmAmount').value='';
+  document.getElementById('hmMsg').value='';
+  document.getElementById('honeymoonModal').style.display='flex';
+}
+function closeHoneymoonModal(){
+  document.getElementById('honeymoonModal').style.display='none';
+  document.getElementById('honeymoonModalInner').innerHTML=`
+    <button onclick="closeHoneymoonModal()" style="position:absolute;top:.75rem;right:.9rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);">&#10005;</button>
+    <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.4rem;">Canc&uacute;n, Mexico</p>
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--text-dark);margin-bottom:.3rem;">Honeymoon Fund</h3>
+    <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6;">Every contribution goes towards making our honeymoon unforgettable &mdash; whether that's a sunset sailing trip, the best tacos in Canc&uacute;n, or that one questionable adventure we haven't planned yet.</p>
+    <p style="font-size:.75rem;color:var(--olive);background:rgba(125,142,114,.1);border:1px solid rgba(125,142,114,.25);padding:.6rem .85rem;margin-bottom:1.25rem;line-height:1.6;">&#128161; Suggested amounts: £20 for cocktails on the beach, £50 for a cenote trip, £100 for a sunset sailing experience</p>
+    <div style="margin-bottom:.85rem;"><label class="fl">Your name</label><input class="fi" type="text" id="hmName" placeholder="e.g. Sarah"></div>
+    <div style="margin-bottom:.85rem;"><label class="fl">Contribution amount (&#163;)</label><input class="fi" type="number" id="hmAmount" placeholder="e.g. 50" min="1"></div>
+    <div style="margin-bottom:1.25rem;"><label class="fl">Leave a note <span style="font-weight:400;color:var(--text-muted);">(optional)</span></label><textarea class="fi" id="hmMsg" rows="2" placeholder="e.g. Put this towards the best street tacos you can find!" style="resize:vertical;"></textarea></div>
+    <button onclick="submitHoneymoon()" style="width:100%;padding:.8rem;background:var(--olive);color:white;border:none;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;" onmouseover="this.style.background='var(--terracotta)'" onmouseout="this.style.background='var(--olive)'">Contribute &amp; pay via PayPal &rarr;</button>
+    <p style="font-size:.72rem;color:var(--text-muted);margin-top:.85rem;line-height:1.6;text-align:center;">You'll be taken to PayPal with the amount pre-filled &mdash; please include your name in the PayPal note so we know it's from you!</p>`;
+}
+function submitHoneymoon(){
+  const name=document.getElementById('hmName').value.trim();
+  const amount=parseFloat(document.getElementById('hmAmount').value);
+  const message=document.getElementById('hmMsg').value.trim();
+  if(!name){showToast('Please enter your name');return;}
+  if(!amount||amount<1){showToast('Please enter an amount');return;}
+  const testMode=isAdmin();
+  const first=currentGuest?currentGuest.name.split(' ')[0]:name;
+  if(!testMode){
+    emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
+    emailjs.send(EMAILJS_SERVICE_ID,'template_2itanao',{contributor_name:name,item_name:'Honeymoon Fund',amount:amount.toFixed(0),message:message||'No note left',to_email:'maikeschmidt906@gmail.com'}).catch(e=>console.warn('EmailJS honeymoon:',e));
+    if(currentGuest){
+      const contribs=activity.contributions||[];
+      contribs.push({itemName:'Honeymoon Fund',amount:amount.toFixed(0),ts:Date.now()});
+      activity.contributions=contribs;
+      saveGuestActivity({contributions:contribs,photo:activity.photo,song:activity.song,rsvp:activity.rsvp});
+      updateActivity();
+    }
+  }
+  document.getElementById('honeymoonModalInner').innerHTML=`
+    <div style="text-align:center;padding:1rem 0;">
+      ${testMode?'<p style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;background:var(--lemon);color:#333;padding:.25rem .75rem;display:inline-block;margin-bottom:1rem;">&#9888; Test mode &mdash; not saved</p>':''}
+      <p style="font-size:2rem;margin-bottom:.75rem;">&#127958;</p>
+      <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.5rem;">${testMode?'Preview':'Thank you'}, ${esc(first)}</p>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--text-dark);margin-bottom:1rem;">You're a dream.</h3>
+      <p style="font-size:.9rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem;">Your contribution of <strong style="color:var(--olive);">£${amount.toFixed(0)}</strong> towards our honeymoon means the world to us. We'll be thinking of you as we sip cocktails on the beach in Canc&uacute;n.</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text-dark);margin-bottom:1.5rem;font-style:italic;">With so much love &mdash; Tommy &amp; Maike &#10084;</p>
+      ${testMode
+        ?'<p style="font-size:.75rem;color:var(--text-muted);margin-bottom:1.25rem;">PayPal redirect skipped in test mode.</p>'
+        :'<p style="font-size:.75rem;color:var(--text-muted);margin-bottom:1.25rem;">You\'re being taken to PayPal to complete your payment&hellip;</p>'}
+      <button onclick="closeHoneymoonModal()" style="padding:.6rem 1.5rem;background:none;border:1px solid var(--olive-pale);color:var(--text-muted);font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;">Close</button>
+    </div>`;
+  if(!testMode)setTimeout(()=>{window.open('https://www.paypal.com/paypalme/maikeschmidt346/'+amount,'_blank','noopener');},800);
+}
+document.getElementById('honeymoonModal').addEventListener('click',e=>{if(e.target===document.getElementById('honeymoonModal'))closeHoneymoonModal();});
 
 // REGISTRY
 const REGISTRY_ITEMS=[
