@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tommy &amp; Maike &mdash; 15th May 2027</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F5F0E8;--cream-dark:#EDE7D5;--olive:#7D8E72;--olive-light:#9BAF8E;
+  --olive-pale:#D4E0C8;--terracotta:#9B3A28;--warm-white:#FDFAF4;
+  --text-dark:#2C2418;--text-mid:#5C4E3A;--text-muted:#8A7A65;--lemon:#E8C840;
+  --nav-h:70px;
+}
+html,body{height:100%}
+body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden}
+/* ENVELOPE */
+#welcomeScreen{position:fixed;inset:0;z-index:1000;background:var(--olive);display:flex;align-items:center;justify-content:center;padding:1.5rem;overflow:hidden}
+#welcomeScreen.hiding{animation:wsFadeOut .5s ease forwards}
+@keyframes wsFadeOut{to{opacity:0;transform:scale(1.03)}}
+.ws-pattern{position:absolute;inset:0;opacity:.04;pointer-events:none;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.ws-leaf{position:absolute;opacity:.15;pointer-events:none}
+.ws-leaf-tl{top:0;left:0;width:clamp(130px,25vw,260px)}
+.ws-leaf-br{bottom:0;right:0;width:clamp(110px,20vw,210px);transform:rotate(180deg) scaleX(-1)}
+.env-stage{position:relative;width:min(340px,86vw);display:flex;flex-direction:column;align-items:center}
+.env-wrap{position:relative;width:100%}
+.env-body{position:relative;width:100%;height:0;padding-bottom:60%;background:#f2ede2;border:1px solid rgba(200,212,168,.5);box-shadow:0 8px 30px rgba(44,36,24,.25);overflow:hidden}
+.env-fold-left{position:absolute;top:0;left:0;width:51%;height:100%;z-index:1;background:linear-gradient(to bottom right,#e8e2d6 49.5%,transparent 50%)}
+.env-fold-right{position:absolute;top:0;right:0;width:51%;height:100%;z-index:1;background:linear-gradient(to bottom left,#e8e2d6 49.5%,transparent 50%)}
+.env-fold-bottom{position:absolute;bottom:0;left:0;right:0;height:52%;z-index:2;background:linear-gradient(to top right,#e0dace 49.5%,transparent 50%),linear-gradient(to top left,#e0dace 49.5%,transparent 50%)}
+.env-flap{position:absolute;top:0;left:-1px;right:-1px;z-index:10;height:0;border-left:calc((min(340px,86vw) + 2px)/2) solid transparent;border-right:calc((min(340px,86vw) + 2px)/2) solid transparent;border-top:calc(min(340px,86vw)*.34) solid #e8e2d6;transform-origin:top center;transition:transform .65s cubic-bezier(.4,0,.2,1);filter:drop-shadow(0 3px 5px rgba(44,36,24,.18))}
+.env-flap.open{transform:rotateX(-180deg)}
+.env-seal{position:absolute;left:50%;z-index:20;top:calc(min(340px,86vw)*.34 - 30px);transform:translateX(-50%);width:60px;height:60px;border-radius:50%;cursor:pointer;user-select:none;transition:transform .22s ease,filter .22s ease;filter:drop-shadow(0 3px 8px rgba(44,36,24,.45))}
+.env-seal:hover{transform:translateX(-50%) scale(1.08)}
+.env-seal.break{animation:sealBreak .38s ease forwards}
+@keyframes sealBreak{0%{transform:translateX(-50%) scale(1);opacity:1}45%{transform:translateX(-50%) scale(1.3) rotate(18deg);opacity:.8}100%{transform:translateX(-50%) scale(0) rotate(35deg);opacity:0}}
+.env-card{display:none;position:absolute;left:9%;right:9%;top:8%;z-index:5;background:var(--warm-white);border:1px solid rgba(200,212,168,.5);padding:1.25rem 1.1rem 1.1rem;text-align:center;box-shadow:0 2px 12px rgba(44,36,24,.12);pointer-events:none}
+.env-card::before{content:"";position:absolute;inset:5px;border:1px solid var(--olive-pale);pointer-events:none}
+.env-card.rising{display:block;pointer-events:auto;z-index:30}
+.env-card-names{font-family:"Cormorant Garamond",serif;font-size:clamp(1.45rem,5vw,2rem);font-weight:300;color:var(--olive);line-height:.9}
+.env-card-amp{font-style:italic;color:var(--terracotta);display:block;font-size:.65em;margin:.25rem 0}
+.env-card-date{font-size:.53rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);margin-top:.4rem}
+.env-body.fadeout{animation:envFadeOut .45s ease forwards;pointer-events:none}
+@keyframes envFadeOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.94)}}
+.env-input{width:100%;padding:.62rem .85rem;border:1px solid var(--olive-pale);background:var(--cream);font-size:.95rem;font-family:"Cormorant Garamond",serif;color:var(--text-dark);text-align:center;outline:none;transition:border-color .2s;margin-bottom:.5rem}
+.env-input:focus{border-color:var(--olive)}
+.env-input::placeholder{color:var(--text-muted);font-style:italic}
+.env-btn{width:100%;padding:.68rem;background:var(--olive);color:white;border:none;font-family:"Jost",sans-serif;font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.env-btn:hover{background:var(--olive-light)}
+.env-err{font-size:.68rem;color:var(--terracotta);min-height:1em;margin-top:.3rem;line-height:1.4}
+.env-hint{margin-top:1rem;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(245,240,232,.45);animation:hintPulse 2.2s infinite;cursor:pointer;text-align:center}
+@keyframes hintPulse{0%,100%{opacity:.35}50%{opacity:.9}}
+.env-hint.gone{visibility:hidden}
+.env-note{font-size:.6rem;color:rgba(245,240,232,.32);line-height:1.6;margin-top:.7rem;text-align:center;display:none}
+/* NAV */
+.top-banner{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--olive);height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;border-bottom:3px solid var(--terracotta)}
+.brand{font-family:"Cormorant Garamond",serif;font-size:1.55rem;font-weight:400;color:var(--cream);letter-spacing:.04em;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.brand .amp{font-style:italic;color:var(--lemon)}
+.nav-menu{display:flex;list-style:none;height:100%;align-items:stretch}
+.nav-menu li{display:flex;align-items:stretch}
+.nav-menu button{background:none;border:none;color:rgba(245,240,232,.72);font-family:"Jost",sans-serif;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;padding:0 1rem;cursor:pointer;transition:color .18s,background .18s;display:flex;align-items:center;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-3px}
+.nav-menu button:hover{color:var(--cream);background:rgba(255,255,255,.07)}
+.nav-menu button.active{color:var(--lemon);border-bottom-color:var(--lemon)}
+.nav-dropdown{position:relative;display:flex;align-items:stretch}
+.nav-dd-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--olive);border-top:2px solid var(--terracotta);min-width:180px;z-index:300;flex-direction:column}
+.nav-dropdown.open .nav-dd-menu,.nav-dropdown:hover .nav-dd-menu{display:flex}
+.nav-dd-menu button{border:none;border-bottom:1px solid rgba(255,255,255,.1);color:rgba(245,240,232,.8);font-family:"Jost",sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;padding:.85rem 1.25rem;text-align:left;cursor:pointer;white-space:nowrap;background:none;margin-bottom:0}
+.nav-dd-menu button:last-child{border-bottom:none}
+.nav-dd-menu button:hover,.nav-dd-menu button.active{background:rgba(255,255,255,.1);color:var(--lemon)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;margin-left:.75rem}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--cream);transition:.3s}
+.mob-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:var(--olive);z-index:198;flex-direction:column;border-bottom:2px solid var(--terracotta)}
+.mob-menu.open{display:flex}
+.mob-menu button{background:none;border:none;border-bottom:1px solid rgba(255,255,255,.1);color:rgba(245,240,232,.8);font-family:"Jost",sans-serif;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;padding:1rem 2rem;text-align:left;cursor:pointer;transition:background .15s}
+.mob-menu button:hover,.mob-menu button.active{background:rgba(255,255,255,.08);color:var(--lemon)}
+.profile-btn{background:none;border:1px solid rgba(245,240,232,.3);border-radius:50%;width:32px;height:32px;cursor:pointer;display:none;align-items:center;justify-content:center;color:var(--cream);font-size:.85rem;transition:border-color .2s,background .2s;flex-shrink:0;margin-left:.5rem;position:relative}
+.profile-btn:hover{border-color:var(--lemon);background:rgba(255,255,255,.1)}
+.profile-btn.visible{display:flex}
+.profile-dd{display:none;position:absolute;right:0;top:calc(100% + 8px);background:var(--warm-white);border:1px solid rgba(200,212,168,.4);min-width:200px;z-index:400;box-shadow:0 4px 20px rgba(44,36,24,.15)}
+.profile-dd.open{display:block}
+.profile-dd-head{padding:1rem 1.25rem .75rem;border-bottom:1px solid var(--olive-pale)}
+.profile-dd-name{font-family:"Cormorant Garamond",serif;font-size:1.15rem;color:var(--olive);display:block}
+.profile-dd-type{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);display:block;margin-top:.15rem}
+.profile-dd-item{display:block;width:100%;text-align:left;background:none;border:none;padding:.6rem 1.25rem;font-family:"Jost",sans-serif;font-size:.78rem;color:var(--text-mid);cursor:pointer;transition:background .15s}
+.profile-dd-item:hover{background:var(--cream);color:var(--olive)}
+.profile-dd-item.switch{border-top:1px solid var(--olive-pale);margin-top:.25rem;color:var(--terracotta);font-size:.72rem}
+.profile-activity{font-size:.72rem;color:var(--text-muted);padding:.35rem 1.25rem}
+/* PAGES */
+.page-wrap{padding-top:var(--nav-h);min-height:100vh}
+.page{display:none;animation:fadeIn .35s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.ps{padding:5rem 2rem 4rem}
+.ps.alt{background:var(--warm-white)}
+.ps.mid{background:var(--cream-dark)}
+.si{max-width:900px;margin:0 auto}
+.sh{text-align:center;margin-bottom:3.5rem}
+.se{font-size:.68rem;letter-spacing:.25em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.8rem}
+.st{font-family:"Cormorant Garamond",serif;font-size:clamp(2.2rem,5vw,3.4rem);font-weight:400;color:var(--olive);line-height:1.1}
+.ss{margin-top:.75rem;color:var(--text-muted);font-size:.88rem;font-weight:300}
+.orn{display:flex;align-items:center;gap:1rem;margin:1.1rem auto 0;max-width:200px}
+.orn::before,.orn::after{content:"";flex:1;height:1px;background:var(--olive-pale)}
+.orn span{font-size:.65rem;color:var(--terracotta)}
+.inv-pill{text-align:center;padding:.9rem 1.5rem;margin-bottom:1.75rem;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;font-weight:500}
+.inv-pill.ceremony{background:rgba(155,58,40,.1);color:var(--terracotta);border:1px solid rgba(155,58,40,.2)}
+.inv-pill.day{background:rgba(125,142,114,.1);color:var(--olive);border:1px solid rgba(125,142,114,.2)}
+.inv-pill.evening{background:rgba(196,154,60,.12);color:#8A6A1A;border:1px solid rgba(196,154,60,.25)}
+/* HOME */
+.hero{min-height:calc(100vh - var(--nav-h));display:flex;align-items:center;justify-content:center;padding:3rem 2rem 4rem;background:var(--cream);position:relative;overflow:hidden}
+.hero-tl{position:absolute;top:0;left:0;width:clamp(260px,38vw,420px);opacity:.6;pointer-events:none}
+.hero-br{position:absolute;bottom:0;right:0;width:clamp(200px,28vw,320px);opacity:.45;pointer-events:none;transform:rotate(180deg) scaleX(-1)}
+.hero-c{position:relative;text-align:center;max-width:600px}
+.hero-ey{font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-muted);margin-bottom:1.2rem}
+.hero-n{font-family:"Cormorant Garamond",serif;font-size:clamp(4.5rem,13vw,8rem);font-weight:300;line-height:.9;color:var(--olive)}
+.hero-amp{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,5.5vw,3.5rem);font-style:italic;color:var(--terracotta);display:block;margin:.5rem 0}
+.hero-div{display:flex;align-items:center;gap:1rem;margin:1.8rem auto;max-width:280px}
+.hero-div::before,.hero-div::after{content:"";flex:1;height:1px;background:var(--olive-pale)}
+.hero-date{font-family:"Cormorant Garamond",serif;font-size:clamp(1.3rem,3.5vw,2rem);color:var(--terracotta);letter-spacing:.1em;text-transform:uppercase}
+.hero-date sup{font-size:.52em;vertical-align:super}
+.hero-venue{margin-top:.5rem;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted)}
+.cd{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem;margin-top:2.5rem;max-width:360px;margin-left:auto;margin-right:auto}
+.cd-item{display:flex;flex-direction:column;align-items:center}
+.cd-num{font-family:"Cormorant Garamond",serif;font-size:2.6rem;font-weight:300;color:var(--olive);line-height:1}
+.cd-lbl{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-muted);margin-top:.25rem}
+.hero-btn{display:inline-block;margin-top:2.5rem;padding:.85rem 2.8rem;background:var(--terracotta);color:white;border:none;font-family:"Jost",sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .2s}
+.hero-btn:hover{background:#7A2C1A}
+/* ITINERARY */
+.tl{position:relative;padding-left:3rem;max-width:680px;margin:0 auto}
+.tl::before{content:"";position:absolute;left:.9rem;top:0;bottom:0;width:1px;background:var(--olive-pale)}
+.tl-item{position:relative;margin-bottom:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid rgba(212,224,200,.35)}
+.tl-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.tl-dot{position:absolute;left:-2.3rem;top:.4rem;width:10px;height:10px;border-radius:50%;background:var(--terracotta);border:2px solid var(--cream);box-shadow:0 0 0 2px var(--olive-pale)}
+.tl-time{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.3rem}
+.tl-event{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:500;color:var(--olive);margin-bottom:.4rem}
+.tl-desc{font-size:.88rem;color:var(--text-muted);line-height:1.7;font-weight:300}
+/* DETAILS */
+.dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+.dc{background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:2rem 1.75rem}
+.dc.green{background:var(--olive);border-color:var(--olive)}
+.dc.green .dh{color:var(--cream)}
+.dc.green .dt{color:rgba(245,240,232,.8)}
+.dc.green .dt a{color:var(--lemon)}
+.di{font-size:1.8rem;margin-bottom:1rem}
+.dh{font-family:"Cormorant Garamond",serif;font-size:1.3rem;font-weight:500;color:var(--olive);margin-bottom:.75rem}
+.dt{font-size:.87rem;color:var(--text-muted);line-height:1.75;font-weight:300}
+.dt a{color:var(--terracotta);text-decoration:none}
+.dt a:hover{text-decoration:underline}
+.dtag{display:inline-block;margin-top:.8rem;padding:.28rem .75rem;background:var(--olive-pale);color:var(--olive);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
+/* INVITATION */
+.inv-wrap{position:relative;min-height:calc(100vh - var(--nav-h));display:flex;align-items:center;justify-content:center;padding:4rem 2rem;background:var(--olive)}
+.inv-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none}
+.inv-card{background:var(--warm-white);border:1px solid rgba(212,224,200,.35);padding:3.5rem 3rem;max-width:540px;width:100%;text-align:center;position:relative}
+.inv-card::before{content:"";position:absolute;inset:8px;border:1px solid var(--olive-pale);pointer-events:none}
+.inv-greet{font-family:"Cormorant Garamond",serif;font-size:1rem;font-style:italic;color:var(--text-muted);margin-bottom:1.5rem}
+.inv-names{font-family:"Cormorant Garamond",serif;font-size:clamp(2.8rem,7vw,3.6rem);font-weight:300;color:var(--olive);line-height:1}
+.inv-names .amp{font-style:italic;color:var(--terracotta);font-size:.7em;display:block;margin:.3rem 0}
+.inv-div{display:flex;align-items:center;gap:1rem;margin:1.25rem auto;max-width:220px}
+.inv-div::before,.inv-div::after{content:"";flex:1;height:1px;background:var(--olive-pale)}
+.inv-heart{font-size:.65rem;color:var(--terracotta)}
+.inv-req{font-size:.88rem;color:var(--text-muted);line-height:1.85;font-weight:300;margin:1.25rem 0}
+.inv-date{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--terracotta);letter-spacing:.08em;margin:.8rem 0 .4rem}
+.inv-date sup{font-size:.5em;vertical-align:super}
+.inv-venue{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--olive-light);margin-bottom:.75rem}
+.inv-time{font-size:.82rem;color:var(--text-muted);margin-bottom:1.5rem}
+.rsvp-btn{display:inline-block;padding:.85rem 2.5rem;background:var(--terracotta);color:white;border:none;cursor:pointer;font-family:"Jost",sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;transition:background .2s}
+.rsvp-btn:hover{background:#7A2C1A}
+.rsvp-note{margin-top:.85rem;font-size:.77rem;color:var(--text-muted)}
+/* HUB */
+.hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:680px;margin:0 auto}
+.hub-card{background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
+.hub-card:hover{border-color:var(--olive);background:rgba(212,224,200,.1)}
+.hub-icon{font-size:2.8rem;display:block;margin-bottom:1rem}
+.hub-title{font-family:"Cormorant Garamond",serif;font-size:1.5rem;color:var(--olive);margin-bottom:.6rem;font-weight:400}
+.hub-desc{font-size:.83rem;color:var(--text-muted);line-height:1.65;font-weight:300;margin-bottom:1.25rem}
+.hub-btn{display:inline-block;padding:.55rem 1.35rem;border:1px solid var(--olive);color:var(--olive);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;font-family:"Jost",sans-serif;background:none;cursor:pointer;transition:.2s}
+.hub-card:hover .hub-btn{background:var(--olive);color:white}
+@media(max-width:480px){.hub-grid{grid-template-columns:1fr}}
+/* GALLERY */
+.gal-tool-btn{background:none;border:1px solid var(--olive-pale);color:var(--text-mid);font-family:"Jost",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .85rem;cursor:pointer;transition:.15s;white-space:nowrap}
+.gal-tool-btn:hover{border-color:var(--olive);color:var(--olive)}
+.gal-tool-primary{background:var(--olive);border-color:var(--olive);color:white}
+.gal-tool-primary:hover{background:var(--olive-light);border-color:var(--olive-light);color:white}
+.gal-upload{border:2px dashed var(--olive-pale);padding:2.5rem 2rem;text-align:center;margin-bottom:2rem;background:rgba(212,224,200,.08);cursor:pointer;transition:.2s}
+.gal-upload:hover{background:rgba(212,224,200,.18);border-color:var(--olive-light)}
+.gal-upload p{color:var(--text-muted);font-size:.87rem}
+.gal-upload .gi{font-size:2.5rem;margin-bottom:.6rem;display:block}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.75rem}
+.gal-ph{aspect-ratio:4/5;background:var(--warm-white);border:1px dashed var(--olive-pale);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:var(--text-muted);font-size:.75rem;cursor:pointer;transition:.2s}
+.gal-ph:hover{border-color:var(--olive-light);background:rgba(212,224,200,.12)}
+.gal-slot{overflow:hidden;position:relative;cursor:pointer}
+.gal-slot .gal-cb{position:absolute;top:.4rem;left:.4rem;z-index:5;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.85);border:2px solid rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--olive);opacity:0;transition:opacity .15s}
+.gal-slot:hover .gal-cb{opacity:1}
+.gal-slot.selected .gal-cb{opacity:1;background:var(--olive);color:white;border-color:var(--olive)}
+.gal-slot.selected::after{content:"";position:absolute;inset:0;border:3px solid var(--olive);pointer-events:none;z-index:4}
+.gal-slot .gal-hover-icons{position:absolute;inset:0;z-index:3;background:rgba(20,16,12,.35);display:flex;align-items:center;justify-content:center;gap:.5rem;opacity:0;transition:opacity .18s}
+.gal-slot:hover .gal-hover-icons{opacity:1}
+.gal-icon-btn{background:rgba(255,255,255,.9);border:none;border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:.85rem;cursor:pointer;color:var(--text-dark);transition:.15s}
+.gal-icon-btn:hover{background:white;transform:scale(1.08)}
+.gal-img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}
+#lightbox{display:none;position:fixed;inset:0;z-index:900;background:rgba(20,16,12,.95);flex-direction:column}
+#lightbox.active{display:flex}
+.lb-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-family:"Jost",sans-serif;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.45rem 1rem;cursor:pointer;transition:.15s;white-space:nowrap}
+.lb-btn:hover{background:rgba(255,255,255,.22)}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:white;font-size:1.8rem;line-height:1;width:44px;height:64px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;z-index:2}
+.lb-nav:hover{background:rgba(255,255,255,.22)}
+.lb-prev{left:0}.lb-next{right:0}
+.lb-thumb{height:56px;width:56px;object-fit:cover;cursor:pointer;border:2px solid transparent;flex-shrink:0;opacity:.65;transition:.15s}
+.lb-thumb:hover{opacity:1}
+.lb-thumb.active{border-color:white;opacity:1}
+/* PHOTO */
+.photo-prompts{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2.5rem}
+.photo-prompt-card{background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:1.5rem 1.25rem;text-align:center}
+.photo-prompt-icon{font-size:2rem;display:block;margin-bottom:.6rem}
+.photo-prompt-card p{font-size:.85rem;color:var(--text-muted);line-height:1.55}
+.photo-prompt-card strong{color:var(--olive);font-weight:500}
+.photo-no-guest{border:2px dashed var(--olive-pale);padding:3rem 2rem;text-align:center}
+/* GIFTS */
+.gifts-intro{text-align:center;max-width:560px;margin:0 auto 3rem;font-family:"Cormorant Garamond",serif;font-size:1.15rem;font-style:italic;color:var(--text-muted);line-height:1.85}
+.gifts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+.gift-card{border:1px solid rgba(212,224,200,.5);padding:1.75rem;text-align:center}
+.gift-emoji{font-size:2.4rem;margin-bottom:.85rem;display:block}
+.gift-title{font-family:"Cormorant Garamond",serif;font-size:1.25rem;margin-bottom:.5rem}
+.gift-desc{font-size:.83rem;line-height:1.65;font-weight:300;margin-bottom:1rem}
+.gift-btn{display:inline-block;padding:.52rem 1.35rem;border:1px solid;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;text-decoration:none;cursor:pointer;background:none;transition:.2s;font-family:"Jost",sans-serif}
+/* REGISTRY */
+.reg-card{border:1px solid var(--olive-pale);background:var(--warm-white);padding:1.5rem;display:flex;flex-direction:column;transition:box-shadow .2s;}
+.reg-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.07);}
+.reg-card.funded{opacity:.55;pointer-events:none;}
+.reg-emoji{font-size:2rem;margin-bottom:.6rem;display:block;}
+.reg-cat{font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.3rem;}
+.reg-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text-dark);margin-bottom:.4rem;}
+.reg-desc{font-size:.82rem;color:var(--text-muted);line-height:1.6;margin-bottom:1rem;flex:1;}
+.reg-bar-wrap{background:var(--cream-dark);height:5px;border-radius:3px;margin-bottom:.5rem;overflow:hidden;}
+.reg-bar{height:100%;background:var(--olive);border-radius:3px;transition:width .4s;}
+.reg-amounts{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text-muted);margin-bottom:1rem;}
+.reg-contrib-list{margin-bottom:1rem;}
+.reg-contrib-item{font-size:.75rem;color:var(--text-muted);padding:.3rem 0;border-bottom:1px solid rgba(212,224,200,.3);line-height:1.4;}
+.reg-contrib-item:last-child{border-bottom:none;}
+.reg-btn{padding:.55rem 1.1rem;border:1px solid var(--olive);color:var(--olive);background:none;font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:.2s;width:100%;}
+.reg-btn:hover{background:var(--olive);color:white;}
+.reg-btn.funded-btn{border-color:var(--olive-pale);color:var(--olive-pale);cursor:default;}
+.reg-filter-btn{background:none;border:1px solid var(--olive-pale);color:var(--text-muted);font-family:'Jost',sans-serif;font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .75rem;cursor:pointer;transition:.15s;}
+.reg-filter-btn:hover,.reg-filter-btn.active{background:var(--olive);border-color:var(--olive);color:white;}
+/* PLAYLIST */
+.mf-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;align-items:center}
+.mf{background:none;border:1px solid var(--olive-pale);color:var(--text-muted);font-family:"Jost",sans-serif;font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;padding:.3rem .7rem;cursor:pointer;transition:.15s;white-space:nowrap}
+.mf:hover{border-color:var(--olive);color:var(--olive)}
+.mf.active{background:var(--olive);border-color:var(--olive);color:white}
+.pl-table{width:100%;border-collapse:collapse}
+.pl-table thead{border-bottom:1px solid var(--olive-pale)}
+.pl-table th{text-align:left;font-size:.63rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-muted);padding:0 1rem .75rem 0;font-weight:400}
+.pl-table th:first-child{padding-left:0}
+.pl-table td{padding:.9rem 1rem .9rem 0;border-bottom:1px solid rgba(212,224,200,.3);vertical-align:top}
+.pl-table td:first-child{padding-left:0}
+.tr-num{color:var(--text-muted);font-size:.82rem;width:2rem}
+.tr-title{font-family:"Cormorant Garamond",serif;font-size:1.1rem;color:var(--text-dark);display:block}
+.tr-artist{font-size:.8rem;color:var(--text-muted);font-weight:300;display:block;margin-top:.1rem}
+.tr-moment{font-size:.68rem;color:var(--terracotta);letter-spacing:.08em;text-transform:uppercase;padding:.22rem .55rem;background:rgba(155,58,40,.08);display:inline-block;white-space:nowrap}
+.tr-by{font-size:.75rem;color:var(--text-muted);font-style:italic}
+/* DIETARY */
+.diet-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem;margin-top:.4rem}
+.diet-check{display:flex;align-items:center;gap:.5rem;font-size:.87rem;color:var(--text-mid);cursor:pointer;user-select:none}
+.diet-check input[type="checkbox"]{width:15px;height:15px;accent-color:var(--olive);cursor:pointer;flex-shrink:0}
+/* MODAL */
+.modal-ov{display:none;position:fixed;inset:0;background:rgba(44,36,24,.65);z-index:500;align-items:center;justify-content:center;padding:2rem}
+.modal-ov.active{display:flex}
+.modal{background:var(--warm-white);padding:2.5rem;max-width:520px;width:100%;position:relative;max-height:90vh;overflow-y:auto}
+.modal-x{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;color:var(--text-muted);cursor:pointer}
+.modal-title{font-family:"Cormorant Garamond",serif;font-size:2rem;color:var(--olive);margin-bottom:.3rem}
+.modal-sub{font-size:.83rem;color:var(--text-muted);margin-bottom:2rem;font-weight:300}
+.fg{margin-bottom:1.25rem}
+.fl{display:block;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.4rem}
+.fi{width:100%;padding:.7rem .85rem;border:1px solid var(--olive-pale);background:var(--cream);font-size:.9rem;font-family:"Jost",sans-serif;color:var(--text-dark);outline:none;transition:border-color .2s}
+.fi:focus{border-color:var(--olive)}
+.fr-grp{display:flex;gap:1rem;flex-wrap:wrap}
+.fr{display:flex;align-items:center;gap:.4rem;cursor:pointer;font-size:.87rem;color:var(--text-mid)}
+.fsubmit{width:100%;padding:.9rem;background:var(--olive);color:white;border:none;font-family:"Jost",sans-serif;font-size:.73rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;margin-top:.5rem;transition:background .2s}
+.fsubmit:hover{background:var(--olive-light)}
+.fsuccess{text-align:center;padding:2rem 0;display:none}
+.fsuccess.active{display:block}
+.fsuccess-icon{font-size:3rem;color:var(--terracotta);margin-bottom:1rem}
+.fsuccess h3{font-family:"Cormorant Garamond",serif;font-size:1.8rem;color:var(--olive);margin-bottom:.5rem}
+.fsuccess p{color:var(--text-muted);font-size:.87rem}
+.fsuccess-btn{display:block;width:100%;text-align:left;background:none;border:1px solid var(--olive-pale);padding:.75rem 1rem;margin-top:.6rem;cursor:pointer;font-family:"Jost",sans-serif;font-size:.82rem;color:var(--text-mid);transition:.15s}
+.fsuccess-btn:first-of-type{margin-top:1rem}
+.fsuccess-btn:hover{background:var(--cream)}
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem}
+.honey-strip{margin-top:2.5rem;background:var(--olive);color:white;padding:2.5rem;text-align:center}
+.honey-strip h3{font-family:"Cormorant Garamond",serif;font-size:1.9rem;font-weight:400;margin-bottom:.75rem}
+.honey-strip p{font-size:.87rem;opacity:.8;line-height:1.7;max-width:460px;margin:0 auto}
+/* FOOTER */
+.pf{background:var(--text-dark);color:var(--cream);text-align:center;padding:2.5rem 2rem}
+.pf-names{font-family:"Cormorant Garamond",serif;font-size:1.9rem;font-weight:300;margin-bottom:.4rem}
+.pf-names .amp{font-style:italic;color:var(--terracotta)}
+.pf-date{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.4)}
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--olive);color:white;padding:.85rem 1.5rem;font-size:.82rem;z-index:600;opacity:0;transform:translateY(8px);transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+/* RESPONSIVE */
+@media(max-width:700px){
+  .nav-menu{display:none}
+  .hamburger{display:flex}
+  .top-banner{padding:0 1.25rem}
+  .inv-card{padding:2.5rem 1.5rem}
+  .pl-table th:nth-child(3),.pl-table td:nth-child(3){display:none}
+  .ps{padding:3.5rem 1.25rem 3rem}
+}
+/* FLOATING PHOTOS */
+.float-photo{position:absolute;z-index:4;pointer-events:none;opacity:0;transition:opacity .6s ease;}
+.float-photo img{display:block;width:100%;height:auto;}
+.float-photo.visible{opacity:1;}
+@keyframes floatA{0%,100%{transform:translateY(0px) rotate(var(--fr));}50%{transform:translateY(-9px) rotate(var(--fr));}}
+@keyframes floatB{0%,100%{transform:translateY(0px) rotate(var(--fr));}50%{transform:translateY(-6px) rotate(var(--fr));}}
+@keyframes floatC{0%,100%{transform:translateY(0px) rotate(var(--fr));}50%{transform:translateY(-12px) rotate(var(--fr));}}
+@media(max-width:900px){.float-photo{display:none;}}
+</style>
+</head>
+<body>
+<!-- ENVELOPE -->
+<div id="welcomeScreen">
+  <div class="ws-pattern"></div>
+  <svg class="ws-leaf ws-leaf-tl" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 Q90 65 200 110 Q290 145 370 175" stroke="#fff" stroke-width="1.5" fill="none"/>
+    <ellipse cx="65" cy="48" rx="24" ry="11" fill="#fff" transform="rotate(-30 65 48)"/>
+    <ellipse cx="148" cy="58" rx="22" ry="10" fill="#fff" transform="rotate(-22 148 58)"/>
+    <ellipse cx="80" cy="100" rx="19" ry="15" fill="#E8C840"/>
+    <ellipse cx="182" cy="142" rx="17" ry="13" fill="#E8C840"/>
+    <circle cx="116" cy="63" r="4.5" fill="white"/>
+  </svg>
+  <svg class="ws-leaf ws-leaf-br" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 10 Q90 65 200 110 Q290 145 370 175" stroke="#fff" stroke-width="1.5" fill="none"/>
+    <ellipse cx="65" cy="48" rx="24" ry="11" fill="#fff" transform="rotate(-30 65 48)"/>
+    <ellipse cx="80" cy="100" rx="19" ry="15" fill="#E8C840"/>
+    <circle cx="116" cy="63" r="4" fill="white"/>
+  </svg>
+  <div class="env-stage">
+    <div class="env-wrap" id="envWrap">
+      <div class="env-body" id="envBody">
+        <div class="env-fold-left"></div>
+        <div class="env-fold-right"></div>
+        <div class="env-fold-bottom"></div>
+        <div class="env-flap" id="envFlap"></div>
+        <div class="env-seal" id="envSeal" onclick="breakSeal()">
+          <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" width="60" height="60" style="display:block">
+            <circle cx="30" cy="30" r="29" fill="url(#waxGrad)" filter="url(#waxBlur)"/>
+            <circle cx="30" cy="30" r="27" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="2"/>
+            <circle cx="30" cy="30" r="22" fill="url(#innerGrad)"/>
+            <circle cx="30" cy="30" r="21" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <text x="30" y="26" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="rgba(255,255,255,0.92)" letter-spacing="1">T</text>
+            <text x="30" y="36" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="7" fill="rgba(255,255,255,0.6)" letter-spacing="3">&amp;</text>
+            <text x="30" y="46" text-anchor="middle" dominant-baseline="middle" font-family="Georgia,serif" font-size="10" font-weight="bold" fill="rgba(255,255,255,0.92)" letter-spacing="1">M</text>
+            <ellipse cx="20" cy="18" rx="7" ry="4" fill="rgba(255,255,255,0.15)" transform="rotate(-30 20 18)"/>
+            <defs>
+              <radialGradient id="waxGrad" cx="35%" cy="30%" r="65%"><stop offset="0%" stop-color="#d4442a"/><stop offset="45%" stop-color="#a82b18"/><stop offset="100%" stop-color="#6b1508"/></radialGradient>
+              <radialGradient id="innerGrad" cx="40%" cy="35%" r="60%"><stop offset="0%" stop-color="#c03820"/><stop offset="100%" stop-color="#8a1e0a"/></radialGradient>
+              <filter id="waxBlur" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="rgba(44,36,24,0.55)"/></filter>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <div class="env-card" id="envCard">
+        <div id="envFront">
+          <div class="env-card-names">Tommy<span class="env-card-amp">&amp;</span>Maike</div>
+          <p class="env-card-date">15 &middot; 05 &middot; 2027</p>
+        </div>
+        <div id="envBack" style="display:none">
+          <p style="font-family:'Cormorant Garamond',serif;font-size:1.05rem;color:var(--olive);margin-bottom:.4rem;">You're invited</p>
+          <p style="font-size:.72rem;color:var(--text-muted);margin-bottom:.65rem;font-weight:300;">Enter your name to open your invitation</p>
+          <input class="env-input" id="welcomeInput" type="text" placeholder="Your full name" autocomplete="name" onkeydown="if(event.key==='Enter') enterSite()">
+          <button class="env-btn" onclick="enterSite()">Open my invitation &rarr;</button>
+          <p class="env-err" id="welcomeError"></p>
+        </div>
+      </div>
+    </div>
+    <p class="env-hint" id="envHint">Tap the seal to open &uarr;</p>
+    <p class="env-note" id="welcomeNote">Can't find your name? Check the spelling or contact Tommy or Maike.</p>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="top-banner">
+  <span class="brand" onclick="navigate('home')">Tommy <span class="amp">&amp;</span> Maike</span>
+  <ul class="nav-menu">
+    <li><button onclick="navigate('home')" data-page="home" class="active">Home</button></li>
+    <li><button onclick="navigate('itinerary')" data-page="itinerary">Itinerary</button></li>
+    <li><button onclick="navigate('details')" data-page="details">Details</button></li>
+    <li><button onclick="navigate('invitation')" data-page="invitation">Invitation</button></li>
+    <li class="nav-dropdown" id="photosDd">
+      <button onclick="handlePhotosClick()" data-page="photohub" style="display:flex;align-items:center;gap:.35rem;">Photos <span style="font-size:.5rem;opacity:.6;">&#9660;</span></button>
+      <div class="nav-dd-menu">
+        <button onclick="navigate('gallery');closePd()" data-submenu="gallery">Wedding Day Gallery</button>
+        <button onclick="navigate('photos');closePd()" data-submenu="photos">Our Story So Far</button>
+      </div>
+    </li>
+    <li><button onclick="navigate('gifts')" data-page="gifts">Gifts</button></li>
+    <li><button onclick="navigate('playlist')" data-page="playlist">Playlist</button></li>
+    <li><button onclick="navigate('contact')" data-page="contact">Contact</button></li>
+  </ul>
+  <button class="hamburger" onclick="toggleMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+  <div style="position:relative;margin-left:.5rem;">
+    <button class="profile-btn" id="profileBtn" onclick="togglePd2()" title="Your profile">&#128100;</button>
+    <div class="profile-dd" id="profileDd">
+      <div class="profile-dd-head">
+        <span class="profile-dd-name" id="profileName"></span>
+        <span class="profile-dd-type" id="profileType"></span>
+      </div>
+      <div id="profileActivity"></div>
+      <button class="profile-dd-item switch" onclick="switchGuest()">&#8617; Switch guest</button>
+    </div>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button onclick="navigate('home');closeMob()" data-mob="home" class="active">Home</button>
+  <button onclick="navigate('itinerary');closeMob()" data-mob="itinerary">Itinerary</button>
+  <button onclick="navigate('details');closeMob()" data-mob="details">Details</button>
+  <button onclick="navigate('invitation');closeMob()" data-mob="invitation">Invitation</button>
+  <button onclick="navigate('photohub');closeMob()" data-mob="photohub" style="font-weight:500;color:var(--lemon);">Photos</button>
+  <button onclick="navigate('gallery');closeMob()" data-mob="gallery" style="padding-left:2.5rem;font-size:.72rem;">&#8627; Wedding Day Gallery</button>
+  <button onclick="navigate('photos');closeMob()" data-mob="photos" style="padding-left:2.5rem;font-size:.72rem;">&#8627; Our Story So Far</button>
+  <button onclick="navigate('gifts');closeMob()" data-mob="gifts">Gifts</button>
+  <button onclick="navigate('playlist');closeMob()" data-mob="playlist">Playlist</button>
+  <button onclick="navigate('contact');closeMob()" data-mob="contact">Contact</button>
+</div>
+
+<div class="page-wrap">
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <svg class="hero-tl" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 Q90 65 200 110 Q290 145 370 175" stroke="#7D8E72" stroke-width="1.5" fill="none" opacity=".55"/>
+      <path d="M200 110 Q225 65 255 32" stroke="#7D8E72" stroke-width="1.2" fill="none" opacity=".45"/>
+      <ellipse cx="65" cy="48" rx="24" ry="11" fill="#9BAF8E" opacity=".55" transform="rotate(-30 65 48)"/>
+      <ellipse cx="148" cy="58" rx="22" ry="10" fill="#9BAF8E" opacity=".45" transform="rotate(-22 148 58)"/>
+      <ellipse cx="210" cy="88" rx="26" ry="11" fill="#7D8E72" opacity=".5" transform="rotate(10 210 88)"/>
+      <ellipse cx="80" cy="100" rx="19" ry="15" fill="#E8C840" opacity=".82"/>
+      <ellipse cx="182" cy="142" rx="17" ry="13" fill="#E8C840" opacity=".72"/>
+      <circle cx="116" cy="63" r="4.5" fill="white" opacity=".92"/>
+      <circle cx="268" cy="98" r="4" fill="white" opacity=".82"/>
+    </svg>
+    <svg class="hero-br" viewBox="0 0 420 360" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 10 Q90 65 200 110 Q290 145 370 175" stroke="#7D8E72" stroke-width="1.5" fill="none" opacity=".5"/>
+      <ellipse cx="65" cy="48" rx="24" ry="11" fill="#9BAF8E" opacity=".5" transform="rotate(-30 65 48)"/>
+      <ellipse cx="80" cy="100" rx="19" ry="15" fill="#E8C840" opacity=".75"/>
+      <circle cx="116" cy="63" r="4" fill="white" opacity=".85"/>
+    </svg>
+    <div class="hero-c">
+      <p class="hero-ey" id="heroEyebrow">You're invited</p>
+      <h1 class="hero-n">Tommy<span class="hero-amp">&amp;</span>Maike</h1>
+      <div class="hero-div"><span style="color:var(--terracotta);font-size:.9rem;">&#9829;</span></div>
+      <p class="hero-date">15<sup>th</sup> May 2027</p>
+      <p class="hero-venue">Thames Rowing Club &middot; Putney, London</p>
+      <div id="heroWelcome" style="margin-top:1.2rem;font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--text-muted);display:none;"></div>
+      <div id="heroInviteTime" style="margin-top:.6rem;display:none;"><span style="font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;padding:.3rem .9rem;display:inline-block;"></span></div>
+      <div class="cd" id="countdown">
+        <div class="cd-item"><span class="cd-num" id="cd-days">&mdash;</span><span class="cd-lbl">Days</span></div>
+        <div class="cd-item"><span class="cd-num" id="cd-hours">&mdash;</span><span class="cd-lbl">Hours</span></div>
+        <div class="cd-item"><span class="cd-num" id="cd-mins">&mdash;</span><span class="cd-lbl">Mins</span></div>
+        <div class="cd-item"><span class="cd-num" id="cd-secs">&mdash;</span><span class="cd-lbl">Secs</span></div>
+      </div>
+      <button class="hero-btn" onclick="navigate('invitation')">View my invitation</button>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- ITINERARY -->
+<div class="page" id="page-itinerary">
+  <div class="ps">
+    <div class="si">
+      <div class="sh"><p class="se">The Day</p><h2 class="st">Itinerary</h2><p class="ss">Saturday 15th May 2027 &mdash; Ceremony guests from 11:30 am &middot; Carriages at midnight</p><div class="orn"><span>&#9829;</span></div></div>
+      <div class="tl">
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:30 am &ndash; 12:00 pm</p><h3 class="tl-event">Ceremony Guests Arrive</h3><p class="tl-desc">Please wait outside until ushered in by one of our team.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 pm</p><h3 class="tl-event">Guests Seated</h3><p class="tl-desc">Everyone takes their seats ahead of the ceremony.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:30 pm &ndash; 1:15 pm</p><h3 class="tl-event">Ceremony</h3><p class="tl-desc">The bit we've all been waiting for &mdash; we do the thing!</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:15 pm</p><h3 class="tl-event">Post-Ceremony Drinks</h3><p class="tl-desc">You've earned it &mdash; grab a drink and let the celebrations begin!</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:30 pm</p><h3 class="tl-event">Balcony Walkout &amp; Group Photos</h3><p class="tl-desc">Gather on the balcony for the big walkout moment and group photographs.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">2:00 pm</p><h3 class="tl-event">Day Guests Arrive</h3><p class="tl-desc">The party grows! Welcome to the rest of our favourite people.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">3:00 pm</p><h3 class="tl-event">Food Starts</h3><p class="tl-desc">Pizza, pizza, and more pizza &mdash; with Italian nibbles to keep things going.</p><div style="display:flex;gap:.75rem;align-items:center;margin-top:.85rem;"><img src="photos/maike_pizza.png" alt="" style="height:80px;width:auto;opacity:.9;"><img src="photos/tommy_pizza.png" alt="" style="height:80px;width:auto;opacity:.9;"></div></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">5:30 pm</p><h3 class="tl-event">Speeches</h3><p class="tl-desc">Raise a glass &mdash; time to embarrass the happy couple (lovingly, of course).</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:00 pm</p><h3 class="tl-event">Evening Guests Arrive</h3><p class="tl-desc">More people, more fun. The evening crew has arrived &mdash; let's go.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:30 pm</p><h3 class="tl-event">Evening Platters</h3><p class="tl-desc">Fuel up &mdash; there's a lot of dancing ahead.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">8:30 pm</p><h3 class="tl-event">Cake Time</h3><p class="tl-desc">It's cake o'clock. Trust us, you don't want to miss this one.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 am</p><h3 class="tl-event">Carriages</h3><p class="tl-desc">All good things must end &mdash; but what a night. Thank you for being part of it. We love you all.</p></div>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- DETAILS -->
+<div class="page" id="page-details">
+  <div class="ps alt">
+    <div class="si">
+      <div class="sh"><p class="se">Everything you need</p><h2 class="st">Details</h2><div class="orn"><span>&#9829;</span></div></div>
+      <div class="dg">
+        <div class="dc"><div class="di">&#128205;</div><h3 class="dh">Venue</h3><p class="dt">Thames Rowing Club<br>Mortlake High Street<br>London SW15 1LB<br><br><a href="https://maps.google.com/?q=Thames+Rowing+Club+Mortlake" target="_blank">Open in Google Maps &rarr;</a></p></div>
+        <div class="dc green"><div class="di">&#128647;</div><h3 class="dh">Getting There</h3><p class="dt">By rail: Barnes station is a 12-min walk (South Western Railway from Waterloo).<br><br>By tube: Putney Bridge station (District Line) is a 20-min walk or short taxi ride.<br><br>By bus: Routes 33, 337 stop nearby.<br><br>By car: Limited parking on site &mdash; we recommend Asda Putney car park (5 min walk).</p><span class="dtag" style="background:rgba(232,200,64,.2);color:var(--lemon);">Pre-book taxis home!</span></div>
+        <div class="dc"><div class="di">&#128247;</div><h3 class="dh">Dress Code</h3><p class="dt">No strict dress code here &mdash; we just want everyone feeling good and having fun! Think colour, texture, and summer vibes. Linen suits, flowy dresses, bold prints &mdash; whatever makes you feel great. Wear what you're comfortable in and come ready to celebrate.<br><br>The only request: please avoid <strong>white</strong> and <strong>sage green</strong>, which are reserved for the bridal party.</p><span class="dtag">No white or sage green please</span></div>
+        <div class="dc green"><div class="di">&#127869;</div><h3 class="dh">Dietary Needs</h3><p class="dt">The menu will include options for:<br><br>&#127807; <strong style="color:var(--lemon);">Vegetarian</strong><br>&#129382; <strong style="color:var(--lemon);">Vegan</strong><br>&#127806; <strong style="color:var(--lemon);">Gluten free</strong><br><br>Please let us know of any other requirements when you RSVP.</p></div>
+        <div class="dc" style="grid-column:1/-1"><div class="di">&#9998;</div><h3 class="dh">A note about the ceremony</h3><p class="dt">We have chosen to keep our ceremony small and intimate &mdash; and if you're joining us as a day or evening guest, we hope you'll understand that this is in no way a reflection of how much you mean to us. The truth is, we have so many wonderful people in our lives that we wanted to make sure that when we say our vows, we are fully present in that moment &mdash; just the two of us, taking it all in, without feeling the weight of too many eyes on us.<br><br>We are so grateful to have every single one of you as part of our big day &mdash; the celebration would not be the same without you, and we cannot wait to share it with you.<br><br><em>With all our love, Maike &amp; Tommy &#9829;</em></p></div>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- INVITATION -->
+<div class="page" id="page-invitation">
+  <div class="inv-wrap">
+    <div class="inv-pattern"></div>
+    <div class="inv-card">
+      <div id="inviteTypeBanner" class="inv-pill" style="display:none;"></div>
+      <p class="inv-greet">Together with their families</p>
+      <div class="inv-names">Tommy<span class="amp">&amp;</span>Maike</div>
+      <p class="inv-req">joyfully invite<br><strong id="inviteGuestName" style="font-family:'Cormorant Garamond',serif;font-size:1.1em;font-weight:400;color:var(--olive);"></strong><br>to celebrate their marriage</p>
+      <div class="inv-div"><span class="inv-heart">&#9829;</span></div>
+      <p class="inv-date">Saturday, 15<sup>th</sup> May 2027</p>
+      <p class="inv-venue">Thames Rowing Club &middot; Putney &middot; London</p>
+      <p class="inv-time" id="inviteTimeNote"></p>
+      <div class="inv-div"><span class="inv-heart">&#9829;</span></div>
+      <button class="rsvp-btn" onclick="document.getElementById('rsvpModal').classList.add('active')">RSVP Now</button>
+      <p class="rsvp-note">Kindly reply by 1st February 2027</p>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTO HUB -->
+<div class="page" id="page-photohub">
+  <div class="ps alt">
+    <div class="si">
+      <div class="sh"><p class="se">Photos</p><h2 class="st">Your photos</h2><p class="ss">Two ways to share your photos with us &mdash; choose what you'd like to do below.</p><div class="orn"><span>&#9829;</span></div></div>
+      <div class="hub-grid">
+        <div class="hub-card" onclick="navigate('gallery')"><span class="hub-icon">&#128247;</span><h3 class="hub-title">Wedding Day Gallery</h3><p class="hub-desc">Taken a great shot on the day? Upload your photos here &mdash; from the ceremony and speeches to the dance floor and everything in between.</p><button class="hub-btn">Go to gallery &rarr;</button></div>
+        <div class="hub-card" onclick="navigate('photos')"><span class="hub-icon">&#127902;</span><h3 class="hub-title">Our Story So Far</h3><p class="hub-desc">Submit photos of yourself with Tommy or Maike, or of the couple together. These will be displayed on a screen throughout the day as part of our slideshow.</p><button class="hub-btn">Submit photos &rarr;</button></div>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- OUR STORY SO FAR -->
+<div class="page" id="page-photos">
+  <div class="ps alt">
+    <div class="si">
+      <div class="sh"><p class="se">For the slideshow</p><h2 class="st">Our Story So Far</h2><p class="ss">Submit your favourite photos of the couple or with the couple &mdash; we'll display them on screen throughout the day.</p><div class="orn"><span>&#9829;</span></div></div>
+      <div class="photo-prompts">
+        <div class="photo-prompt-card"><img src="photos/oktoberfest.png" class="photo-prompt-icon" style="height:80px;width:auto;margin:0 auto .6rem;display:block;" alt=""><p>You with the <strong>bride or groom</strong></p></div>
+        <div class="photo-prompt-card"><img src="photos/snorkling.png" class="photo-prompt-icon" style="height:80px;width:auto;margin:0 auto .6rem;display:block;" alt=""><p>The <strong>couple together</strong> &mdash; past or present</p></div>
+        <div class="photo-prompt-card"><img src="photos/milan_canal.png" class="photo-prompt-icon" style="height:80px;width:auto;margin:0 auto .6rem;display:block;" alt=""><p>A favourite <strong>memory</strong> with Tommy or Maike</p></div>
+      </div>
+      <div id="photoFormWrap" style="display:none;text-align:center;padding:2rem;background:var(--warm-white);border:1px solid rgba(212,224,200,.5);">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--olive);margin-bottom:.6rem;">Ready to submit your photos?</p>
+        <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.5rem;font-weight:300;line-height:1.65;">Tap the button below to open the photo submission form. It will open in your browser where you can upload photos directly to our slideshow folder.</p>
+        <a id="photoFormLink" href="#" target="_blank" rel="noopener" style="display:inline-block;padding:1rem 2.5rem;background:var(--olive);color:white;text-decoration:none;font-family:'Jost',sans-serif;font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;" onmouseover="this.style.background='var(--olive-light)'" onmouseout="this.style.background='var(--olive)'">Open photo form &rarr;</a>
+        <p style="margin-top:1rem;font-size:.72rem;color:var(--text-muted);">Opens in a new tab &middot; Works on all devices</p>
+      </div>
+      <div id="photoNoGuest" class="photo-no-guest" style="display:none;"><p style="color:var(--text-muted);font-size:.88rem;">Please <button onclick="switchGuest()" style="background:none;border:none;cursor:pointer;color:var(--terracotta);text-decoration:underline;font-family:'Jost',sans-serif;font-size:.88rem;padding:0;">log in with your name</button> first to access the photo upload form.</p></div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- WEDDING DAY GALLERY -->
+<div class="page" id="page-gallery">
+  <div class="ps mid">
+    <div class="si">
+      <div class="sh"><p class="se">Us</p><h2 class="st">Wedding Day Gallery</h2><p class="ss">Upload your shots from the ceremony, celebrations, and everything in between to share with all guests.</p><div class="orn"><span>&#9829;</span></div></div>
+      <div style="text-align:center;padding:2.5rem 1.5rem;border:1px solid var(--olive-pale);background:rgba(212,224,200,.07);margin-bottom:2rem;">
+        <img src="photos/tara_wedding.png" style="height:90px;width:auto;margin:0 auto 1.1rem;display:block;" alt="">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1.45rem;color:var(--text-dark);margin-bottom:.5rem;">Share your photos</p>
+        <p style="font-size:.88rem;color:var(--text-muted);max-width:420px;margin:0 auto 1.4rem;line-height:1.65;">Join our shared Google Photos album to upload your shots from the day and browse everyone else's memories as they come in.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:.6rem;justify-content:center;margin-bottom:1.4rem;">
+          <img src="photos/cinque.png" style="height:52px;width:auto;" alt="">
+          <img src="photos/como.png" style="height:52px;width:auto;" alt="">
+          <img src="photos/hackney.png" style="height:52px;width:auto;" alt="">
+          <img src="photos/pisa.png" style="height:52px;width:auto;" alt="">
+          <img src="photos/skiing.png" style="height:52px;width:auto;" alt="">
+          <img src="photos/lake_district.png" style="height:52px;width:auto;" alt="">
+        </div>
+        <a href="https://photos.app.goo.gl/yh4FkrFBbi8E7Fdc8" target="_blank" rel="noopener" style="display:inline-block;padding:.75rem 2rem;background:var(--olive);color:#fff;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;" onmouseover="this.style.background='var(--terracotta)'" onmouseout="this.style.background='var(--olive)'">Open shared album &rarr;</a>
+        <p style="margin-top:1.4rem;font-size:.75rem;color:var(--text-muted);max-width:380px;margin-left:auto;margin-right:auto;line-height:1.6;font-style:italic;">&#9888;&nbsp; All photos uploaded to the shared album will be visible to all guests. Please be mindful of what you share and ensure everyone in a photo is happy for it to be seen.</p>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- GIFTS -->
+<div class="page" id="page-gifts">
+  <div class="ps alt">
+    <div class="si">
+      <div class="sh"><p class="se">With gratitude</p><h2 class="st">Gift Ideas</h2><div class="orn"><span>&#9829;</span></div></div>
+      <p class="gifts-intro">Your presence is the greatest gift of all. But if you'd like to give a little something, we'd love contributions towards the adventures still to come.</p>
+      <div class="gifts-grid">
+        <div class="gift-card" style="background:var(--olive);border-color:var(--olive);">
+          <span class="gift-emoji">&#127464;&#127469;</span>
+          <h3 class="gift-title" style="color:var(--cream);">Z&uuml;rich Wishlist</h3>
+          <p class="gift-desc" style="color:rgba(245,240,232,.75);">We&rsquo;re setting up our first home together in Z&uuml;rich and have put together a wishlist of things we&rsquo;ll be buying for the apartment &mdash; from kitchen essentials to cosy touches that&rsquo;ll make it feel like ours. If you&rsquo;d like to contribute towards something specific, head to the wishlist and pick an item to put towards.</p>
+          <button class="gift-btn" style="border-color:var(--lemon);color:var(--lemon);" onmouseover="this.style.background='rgba(232,200,64,.15)'" onmouseout="this.style.background='none'" onclick="navigate('registry')">&#127968; Browse the wishlist &rarr;</button>
+        </div>
+        <div class="gift-card" style="background:var(--olive);border-color:var(--olive);">
+          <span class="gift-emoji">&#127474;&#127485;</span>
+          <h3 class="gift-title" style="color:var(--cream);">Honeymoon Fund</h3>
+          <p class="gift-desc" style="color:rgba(245,240,232,.75);">We're heading to Canc&uacute;n and plan to make the most of every second &mdash; snorkelling in cenotes, cliff jumping, exploring Mayan ruins, sunset sailing, the best street tacos we can find, and probably one very questionable adventure we haven't planned yet. Leave us a note if you'd like your contribution to go towards something specific!</p>
+          <textarea id="honeymoonNote" placeholder="Leave a note for how you'd like us to spend it (optional)..." style="width:100%;padding:.6rem .75rem;border:1px solid rgba(232,200,64,.3);background:rgba(255,255,255,.08);color:rgba(245,240,232,.85);font-family:'Jost',sans-serif;font-size:.82rem;resize:vertical;min-height:70px;margin-bottom:.85rem;outline:none;" onfocus="this.style.borderColor='rgba(232,200,64,.7)'" onblur="this.style.borderColor='rgba(232,200,64,.3)'"></textarea>
+          <button class="gift-btn" style="border-color:var(--lemon);color:var(--lemon);" onmouseover="this.style.background='rgba(232,200,64,.15)'" onmouseout="this.style.background='none'" onclick="openGiftLink('honeymoon')">Contribute &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- REGISTRY -->
+<div class="page" id="page-registry">
+  <div class="ps alt">
+    <div class="si">
+      <div class="sh"><p class="se">Our new chapter</p><h2 class="st">Z&uuml;rich Wishlist</h2><p class="ss">We&rsquo;re building a home together in Z&uuml;rich &mdash; if you&rsquo;d like to give something specific, here are a few things that would make our new apartment feel like ours. Every contribution, big or small, means the world.</p><div class="orn"><span>&#9829;</span></div></div>
+      <div id="regCatFilter" style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2rem;"></div>
+      <div id="regGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;"></div>
+    </div>
+  </div>
+  <!-- Contribution modal -->
+  <div id="regModal" style="display:none;position:fixed;inset:0;background:rgba(30,28,24,.6);z-index:500;align-items:center;justify-content:center;padding:1.5rem;">
+    <div style="background:var(--cream);max-width:420px;width:100%;padding:2rem;position:relative;">
+      <button onclick="closeRegModal()" style="position:absolute;top:.75rem;right:.9rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);">&#10005;</button>
+      <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.4rem;" id="regModalCat"></p>
+      <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--text-dark);margin-bottom:.3rem;" id="regModalName"></h3>
+      <p style="font-size:.85rem;color:var(--text-muted);margin-bottom:1.25rem;" id="regModalDesc"></p>
+      <div id="regModalProgress" style="margin-bottom:1.25rem;"></div>
+      <div style="margin-bottom:.85rem;">
+        <label class="fl">Your name</label>
+        <input class="fi" type="text" id="regContribName" placeholder="e.g. Sarah">
+      </div>
+      <div style="margin-bottom:.85rem;">
+        <label class="fl">Contribution amount (&#163;)</label>
+        <input class="fi" type="number" id="regContribAmount" placeholder="e.g. 50" min="1">
+      </div>
+      <div style="margin-bottom:1.25rem;">
+        <label class="fl">Leave a note <span style="font-weight:400;color:var(--text-muted);">(optional)</span></label>
+        <textarea class="fi" id="regContribMsg" rows="2" placeholder="e.g. You must try Café Sprüngli! or this IKEA sofa would be perfect..." style="resize:vertical;"></textarea>
+      </div>
+      <button onclick="submitContrib()" style="width:100%;padding:.8rem;background:var(--olive);color:white;border:none;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;" onmouseover="this.style.background='var(--terracotta)'" onmouseout="this.style.background='var(--olive)'">Contribute &amp; pay via PayPal &rarr;</button>
+      <p style="font-size:.72rem;color:var(--text-muted);margin-top:.85rem;line-height:1.6;text-align:center;">You&rsquo;ll be taken to PayPal with the amount pre-filled &mdash; please include your name in the PayPal note so we know it&rsquo;s from you!</p>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- PLAYLIST -->
+<div class="page" id="page-playlist">
+  <div class="ps">
+    <div class="si">
+      <div class="sh"><p class="se">Set the mood</p><h2 class="st">Playlist</h2><p class="ss">Expect to hear some bangers. The more songs you suggest, the less likely you'll hear Maike's singing &mdash; or Tommy's enthusiastic rendition of the wrong lyrics.</p><div class="orn"><span>&#9829;</span></div></div>
+      <div style="background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:1.75rem;margin-bottom:2rem;">
+        <p style="font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--olive);margin-bottom:1.25rem;">Suggest a song</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;">
+          <div><label class="fl">Song title</label><input class="fi" type="text" id="suggSong" placeholder="e.g. Mr Brightside"></div>
+          <div><label class="fl">Artist</label><input class="fi" type="text" id="suggArtist" placeholder="e.g. The Killers"></div>
+          <div><label class="fl">Moment</label>
+            <select class="fi" id="suggMoment" style="cursor:pointer;">
+              <option value="">Select a moment...</option>
+              <option>Bride getting ready</option><option>Groom getting ready</option><option>Ceremony</option>
+              <option>Drinks reception</option><option>First dance</option><option>Classics</option>
+              <option>Party starters</option><option>Speeches</option><option>Sing along bangers</option><option>End of the night</option>
+            </select>
+          </div>
+          <div><label class="fl">Your name</label><input class="fi" type="text" id="suggName" placeholder="e.g. Sarah"></div>
+        </div>
+        <button onclick="addSong()" style="margin-top:1rem;padding:.75rem 2rem;background:var(--olive);color:white;border:none;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;" onmouseover="this.style.background='var(--olive-light)'" onmouseout="this.style.background='var(--olive)'">Add suggestion &rarr;</button>
+      </div>
+      <div class="mf-wrap">
+        <span style="font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);margin-right:.5rem;">Filter:</span>
+        <button class="mf active" data-m="all" onclick="filterPl('all')">All</button>
+        <button class="mf" data-m="Bride getting ready" onclick="filterPl('Bride getting ready')">Bride getting ready</button>
+        <button class="mf" data-m="Groom getting ready" onclick="filterPl('Groom getting ready')">Groom getting ready</button>
+        <button class="mf" data-m="Ceremony" onclick="filterPl('Ceremony')">Ceremony</button>
+        <button class="mf" data-m="Drinks reception" onclick="filterPl('Drinks reception')">Drinks reception</button>
+        <button class="mf" data-m="First dance" onclick="filterPl('First dance')">First dance</button>
+        <button class="mf" data-m="Classics" onclick="filterPl('Classics')">Classics</button>
+        <button class="mf" data-m="Party starters" onclick="filterPl('Party starters')">Party starters</button>
+        <button class="mf" data-m="Speeches" onclick="filterPl('Speeches')">Speeches</button>
+        <button class="mf" data-m="Sing along bangers" onclick="filterPl('Sing along bangers')">Sing along bangers</button>
+        <button class="mf" data-m="End of the night" onclick="filterPl('End of the night')">End of the night</button>
+      </div>
+      <div style="max-height:420px;overflow-y:auto;border:1px solid var(--olive-pale);border-radius:4px;">
+      <table class="pl-table" style="margin:0;">
+        <thead><tr><th style="width:2rem;">#</th><th>Song</th><th>Moment</th><th>Suggested by</th></tr></thead>
+        <tbody id="playlistBody"></tbody>
+      </table>
+      </div>
+      <p id="plEmpty" style="display:none;text-align:center;padding:2rem 0;color:var(--text-muted);font-size:.88rem;font-style:italic;">No songs in this moment yet &mdash; be the first!</p>
+      <div style="margin-top:2rem;">
+        <button onclick="dlPlaylist()" style="display:inline-flex;align-items:center;gap:.4rem;padding:.5rem 1rem;background:none;color:var(--text-muted);border:1px solid var(--olive-pale);font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;" onmouseover="this.style.color='var(--olive)';this.style.borderColor='var(--olive)'" onmouseout="this.style.color='var(--text-muted)';this.style.borderColor='var(--olive-pale)'">&#8659; &nbsp; Download suggestions</button>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="ps alt">
+    <div class="si">
+      <div class="sh"><p class="se">Get in touch</p><h2 class="st">Contact</h2><p class="ss">Any questions on the day or beforehand &mdash; we're here to help.</p><div class="orn"><span>&#9829;</span></div></div>
+      <div class="contact-grid">
+        <div class="dc"><div class="di">&#128144;</div><h3 class="dh">Maike</h3><p class="dt"><a href="tel:07931284964" style="color:var(--terracotta);font-family:'Cormorant Garamond',serif;font-size:1.3rem;display:block;margin-bottom:.5rem;">07931 284 964</a>The bride &mdash; best reached by WhatsApp in the run-up to the day.</p></div>
+        <div class="dc"><div class="di">&#129333;</div><h3 class="dh">Tommy</h3><p class="dt"><a href="tel:07715923239" style="color:var(--terracotta);font-family:'Cormorant Garamond',serif;font-size:1.3rem;display:block;margin-bottom:.5rem;">07715 923 239</a>The groom &mdash; happy to help with any logistics or questions.</p></div>
+        <div class="dc">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--cream-dark);border:1px dashed var(--olive-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-align:center;line-height:1.4;">Photo<br>here</span></div>
+            <div><p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.2rem;">Maid of Honour</p><h3 class="dh" style="margin-bottom:0;">Rebekah Inskip</h3></div>
+          </div>
+          <p class="dt">Your first point of contact on the wedding day for anything bridal-side &mdash; come find her if you need anything.</p>
+        </div>
+        <div class="dc">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
+            <div style="width:64px;height:64px;border-radius:50%;background:var(--cream-dark);border:1px dashed var(--olive-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><span style="font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);text-align:center;line-height:1.4;">Photo<br>here</span></div>
+            <div><p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.2rem;">Best Man</p><h3 class="dh" style="margin-bottom:0;">Danny Fay</h3></div>
+          </div>
+          <p class="dt">Your go-to on the day for anything groom-side &mdash; he'll be around all day.</p>
+        </div>
+      </div>
+      <div class="honey-strip">
+        <h3>&#128140; &nbsp; Got a question?</h3>
+        <p>For anything else &mdash; seating, logistics, or just to say hello &mdash; drop us a message and we'll get back to you as soon as we can. We're so excited to celebrate with you.</p>
+      </div>
+    </div>
+  </div>
+  <footer class="pf"><div class="pf-names">Tommy <span class="amp">&amp;</span> Maike</div><p class="pf-date">15th May 2027 &middot; Thames Rowing Club &middot; Putney</p></footer>
+</div>
+
+</div><!-- /page-wrap -->
+<!-- RSVP MODAL -->
+<div class="modal-ov" id="rsvpModal" onclick="if(event.target===this)this.classList.remove('active')">
+  <div class="modal">
+    <button class="modal-x" onclick="document.getElementById('rsvpModal').classList.remove('active')">&#10005;</button>
+    <div id="rsvpForm">
+      <h2 class="modal-title">Your RSVP</h2>
+      <p class="modal-sub">Please respond by 1st February 2027</p>
+      <div id="rsvpInviteNote" style="display:none;padding:.75rem 1rem;margin-bottom:1.25rem;font-size:.82rem;"></div>
+      <div class="fg"><label class="fl">Your name</label><input class="fi" type="text" id="rsvpName" placeholder="Your name" readonly style="background:var(--cream-dark);cursor:default;"></div>
+      <div class="fg"><label class="fl">Will you be joining us?</label><div class="fr-grp"><label class="fr"><input type="radio" name="attending" value="yes" onchange="onAtt()"> Joyfully accepts</label><label class="fr"><input type="radio" name="attending" value="no" onchange="onAtt()"> Regretfully declines</label></div></div>
+      <div id="rsvpAttSec" style="display:none;">
+        <div class="fg"><label class="fl">Your dietary requirements</label>
+          <div class="diet-opts" id="rsvpDietOpts">
+            <label class="diet-check"><input type="checkbox" name="diet" value="None" onchange="dietNone(this,'rsvpDietOpts')"> None</label>
+            <label class="diet-check"><input type="checkbox" name="diet" value="Gluten Free"> Gluten Free</label>
+            <label class="diet-check"><input type="checkbox" name="diet" value="Nut Allergy"> Nut Allergy</label>
+            <label class="diet-check"><input type="checkbox" name="diet" value="Veggie"> Vegetarian</label>
+            <label class="diet-check"><input type="checkbox" name="diet" value="No Dairy"> No Dairy</label>
+            <label class="diet-check"><input type="checkbox" name="diet" value="Vegan"> Vegan</label>
+            <label class="diet-check"><input type="checkbox" name="diet" value="Other" onchange="dietOther(this,'rsvpDietOther')"> Other</label>
+          </div>
+          <textarea class="fi" id="rsvpDietOther" rows="2" placeholder="Please describe your requirements..." style="display:none;margin-top:.6rem;"></textarea>
+        </div>
+        <div id="rsvpPlusSec" style="display:none;">
+          <div style="border-top:1px solid var(--olive-pale);margin:1.25rem 0;padding-top:1.25rem;">
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--olive);margin-bottom:.75rem;">Your plus-one</p>
+            <div class="fg"><label class="fl">Plus-one's name</label><input class="fi" type="text" id="plusOneName" placeholder="Their full name"></div>
+            <div class="fg"><label class="fl">Plus-one's dietary requirements</label>
+              <div class="diet-opts" id="poDietOpts">
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="None" onchange="dietNone(this,'poDietOpts')"> None</label>
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="Gluten Free"> Gluten Free</label>
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="Nut Allergy"> Nut Allergy</label>
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="Veggie"> Vegetarian</label>
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="No Dairy"> No Dairy</label>
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="Vegan"> Vegan</label>
+                <label class="diet-check"><input type="checkbox" name="poDiet" value="Other" onchange="dietOther(this,'poDietOther')"> Other</label>
+              </div>
+              <textarea class="fi" id="poDietOther" rows="2" placeholder="Please describe their requirements..." style="display:none;margin-top:.6rem;"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="fg" style="border-top:1px solid var(--olive-pale);padding-top:1.25rem;margin-top:.25rem;"><label class="fl">Are you RSVP-ing for anyone else?</label><div class="fr-grp"><label class="fr"><input type="radio" name="forOthers" value="yes" onchange="onOthers()"> Yes</label><label class="fr"><input type="radio" name="forOthers" value="no" onchange="onOthers()"> No, just me</label></div></div>
+        <div id="rsvpAddSec" style="display:none;">
+          <div class="fg"><label class="fl">How many other people?</label><select class="fi" id="addCount" onchange="buildAdd()" style="cursor:pointer;"><option value="">Select...</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+          <div id="addContainer"></div>
+        </div>
+        <div class="fg" style="border-top:1px solid var(--olive-pale);padding-top:1.25rem;margin-top:.25rem;"><label class="fl">A message for Tommy &amp; Maike (optional)</label><textarea class="fi" id="rsvpMsg" rows="3" placeholder="Share your warm wishes..."></textarea></div>
+      </div>
+      <button class="fsubmit" onclick="submitRSVP()">Send my RSVP</button>
+    </div>
+    <div class="fsuccess" id="rsvpSuccess">
+      <div class="fsuccess-icon">&#9829;</div>
+      <h3>Thank you!</h3>
+      <p id="rsvpSuccessMsg">We've received your RSVP and can't wait to celebrate with you!</p>
+      <div style="margin-top:1.5rem;border-top:1px solid var(--olive-pale);padding-top:1.25rem;text-align:left;">
+        <p style="font-size:.82rem;color:var(--text-muted);line-height:1.7;margin-bottom:.75rem;">While you're here, why not:</p>
+        <button class="fsuccess-btn" onclick="document.getElementById('rsvpModal').classList.remove('active');navigate('playlist');">&#127925; &nbsp; Head to the <strong>Playlist</strong> page to suggest a song</button>
+        <button class="fsuccess-btn" onclick="document.getElementById('rsvpModal').classList.remove('active');navigate('photohub');">&#128247; &nbsp; <strong>Share your photos</strong> for the gallery or slideshow</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;flex-shrink:0;">
+    <span id="lbCounter" style="font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.5);"></span>
+    <div style="display:flex;gap:.5rem;">
+      <button onclick="lbDownload()" class="lb-btn">&#8659; Download</button>
+      <button onclick="lbShare()" class="lb-btn">&#8679; Share</button>
+      <button onclick="closeLightbox()" class="lb-btn" style="padding:.45rem .75rem;">&#10005;</button>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:0 3.5rem;">
+    <button onclick="lbPrev()" class="lb-nav lb-prev">&#8249;</button>
+    <img id="lbImg" src="" alt="" style="max-width:100%;max-height:100%;object-fit:contain;display:block;user-select:none;">
+    <button onclick="lbNext()" class="lb-nav lb-next">&#8250;</button>
+  </div>
+  <div id="lbStrip" style="display:flex;gap:4px;padding:.6rem 1rem;overflow-x:auto;flex-shrink:0;background:rgba(0,0,0,.4);"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+const EMAILJS_SERVICE_ID='service_ocmqo8e';
+const EMAILJS_TEMPLATE_ID='template_wptnb5g';
+const EMAILJS_PUBLIC_KEY='BKUrXdcDyQGBEsCph';
+const GIFT_LINKS={zurich:'ZURICH_REVOLUT_LINK',honeymoon:'HONEYMOON_REVOLUT_LINK'};
+const PHOTO_FORMS={
+  ceremony:'https://docs.google.com/forms/d/e/1FAIpQLScpCYLzMVw_pZq9nEPDDgrO8OOpLry6LLTe5OyXqPRPT3E1hg/viewform?usp=header',
+  day:'https://docs.google.com/forms/d/e/1FAIpQLSfGJeactdyhkYoMs6URdghfhQCwgCAiGMhXM1fNfR6ka0zFTg/viewform?usp=publish-editor',
+  evening:'https://docs.google.com/forms/d/e/1FAIpQLSehqd79CwI4kiyd8hnOm8pkY5C33uvVdNEJbpMqX__2Va3Rgg/viewform?usp=publish-editor',
+};
+const GUESTS=[
+  {name:'Tommy',type:'ceremony'},
+  {name:'Maike',type:'ceremony'},
+  {name:'Tina Schmidt',type:'ceremony'},
+  {name:'Holger Schmidt',type:'ceremony'},
+  {name:'Henric Schmidt',type:'ceremony'},
+  {name:'Steffi Torlichen',type:'ceremony'},
+  {name:'Maya Jones',type:'ceremony'},
+  {name:'Nina Jones',type:'ceremony'},
+  {name:'Phillip Jones',type:'ceremony'},
+  {name:'Moni',type:'ceremony'},
+  {name:'Rebekah Inskip',type:'ceremony'},
+  {name:'India Hurford-Jones',type:'ceremony'},
+  {name:'Lydia Wanell',type:'ceremony'},
+  {name:'Verity Smith',type:'ceremony'},
+  {name:'Maddie Garret',type:'ceremony'},
+  {name:'Georgia Varey',type:'ceremony'},
+  {name:'Jess Davies',type:'ceremony'},
+  {name:'Annabel Samols',type:'ceremony'},
+  {name:'Toryn Sowden',type:'ceremony'},
+  {name:'Linda Fay',type:'ceremony'},
+  {name:'Micheal Fay',type:'ceremony'},
+  {name:'Danny Fay',type:'ceremony'},
+  {name:'Tara Holman',type:'ceremony'},
+  {name:'Arlo Holman',type:'ceremony'},
+  {name:'Liam O\'Brien',type:'ceremony'},
+  {name:'Sue O\'Brien',type:'ceremony'},
+  {name:'Susie Flynn',type:'ceremony'},
+  {name:'Micheal Flynn',type:'ceremony'},
+  {name:'Kevin O\'Brien',type:'ceremony'},
+  {name:'Trilby O\'Brien',type:'ceremony'},
+  {name:'Raymond O\'Brien',type:'ceremony'},
+  {name:'Valerie O\'Brien',type:'ceremony'},
+  {name:'Sarah Clarke',type:'ceremony'},
+  {name:'Maureen Rotchester',type:'ceremony'},
+  {name:'Lawrence Fay',type:'ceremony'},
+  {name:'Chris Fay',type:'ceremony'},
+  {name:'Marie Fay',type:'ceremony'},
+  {name:'Stevie Fay',type:'ceremony'},
+  {name:'Rosie Casey',type:'ceremony'},
+  {name:'John Casey',type:'ceremony'},
+  {name:'Siobhan Casey',type:'ceremony'},
+  {name:'Chanetelle Casey',type:'ceremony'},
+  {name:'Kieran McMannamon',type:'ceremony'},
+  {name:'Ben Shaw',type:'ceremony'},
+  {name:'Tom Barret',type:'ceremony'},
+  {name:'Sean O\'Malley',type:'ceremony'},
+  {name:'Sasan Nejad',type:'ceremony'},
+  {name:'Charlee Boyle',type:'ceremony'},
+  {name:'Yoni Temesgen',type:'ceremony'},
+  {name:'Jonny Kouj',type:'ceremony'},
+  {name:'Volka Grünwald',type:'ceremony',plusOne:true},
+  {name:'Rosie Hunt',type:'ceremony',plusOne:true},
+  {name:'Chris Singelton',type:'ceremony',plusOne:true},
+  {name:'Emily Barret',type:'ceremony',plusOne:true},
+  {name:'Cora Doherty',type:'ceremony',plusOne:true},
+  {name:'Katie Harvey',type:'ceremony',plusOne:true},
+  {name:'Ruben Lorenco Pereira',type:'ceremony',plusOne:true},
+  {name:'Dennis O\'Brien',type:'ceremony',plusOne:true},
+  {name:'Emma O\'Brien',type:'ceremony',plusOne:true},
+  {name:'Declan Flynn',type:'ceremony',plusOne:true},
+  {name:'Robbie Connolly',type:'ceremony',plusOne:true},
+  {name:'Joe Sellick',type:'ceremony',plusOne:true},
+  {name:'Connor Callaghan',type:'ceremony',plusOne:true},
+  {name:'Ciaran Slevin',type:'ceremony',plusOne:true},
+  {name:'Nathan Hawley',type:'ceremony',plusOne:true},
+  {name:'Jay Rumney',type:'ceremony',plusOne:true},
+  {name:'Nick Wakefield',type:'ceremony',plusOne:true},
+  {name:'Andy Zepetes',type:'ceremony',plusOne:true},
+  {name:'Ellis Maddison',type:'ceremony',plusOne:true},
+  {name:'George Black',type:'ceremony',plusOne:true},
+  {name:'James Clerkin',type:'ceremony',plusOne:true},
+  {name:'Dylan Patel',type:'ceremony',plusOne:true},
+  {name:'Auntie Anne',type:'ceremony',plusOne:true},
+  {name:'Phil Inskip',type:'day'},
+  {name:'Liz Inskip',type:'day'},
+  {name:'Ciara Jones',type:'day'},
+  {name:'Alex Rankin',type:'day'},
+  {name:'Issi Platt',type:'day'},
+  {name:'Meaghan Spedden',type:'day'},
+  {name:'Sahitya Pruvadda',type:'day'},
+  {name:'Yulia Bezsudnova',type:'day'},
+  {name:'Tim Tierney',type:'day'},
+  {name:'Nic Alexander',type:'day'},
+  {name:'Alberto Mariola',type:'day'},
+  {name:'Gareth Barnes',type:'day'},
+  {name:'Karen Taylor',type:'day'},
+  {name:'Mark Taylor',type:'day'},
+  {name:'Carly Taylor',type:'day'},
+  {name:'Stevie Taylor',type:'day'},
+  {name:'Marion Curd',type:'day'},
+  {name:'Kerry Curd',type:'day'},
+  {name:'John Curd',type:'day'},
+  {name:'Brenda Scott',type:'day'},
+  {name:'Martin Scott',type:'day'},
+  {name:'Nathan Scott',type:'day'},
+  {name:'Ryan Scott',type:'day'},
+  {name:'Debbie Clifford',type:'day'},
+  {name:'Paul Clifford',type:'day'},
+  {name:'Jake Clifford',type:'day'},
+  {name:'Patrick Clifford',type:'day'},
+  {name:'Jamie Clifford',type:'day'},
+  {name:'Mickey Weeds',type:'day'},
+  {name:'Pat',type:'day'},
+  {name:'Kyle Godfrey',type:'day'},
+  {name:'Joe Holland',type:'day'},
+  {name:'Kidus',type:'day'},
+  {name:'Mickey Temesgen',type:'day'},
+  {name:'Zoe Owusu',type:'day'},
+  {name:'Tilly Hurford-Jones',type:'day'},
+  {name:'Sarah Hunt',type:'day'},
+  {name:'John Hunt',type:'day'},
+  {name:'Katherine Wanell',type:'day'},
+  {name:'Mark Wanell',type:'day'},
+  {name:'Alessia',type:'day'},
+  {name:'Daisy',type:'day'},
+  {name:'Kara',type:'day'},
+  {name:'Oliver Case',type:'day'},
+  {name:'Anastasia DeClaremont',type:'day',plusOne:true},
+  {name:'Kat Plat',type:'day',plusOne:true},
+  {name:'Loren Burges',type:'day',plusOne:true},
+  {name:'Aaron Taylor',type:'day',plusOne:true},
+  {name:'Ellie Taylor',type:'day',plusOne:true},
+  {name:'Connor Cranston',type:'day',plusOne:true},
+  {name:'Karl Knarr',type:'day',plusOne:true},
+  {name:'Caroline Hurford',type:'day',plusOne:true},
+  {name:'Fulian',type:'day',plusOne:true},
+];
+const INVITE_INFO={
+  ceremony:{label:'Ceremony Invitation',timeNote:'Arrive from 11:30 am - Please wait outside to be ushered in - Carriages at midnight',heroPill:'Ceremony guest - Arrive from 11:30 am',pillClass:'ceremony',rsvpNote:"You're invited as a Ceremony guest - arriving from 11:30 am.",rsvpColor:'rgba(155,58,40,.08)',rsvpBorder:'rgba(155,58,40,.25)',rsvpTextColor:'var(--terracotta)'},
+  day:{label:'Day Invitation',timeNote:'Arrive from 2:00 pm - Celebrations from afternoon into the evening - Carriages at midnight',heroPill:'Day guest - Arrive from 2:00 pm',pillClass:'day',rsvpNote:"You're invited as a Day guest - joining us from 2:00 pm.",rsvpColor:'rgba(125,142,114,.08)',rsvpBorder:'rgba(125,142,114,.2)',rsvpTextColor:'var(--olive)'},
+  evening:{label:'Evening Invitation',timeNote:'Arrive from 7:00 pm - Evening reception, dancing & celebrations - Carriages at midnight',heroPill:'Evening guest - Arrive from 7:00 pm',pillClass:'evening',rsvpNote:"You're invited as an Evening guest - joining us from 7:00 pm.",rsvpColor:'rgba(196,154,60,.1)',rsvpBorder:'rgba(196,154,60,.3)',rsvpTextColor:'#8A6A1A'},
+};
+const ADMINS=['Tommy','Maike'];
+let currentGuest=null;
+const activity={rsvp:false,song:false,photo:false};
+let sealBroken=false;
+let songsUnsubscribe=null,galUnsubscribe=null;
+let firestoreSongs=[];
+let galDocs=[];
+
+function normId(name){return name.toLowerCase().replace(/[^a-z0-9]/g,'_');}
+function isAdmin(){return currentGuest&&ADMINS.includes(currentGuest.name.split(' ')[0]);}
+function onFirebaseReady(cb){if(window._firebaseReady)cb();else document.addEventListener('firebase-ready',cb,{once:true});}
+
+function breakSeal(){
+  if(sealBroken)return;sealBroken=true;
+  const seal=document.getElementById('envSeal'),flap=document.getElementById('envFlap'),
+        hint=document.getElementById('envHint'),card=document.getElementById('envCard'),
+        body=document.getElementById('envBody');
+  seal.classList.add('break');hint.classList.add('gone');
+  setTimeout(()=>seal.style.display='none',420);
+  setTimeout(()=>flap.classList.add('open'),350);
+  setTimeout(()=>{
+    card.classList.add('rising');card.style.display='block';
+    card.style.transition='top 0.55s cubic-bezier(0.22,1,0.36,1)';
+    card.style.top='-105%';
+  },750);
+  setTimeout(()=>{
+    document.getElementById('envFront').style.display='none';
+    document.getElementById('envBack').style.display='block';
+    card.style.transition='top 0.55s cubic-bezier(0.22,1,0.36,1),transform 0.35s ease';
+    card.style.transform='rotateY(90deg)';
+  },1200);
+  setTimeout(()=>card.style.transform='rotateY(0deg)',1390);
+  setTimeout(()=>body.classList.add('fadeout'),1500);
+  setTimeout(()=>{
+    card.style.transition='top 0.4s cubic-bezier(0.4,0,0.2,1),transform 0.4s ease';
+    card.style.top='0';
+    document.getElementById('welcomeNote').style.display='block';
+    setTimeout(()=>document.getElementById('welcomeInput').focus(),350);
+  },1800);
+}
+
+function enterSite(){
+  const raw=document.getElementById('welcomeInput').value.trim();
+  const errEl=document.getElementById('welcomeError');
+  if(!raw){errEl.textContent='Please enter your full name to continue.';return;}
+  const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
+  const match=GUESTS.find(g=>norm(g.name)===norm(raw));
+  if(!match){errEl.textContent="We couldn't find that name. Please use your full name exactly as on your invitation, or contact Tommy or Maike.";return;}
+  errEl.textContent='';currentGuest=match;applyPersonalisation(match);
+  const screen=document.getElementById('welcomeScreen');
+  screen.classList.add('hiding');setTimeout(()=>screen.style.display='none',550);
+}
+
+function applyPersonalisation(guest){
+  const info=INVITE_INFO[guest.type],first=guest.name.split(' ')[0];
+  document.getElementById('profileBtn').classList.add('visible');
+  document.getElementById('profileName').textContent=guest.name;
+  document.getElementById('profileType').textContent=info.label;
+  document.getElementById('heroEyebrow').innerHTML='Welcome, '+first+' &#127807;';
+  const wEl=document.getElementById('heroWelcome');wEl.textContent="We're so glad you can join us.";wEl.style.display='block';
+  const pWrap=document.getElementById('heroInviteTime');pWrap.style.display='block';
+  const pSpan=pWrap.querySelector('span');pSpan.textContent=info.heroPill;pSpan.className='inv-pill '+info.pillClass;pSpan.style.marginTop='0';
+  document.getElementById('inviteGuestName').textContent=guest.name;
+  document.getElementById('inviteTimeNote').textContent=info.timeNote;
+  const tb=document.getElementById('inviteTypeBanner');tb.textContent=info.label;tb.className='inv-pill '+info.pillClass;tb.style.display='block';
+  const rn=document.getElementById('rsvpInviteNote');rn.textContent=info.rsvpNote;rn.style.display='block';
+  rn.style.background=info.rsvpColor;rn.style.border='1px solid '+info.rsvpBorder;rn.style.color=info.rsvpTextColor;
+  document.getElementById('rsvpName').value=guest.name;
+  onFirebaseReady(()=>{loadGuestProfile(guest);initGalleryListener();});
+}
+
+function updateActivity(){
+  const c=document.getElementById('profileActivity'),items=[];
+  if(activity.rsvp)items.push('&#10003; RSVP sent');
+  if(activity.song)items.push('&#10003; Song suggested');
+  if(activity.photo)items.push('&#10003; Photos submitted');
+  c.innerHTML=items.map(i=>'<p class="profile-activity">'+i+'</p>').join('');
+}
+
+function togglePd2(){document.getElementById('profileDd').classList.toggle('open')}
+document.addEventListener('click',e=>{
+  const btn=document.getElementById('profileBtn'),dd=document.getElementById('profileDd');
+  if(btn&&dd&&!btn.contains(e.target)&&!dd.contains(e.target))dd.classList.remove('open');
+});
+
+function switchGuest(){
+  if(songsUnsubscribe){songsUnsubscribe();songsUnsubscribe=null;}
+  if(galUnsubscribe){galUnsubscribe();galUnsubscribe=null;}
+  firestoreSongs=[];galDocs=[];
+  currentGuest=null;sealBroken=false;activity.rsvp=false;activity.song=false;activity.photo=false;
+  document.getElementById('envSeal').classList.remove('break');document.getElementById('envSeal').style.cssText='';
+  document.getElementById('envFlap').classList.remove('open');
+  const card=document.getElementById('envCard');card.classList.remove('rising');card.style.cssText='';
+  document.getElementById('envBody').classList.remove('fadeout');document.getElementById('envBody').style.cssText='';
+  document.getElementById('envFront').style.display='block';document.getElementById('envBack').style.display='none';
+  document.getElementById('envHint').classList.remove('gone');
+  document.getElementById('welcomeNote').style.display='none';
+  document.getElementById('welcomeInput').value='';document.getElementById('welcomeError').textContent='';
+  const screen=document.getElementById('welcomeScreen');screen.style.display='flex';screen.classList.remove('hiding');
+  document.getElementById('profileBtn').classList.remove('visible');document.getElementById('profileDd').classList.remove('open');document.getElementById('profileActivity').innerHTML='';
+  document.getElementById('heroEyebrow').textContent="You're invited";document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
+  document.getElementById('inviteGuestName').textContent='';document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
+  document.getElementById('rsvpInviteNote').style.display='none';document.getElementById('rsvpName').value='';
+  document.getElementById('rsvpForm').style.display='';document.getElementById('rsvpSuccess').classList.remove('active');document.getElementById('rsvpModal').classList.remove('active');
+  document.getElementById('rsvpAttSec').style.display='none';document.getElementById('rsvpPlusSec').style.display='none';document.getElementById('rsvpAddSec').style.display='none';
+  document.getElementById('addContainer').innerHTML='';document.getElementById('addCount').value='';
+  document.querySelectorAll('input[name="attending"],input[name="forOthers"]').forEach(r=>r.checked=false);
+  document.querySelectorAll('input[name="diet"],input[name="poDiet"]').forEach(r=>r.checked=false);
+  document.getElementById('rsvpDietOther').style.display='none';document.getElementById('rsvpDietOther').value='';
+  document.getElementById('photoFormWrap').style.display='none';document.getElementById('photoFormLink').href='#';
+  navigate('home');
+}
+
+const photoPages=['photohub','photos','gallery'];
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.querySelectorAll('[data-page]').forEach(b=>{const dp=b.dataset.page;b.classList.toggle('active',dp==='photohub'?photoPages.includes(page):dp===page);});
+  document.querySelectorAll('[data-mob]').forEach(b=>b.classList.toggle('active',b.dataset.mob===page));
+  document.querySelectorAll('[data-submenu]').forEach(b=>b.classList.toggle('active',b.dataset.submenu===page));
+  closePd();window.scrollTo(0,0);if(page==='photos')loadPhotoForm();if(page==='registry')renderRegistry();
+}
+function handlePhotosClick(){const cur=document.querySelector('.page.active')?.id?.replace('page-','');if(photoPages.includes(cur))document.getElementById('photosDd').classList.toggle('open');else navigate('photohub');}
+function closePd(){document.getElementById('photosDd')?.classList.remove('open')}
+document.addEventListener('click',e=>{const dd=document.getElementById('photosDd');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
+function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
+function closeMob(){document.getElementById('mobMenu').classList.remove('open')}
+
+function loadPhotoForm(){
+  const wrap=document.getElementById('photoFormWrap'),none=document.getElementById('photoNoGuest');
+  if(!currentGuest){wrap.style.display='none';none.style.display='block';return;}
+  document.getElementById('photoFormLink').href=PHOTO_FORMS[currentGuest.type];
+  wrap.style.display='block';none.style.display='none';
+}
+
+function tick(){
+  const diff=new Date('2027-05-15T13:30:00')-new Date();
+  if(diff<=0){document.getElementById('countdown').innerHTML='<p style="font-size:1.4rem;color:var(--olive);grid-column:1/-1;text-align:center">The day has arrived!</p>';return;}
+  document.getElementById('cd-days').textContent=Math.floor(diff/86400000);
+  document.getElementById('cd-hours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cd-mins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+  document.getElementById('cd-secs').textContent=String(Math.floor((diff%60000)/1000)).padStart(2,'0');
+}
+tick();setInterval(tick,1000);
+
+function onAtt(){const yes=document.querySelector('input[name="attending"]:checked')?.value==='yes';document.getElementById('rsvpAttSec').style.display=yes?'block':'none';document.getElementById('rsvpPlusSec').style.display=(yes&&currentGuest?.plusOne)?'block':'none';}
+function onOthers(){const yes=document.querySelector('input[name="forOthers"]:checked')?.value==='yes';document.getElementById('rsvpAddSec').style.display=yes?'block':'none';if(!yes){document.getElementById('addCount').value='';document.getElementById('addContainer').innerHTML='';}}
+function buildAdd(){
+  const n=parseInt(document.getElementById('addCount').value)||0,c=document.getElementById('addContainer');c.innerHTML='';
+  for(let i=1;i<=n;i++){const d=document.createElement('div');d.style.cssText='border:1px solid var(--olive-pale);padding:1.25rem;margin-bottom:1rem;background:rgba(212,224,200,.08);';
+    d.innerHTML='<p style="font-size:1rem;color:var(--olive);margin-bottom:.85rem;">Guest '+i+'</p>'
+      +'<div class="fg"><label class="fl">Name</label><input class="fi" type="text" id="addName'+i+'" placeholder="Their full name" oninput="chkName('+i+')"><p id="addMsg'+i+'" style="font-size:.78rem;margin-top:.4rem;min-height:1.1em;"></p></div>'
+      +'<div class="fg"><label class="fl">Dietary</label><div class="diet-opts" id="addDietOpts'+i+'">'
+      +'<label class="diet-check"><input type="checkbox" name="addDiet'+i+'" value="None" onchange="dietNone(this,\'addDietOpts'+i+'\')"> None</label>'
+      +'<label class="diet-check"><input type="checkbox" name="addDiet'+i+'" value="Gluten Free"> Gluten Free</label>'
+      +'<label class="diet-check"><input type="checkbox" name="addDiet'+i+'" value="Nut Allergy"> Nut Allergy</label>'
+      +'<label class="diet-check"><input type="checkbox" name="addDiet'+i+'" value="Veggie"> Vegetarian</label>'
+      +'<label class="diet-check"><input type="checkbox" name="addDiet'+i+'" value="Vegan"> Vegan</label>'
+      +'<label class="diet-check"><input type="checkbox" name="addDiet'+i+'" value="Other" onchange="dietOther(this,\'addDietOther'+i+'\')"> Other</label>'
+      +'</div><textarea class="fi" id="addDietOther'+i+'" rows="2" placeholder="Describe..." style="display:none;margin-top:.6rem;"></textarea></div>';
+    c.appendChild(d);}
+}
+function chkName(i){const v=document.getElementById('addName'+i).value.trim(),m=document.getElementById('addMsg'+i);if(!v){m.textContent='';return;}const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();const found=GUESTS.find(g=>norm(g.name)===norm(v));if(found){m.style.color='var(--olive)';m.textContent='Found on list';}else{m.style.color='var(--terracotta)';m.textContent='Not found - check spelling.';}}
+
+function submitRSVP(){
+  const att=document.querySelector('input[name="attending"]:checked')?.value;
+  if(!att){showToast("Please let us know if you'll be joining us");return;}
+  const name=document.getElementById('rsvpName').value,attending=att==='yes'?'Joyfully accepts':'Regretfully declines',invType=currentGuest?INVITE_INFO[currentGuest.type]?.label:'';
+  const dietChecked=[...document.querySelectorAll('input[name="diet"]:checked')].map(c=>c.value),dietOtherVal=document.getElementById('rsvpDietOther')?.value||'',dietary=dietChecked.join(', ')+(dietOtherVal?' - '+dietOtherVal:'');
+  const plusOneName=document.getElementById('plusOneName')?.value||'',poDiet=[...document.querySelectorAll('input[name="poDiet"]:checked')].map(c=>c.value).join(', '),poDietOther=document.getElementById('poDietOther')?.value||'',plusOneDiet=poDiet+(poDietOther?' - '+poDietOther:'');
+  const addCount=parseInt(document.getElementById('addCount')?.value)||0;let additionalLines='';
+  for(let i=1;i<=addCount;i++){const gName=document.getElementById('addName'+i)?.value||'',gDiet=[...document.querySelectorAll('input[name="addDiet'+i+'"]:checked')].map(c=>c.value).join(', '),gDietOther=document.getElementById('addDietOther'+i)?.value||'';if(gName)additionalLines+='\nGuest '+i+': '+gName+' | Diet: '+gDiet+(gDietOther?' - '+gDietOther:'');}
+  const msg=document.getElementById('rsvpMsg')?.value||'';
+  const fullSummary=['RSVP: '+name,'Type: '+invType,'Attending: '+attending,'Dietary: '+(dietary||'None'),plusOneName?'Plus-one: '+plusOneName+' Diet: '+(plusOneDiet||'None'):'',additionalLines?'Others:'+additionalLines:'',msg?'Message: '+msg:''].filter(Boolean).join('\n');
+  if(EMAILJS_SERVICE_ID!=='YOUR_SERVICE_ID'){emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,{guest_name:name,attending,invite_type:invType,dietary:dietary||'None',plus_one:plusOneName||'N/A',plus_one_diet:plusOneDiet||'N/A',additional_guests:additionalLines||'None',message:msg||'',full_summary:fullSummary,to_email:'maikeschmidt906@gmail.com'}).catch(err=>console.warn('EmailJS:',err));}
+  onFirebaseReady(()=>{const{doc,setDoc,serverTimestamp}=window._firebase;setDoc(doc(window._db,'rsvps',normId(name)),{name,attending,inviteType:invType,dietary:dietary||'',plusOne:plusOneName||'',plusOneDiet:plusOneDiet||'',additionalGuests:additionalLines||'',message:msg||'',updatedAt:serverTimestamp()}).catch(e=>console.warn('Firestore RSVP:',e));saveGuestActivity({rsvp:true});});
+  activity.rsvp=true;updateActivity();
+  document.getElementById('rsvpForm').style.display='none';
+  document.getElementById('rsvpSuccessMsg').textContent=att==='no'?"We're so sorry you can't make it, but we appreciate you letting us know. You'll be missed!":"We've received your RSVP and can't wait to celebrate with you. See you on 15th May 2027!";
+  document.getElementById('rsvpSuccess').classList.add('active');
+}
+
+function dietNone(cb,gid){const g=document.getElementById(gid);if(!g)return;const all=g.querySelectorAll('input[type="checkbox"]');if(cb.value==='None'&&cb.checked)all.forEach(b=>{if(b.value!=='None')b.checked=false;});else if(cb.value!=='None'&&cb.checked)all.forEach(b=>{if(b.value==='None')b.checked=false;});}
+function dietOther(cb,tid){const ta=document.getElementById(tid);if(!ta)return;ta.style.display=cb.checked?'block':'none';if(!cb.checked)ta.value='';}
+
+function openGiftLink(fund){
+  const noteId=fund==='zurich'?'zurichNote':'honeymoonNote',note=document.getElementById(noteId)?.value.trim(),link=GIFT_LINKS[fund];
+  if(note)showToast('Note saved - thank you!');
+  if(!link||link.includes('REVOLUT')){showToast('Payment link coming soon - thank you so much!');return;}
+  window.open(link,'_blank','noopener');
+}
+
+let galPhotos=[],lbIndex=0;
+function handleGalUpload(e){
+  if(!currentGuest){showToast('Please log in to upload photos.');return;}
+  const files=Array.from(e.target.files);
+  if(!files.length)return;
+  showToast('Uploading '+files.length+' photo'+(files.length>1?'s':'')+'...');
+  onFirebaseReady(async()=>{
+    const{ref,uploadBytes,getDownloadURL,collection,addDoc,serverTimestamp}=window._firebase;
+    for(const file of files){
+      try{
+        const path='gallery/'+normId(currentGuest.name)+'_'+Date.now()+'_'+file.name;
+        const storRef=ref(window._storage,path);
+        await uploadBytes(storRef,file);
+        const url=await getDownloadURL(storRef);
+        const approved=isAdmin();
+        await addDoc(collection(window._db,'gallery'),{url,name:file.name,storagePath:path,uploadedBy:currentGuest.name,approved,ts:Date.now(),addedAt:serverTimestamp()});
+      }catch(err){console.warn('Upload error:',err);}
+    }
+    activity.photo=true;updateActivity();saveGuestActivity({photo:true});
+    showToast(files.length+' photo'+(files.length>1?'s':'')+' '+(isAdmin()?'added!':'submitted for approval!'));
+  });
+}
+function renderGalGrid(){
+  const grid=document.getElementById('galGrid');
+  const pendingWrap=document.getElementById('galPendingWrap');
+  const pendingGrid=document.getElementById('galPendingGrid');
+  if(!grid)return;
+  grid.innerHTML='';
+  if(pendingGrid)pendingGrid.innerHTML='';
+
+  // Build approved list + own pending
+  const approved=galDocs.filter(d=>d.approved);
+  const myPending=galDocs.filter(d=>!d.approved&&d.uploadedBy===currentGuest?.name);
+  const adminPending=isAdmin()?galDocs.filter(d=>!d.approved):[];
+
+  // Show admin pending section
+  if(isAdmin()&&adminPending.length>0){
+    pendingWrap.style.display='block';
+    adminPending.forEach(ph=>{
+      const slot=document.createElement('div');slot.className='gal-slot';
+      slot.innerHTML='<img src="'+ph.url+'" alt="'+esc(ph.name)+'" class="gal-img" style="opacity:.7;">'
+        +'<div style="position:absolute;bottom:0;left:0;right:0;display:flex;gap:.3rem;padding:.4rem;background:rgba(0,0,0,.55);">'
+        +'<button onclick="approvePhoto(\''+ph.id+'\')" style="flex:1;font-size:.7rem;padding:.3rem;background:var(--olive);color:#fff;border:none;cursor:pointer;border-radius:2px;">&#10003; Approve</button>'
+        +'<button onclick="rejectPhoto(\''+ph.id+'\',\''+ph.storagePath+'\')" style="flex:1;font-size:.7rem;padding:.3rem;background:var(--terracotta);color:#fff;border:none;cursor:pointer;border-radius:2px;">&#10007; Reject</button>'
+        +'</div>';
+      pendingGrid.appendChild(slot);
+    });
+  } else {
+    if(pendingWrap)pendingWrap.style.display='none';
+  }
+
+  // Build display list: approved + own pending (non-admin)
+  const displayList=[...approved,...(isAdmin()?[]:myPending)];
+  galPhotos=displayList; // keep in sync for lightbox
+
+  displayList.forEach((ph,i)=>{
+    const slot=document.createElement('div');slot.className='gal-slot';slot.dataset.idx=i;
+    const pendingBadge=!ph.approved?'<div style="position:absolute;top:.4rem;left:.4rem;font-size:.6rem;background:rgba(155,58,40,.85);color:#fff;padding:.15rem .4rem;border-radius:2px;letter-spacing:.05em;">Pending</div>':'';
+    slot.innerHTML='<img src="'+ph.url+'" alt="'+esc(ph.name)+'" class="gal-img" onclick="openLightbox('+i+')">'
+      +pendingBadge
+      +'<div class="gal-cb" onclick="toggleSel(event,'+i+')">&#10003;</div>'
+      +'<div class="gal-hover-icons"><button class="gal-icon-btn" onclick="openLightbox('+i+')" title="View">&#128269;</button><button class="gal-icon-btn" onclick="dlOne('+i+')" title="Download">&#8659;</button><button class="gal-icon-btn" onclick="shareOne('+i+')" title="Share">&#8679;</button><button class="gal-icon-btn" onclick="toggleSel(event,'+i+')" title="Select">&#9745;</button></div>';
+    grid.appendChild(slot);
+  });
+
+  const ph=document.createElement('div');ph.className='gal-ph';ph.onclick=()=>document.getElementById('galUpload').click();ph.innerHTML='<span style="font-size:1.8rem;">&#128247;</span><span>Add more</span>';grid.appendChild(ph);
+  if(displayList.length>0||isAdmin())document.getElementById('galToolbar').style.display='flex';
+}
+function initGalleryListener(){
+  if(galUnsubscribe)galUnsubscribe();
+  const{collection,onSnapshot,query,orderBy}=window._firebase;
+  galUnsubscribe=onSnapshot(query(collection(window._db,'gallery'),orderBy('ts','asc')),snap=>{
+    galDocs=snap.docs.map(d=>({...d.data(),id:d.id}));renderGalGrid();
+  });
+}
+async function approvePhoto(docId){
+  const{doc,updateDoc}=window._firebase;
+  await updateDoc(doc(window._db,'gallery',docId),{approved:true}).catch(e=>console.warn(e));
+  showToast('Photo approved!');
+}
+async function rejectPhoto(docId,storagePath){
+  const{doc,deleteDoc,ref,deleteObject}=window._firebase;
+  try{await deleteObject(ref(window._storage,storagePath));}catch(e){}
+  await deleteDoc(doc(window._db,'gallery',docId)).catch(e=>console.warn(e));
+  showToast('Photo removed.');
+}
+const galSelected=new Set();
+function toggleSel(e,i){e.stopPropagation();const slot=document.querySelector('.gal-slot[data-idx="'+i+'"]');if(galSelected.has(i)){galSelected.delete(i);slot.classList.remove('selected');}else{galSelected.add(i);slot.classList.add('selected');}updateSelUI();}
+function updateSelUI(){const n=galSelected.size;document.getElementById('galSelCount').textContent=n;document.getElementById('galDlSelBtn').style.display=n>0?'inline-block':'none';document.getElementById('galShareSelBtn').style.display=n>0?'inline-block':'none';}
+function galSelectAll(){galPhotos.forEach((_,i)=>{galSelected.add(i);const s=document.querySelector('.gal-slot[data-idx="'+i+'"]');if(s)s.classList.add('selected');});updateSelUI();}
+function galClearSel(){galSelected.clear();document.querySelectorAll('.gal-slot.selected').forEach(s=>s.classList.remove('selected'));updateSelUI();}
+function dlOne(i){const a=document.createElement('a');a.href=phSrc(galPhotos[i]);a.download=galPhotos[i].name||'photo-'+(i+1)+'.jpg';a.click();}
+async function shareOne(i){const ph=galPhotos[i];if(navigator.share&&navigator.canShare){try{const res=await fetch(phSrc(ph)),blob=await res.blob(),file=new File([blob],ph.name||'photo.jpg',{type:blob.type});if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Tommy & Maike Wedding'});return;}}catch(err){}}dlOne(i);showToast('Sharing not supported - photo downloaded.');}
+function galDownloadAll(){if(!galPhotos.length){showToast('No photos yet.');return;}galPhotos.forEach((ph,i)=>{setTimeout(()=>dlOne(i),i*200);});showToast('Downloading '+galPhotos.length+' photos...');}
+function galDownloadSelected(){if(!galSelected.size){showToast('No photos selected.');return;}[...galSelected].forEach((i,n)=>{setTimeout(()=>dlOne(i),n*200);});showToast('Downloading '+galSelected.size+' photos...');}
+async function galShareSelected(){if(!galSelected.size){showToast('No photos selected.');return;}if(navigator.share&&navigator.canShare){try{const files=await Promise.all([...galSelected].map(async i=>{const ph=galPhotos[i],res=await fetch(ph.src),blob=await res.blob();return new File([blob],ph.name||'photo.jpg',{type:blob.type});}));if(navigator.canShare({files})){await navigator.share({files,title:'Tommy & Maike Wedding Photos'});return;}}catch(err){}}galDownloadSelected();}
+function openLightbox(i){lbIndex=i;document.getElementById('lightbox').classList.add('active');document.body.style.overflow='hidden';renderLb();buildThumbStrip();}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('active');document.body.style.overflow='';}
+function phSrc(ph){return ph.url||ph.src||'';}
+function renderLb(){const ph=galPhotos[lbIndex];document.getElementById('lbImg').src=phSrc(ph);document.getElementById('lbCounter').textContent=(lbIndex+1)+' / '+galPhotos.length;document.querySelectorAll('.lb-thumb').forEach((t,i)=>t.classList.toggle('active',i===lbIndex));const active=document.querySelector('.lb-thumb.active');if(active)active.scrollIntoView({block:'nearest',inline:'center',behavior:'smooth'});}
+function buildThumbStrip(){const strip=document.getElementById('lbStrip');strip.innerHTML='';galPhotos.forEach((ph,i)=>{const img=document.createElement('img');img.src=phSrc(ph);img.className='lb-thumb';img.alt='';if(i===lbIndex)img.classList.add('active');img.onclick=()=>{lbIndex=i;renderLb();};strip.appendChild(img);});}
+function lbPrev(){lbIndex=(lbIndex-1+galPhotos.length)%galPhotos.length;renderLb();}
+function lbNext(){lbIndex=(lbIndex+1)%galPhotos.length;renderLb();}
+function lbDownload(){dlOne(lbIndex);}function lbShare(){shareOne(lbIndex);}
+document.addEventListener('keydown',e=>{const lb=document.getElementById('lightbox');if(!lb.classList.contains('active'))return;if(e.key==='ArrowLeft')lbPrev();if(e.key==='ArrowRight')lbNext();if(e.key==='Escape')closeLightbox();});
+let lbTouchX=null;
+document.getElementById('lightbox').addEventListener('touchstart',e=>{lbTouchX=e.touches[0].clientX;},{passive:true});
+document.getElementById('lightbox').addEventListener('touchend',e=>{if(lbTouchX===null)return;const dx=e.changedTouches[0].clientX-lbTouchX;if(Math.abs(dx)>50){dx<0?lbNext():lbPrev();}lbTouchX=null;},{passive:true});
+
+const SONGS=[
+  {song:'Fly Me to the Moon',artist:'Frank Sinatra',moment:'Ceremony',by:'Tommy & Maike',ts:1},
+  {song:'Use Somebody',artist:'Kings of Leon',moment:'Ceremony',by:'Tommy & Maike',ts:2},
+  {song:'Waltzer',artist:'Provinz',moment:'First dance',by:'Tommy & Maike',ts:3},
+  {song:'Give a Little Love',artist:'Gizmo Varillas',moment:'Drinks reception',by:'Tommy & Maike',ts:4},
+  {song:'Not High on Drugs',artist:'Benjamin Amaru',moment:'Drinks reception',by:'Tommy & Maike',ts:5},
+  {song:'In Case I Fall for You',artist:'Black Sea Dahu',moment:'Drinks reception',by:'Tommy & Maike',ts:6},
+  {song:'On the Run',artist:'Gizmo Varillas',moment:'Drinks reception',by:'Tommy & Maike',ts:7},
+  {song:'Mia & Keira',artist:'Giant Rooks',moment:'Drinks reception',by:'Tommy & Maike',ts:8},
+  {song:'Volare',artist:'Gipsy Kings',moment:'Drinks reception',by:'Tommy & Maike',ts:9},
+  {song:'September',artist:'Earth, Wind & Fire',moment:'Party starters',by:'Tommy & Maike',ts:10},
+  {song:'Con te partir\u00f2',artist:'Andrea Bocelli',moment:'Ceremony',by:'Tommy & Maike',ts:11},
+  {song:'Mr Brightside',artist:'The Killers',moment:'Sing along bangers',by:'Tommy & Maike',ts:12},
+];
+let plFilter='all';
+function renderPl(){
+  const body=document.getElementById('playlistBody'),empty=document.getElementById('plEmpty');
+  const guestSongs=[...firestoreSongs].sort((a,b)=>b.ts-a.ts);
+  const curatedSongs=[...SONGS];
+  const filterFn=s=>plFilter==='all'||s.moment===plFilter;
+  const guestFiltered=guestSongs.filter(filterFn);
+  const curatedFiltered=curatedSongs.filter(filterFn);
+  const list=[...guestFiltered,...curatedFiltered];
+  body.innerHTML='';if(!list.length){empty.style.display='block';return;}empty.style.display='none';
+  list.forEach((s,i)=>{
+    if(i===guestFiltered.length&&guestFiltered.length>0&&curatedFiltered.length>0){
+      const divRow=document.createElement('tr');
+      divRow.innerHTML='<td colspan="4" style="padding:.4rem 0;"><div style="border-top:1px solid var(--olive-pale);margin:.25rem 0;"></div><p style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text-muted);text-align:center;padding:.2rem 0;">Tommy &amp; Maike&rsquo;s picks</p></td>';
+      body.appendChild(divRow);
+    }
+    const tr=document.createElement('tr');
+    const isNew=i<guestFiltered.length&&i===0;
+    tr.innerHTML='<td class="tr-num">'+(list.length-i)+'</td><td><span class="tr-title">'+esc(s.song)+'</span>'+(s.artist?'<span class="tr-artist">'+esc(s.artist)+'</span>':'')+'</td><td><span class="tr-moment">'+esc(s.moment)+'</span></td><td class="tr-by">'+esc(s.by)+(isNew?'&nbsp;<span style="font-size:.6rem;background:var(--olive);color:#fff;padding:.1rem .35rem;border-radius:2px;letter-spacing:.05em;vertical-align:middle;">new</span>':'')+'</td>';
+    body.appendChild(tr);
+  });
+}
+function initSongsListener(){
+  if(songsUnsubscribe)songsUnsubscribe();
+  const{collection,onSnapshot,query,orderBy}=window._firebase;
+  songsUnsubscribe=onSnapshot(query(collection(window._db,'songs'),orderBy('ts','asc')),snap=>{
+    firestoreSongs=snap.docs.map(d=>({...d.data(),id:d.id}));renderPl();
+  });
+}
+function addSong(){
+  const song=document.getElementById('suggSong').value.trim(),artist=document.getElementById('suggArtist').value.trim(),moment=document.getElementById('suggMoment').value;
+  const byName=currentGuest?currentGuest.name.split(' ')[0]:(document.getElementById('suggName').value.trim()||'A guest');
+  if(!song){showToast('Please enter a song title');return;}if(!moment){showToast('Please select a moment');return;}
+  onFirebaseReady(()=>{const{collection,addDoc,serverTimestamp}=window._firebase;addDoc(collection(window._db,'songs'),{song,artist,moment,by:byName,ts:Date.now(),addedAt:serverTimestamp()}).catch(e=>console.warn('Firestore song:',e));});
+  document.getElementById('suggSong').value='';document.getElementById('suggArtist').value='';document.getElementById('suggMoment').value='';document.getElementById('suggName').value='';
+  activity.song=true;updateActivity();saveGuestActivity({song:true});showToast('Song added! Thank you!');
+}
+function filterPl(m){plFilter=m;document.querySelectorAll('.mf').forEach(b=>b.classList.toggle('active',b.dataset.m===m));renderPl();}
+onFirebaseReady(()=>initSongsListener());
+function dlPlaylist(){
+  const allSongs=[...SONGS,...firestoreSongs];
+  const hdrs=['Song','Artist','Moment','Suggested by'],rows=[...allSongs].sort((a,b)=>b.ts-a.ts).map(s=>[s.song,s.artist,s.moment,s.by]);
+  const csv=[hdrs,...rows].map(r=>r.map(c=>'"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='tommy-maike-songs.csv';a.click();URL.revokeObjectURL(a.href);
+}
+renderPl();
+
+async function loadGuestProfile(guest){
+  const{doc,getDoc}=window._firebase;
+  try{
+    const snap=await getDoc(doc(window._db,'guests',normId(guest.name)));
+    if(snap.exists()){
+      const data=snap.data();
+      if(data.rsvp)activity.rsvp=true;
+      if(data.song)activity.song=true;
+      if(data.photo)activity.photo=true;
+      updateActivity();
+      if(data.rsvpDone){
+        document.getElementById('rsvpForm').style.display='none';
+        document.getElementById('rsvpSuccessMsg').textContent="We've already received your RSVP — can't wait to celebrate with you!";
+        document.getElementById('rsvpSuccess').classList.add('active');
+      }
+    }
+  }catch(e){console.warn('loadGuestProfile:',e);}
+}
+function saveGuestActivity(patch){
+  if(!currentGuest)return;
+  onFirebaseReady(()=>{
+    const{doc,setDoc,serverTimestamp}=window._firebase;
+    const updates={...patch,updatedAt:serverTimestamp()};
+    if(patch.rsvp)updates.rsvpDone=true;
+    setDoc(doc(window._db,'guests',normId(currentGuest.name)),updates,{merge:true}).catch(e=>console.warn('saveGuestActivity:',e));
+  });
+}
+
+// REGISTRY
+const REGISTRY_ITEMS=[
+  // Furniture
+  {id:'sofa',cat:'Furniture',emoji:'🛋',name:'Living room sofa',desc:'A cosy sofa to come home to after long days exploring Zürich — the heart of our new living room.',target:600},
+  {id:'dining_table',cat:'Furniture',emoji:'🪑',name:'Dining table & chairs',desc:'Somewhere to host friends over Swiss raclette and far too much wine.',target:400},
+  {id:'bed_frame',cat:'Furniture',emoji:'🛏',name:'Bed frame',desc:'A proper bed frame to make our bedroom feel like home.',target:350},
+  {id:'coffee_table',cat:'Furniture',emoji:'🪵',name:'Coffee table',desc:'The centrepiece of lazy Sunday mornings.',target:150},
+  // Kitchen
+  {id:'coffee_machine',cat:'Kitchen',emoji:'☕',name:'Coffee machine',desc:'Our current one has had a good run — time for an upgrade. Switzerland takes its coffee seriously and so do we.',target:200},
+  {id:'kitchen_aid',cat:'Kitchen',emoji:'🍰',name:'KitchenAid mixer',desc:'So Tommy can finally stop complaining we don\'t have the right equipment and flex those baking skills.',target:450},
+  {id:'frying_pans',cat:'Kitchen',emoji:'🍳',name:'New frying pan set',desc:'So we can fry an egg and actually eat more than half of it. A humble but important goal.',target:80},
+  {id:'utensils',cat:'Kitchen',emoji:'🥄',name:'Cooking utensils',desc:'Our silicone ones are sadly falling apart — nothing fancy, just a solid little set to see us through.',target:25},
+  {id:'serving',cat:'Kitchen',emoji:'🫕',name:'Serving bowls & boards',desc:'For when friends and family come to visit — we fully intend to host well.',target:70},
+  {id:'kettle',cat:'Kitchen',emoji:'🫖',name:'Kettle',desc:'One that isn\'t full of limescale build-up. A fresh start deserves a fresh kettle.',target:40},
+  {id:'toaster',cat:'Kitchen',emoji:'🍞',name:'4-slice toaster',desc:'For Tommy\'s toast obsession. Four slices. Non-negotiable.',target:35},
+  // Decorations
+  {id:'picture_frames',cat:'Decorations',emoji:'🖼',name:'Picture frames',desc:'To fill with photos from the wedding, travels, and everything in between.',target:50},
+  {id:'plants',cat:'Decorations',emoji:'🌿',name:'House plants',desc:'To bring some green into our new space.',target:40},
+  {id:'candles',cat:'Decorations',emoji:'🕯',name:'Candles & holders',desc:'For cosy evenings in when the Swiss winter arrives.',target:35},
+  // Bedroom
+  {id:'bedding_main',cat:'Bedroom',emoji:'🛌',name:'Bedding — our room',desc:'Fresh bedding for our new bedroom. Suggestions very welcome — we\'re open to recommendations!',target:90},
+  {id:'bedding_spare',cat:'Bedroom',emoji:'🛏',name:'Bedding — spare room',desc:'For when you come to visit us in Zürich. Suggest a set you\'d want to sleep in!',target:70},
+  {id:'lamps',cat:'Bedroom',emoji:'🪔',name:'Comforting lamps',desc:'Maike refuses to use the main lights, so good lamps are essential. Warm, cosy, non-negotiable.',target:70},
+  {id:'bath_mat',cat:'Bedroom',emoji:'🛁',name:'Bathroom mat',desc:'The small things that make a house a home.',target:25},
+  // Experiences
+  {id:'coffee_voucher',cat:'Experiences',emoji:'☕',name:'Zürich coffee crawl',desc:'Help us discover the best coffee and matcha spots the city has to offer.',target:80},
+  {id:'lake_day',cat:'Experiences',emoji:'🏊',name:'Lake Zürich day out',desc:'Boat hire, swimming, and an afternoon by the water.',target:100},
+  {id:'ski_day',cat:'Experiences',emoji:'⛷',name:'Ski day in the Alps',desc:'We\'ll be an hour from the slopes — a ski day fund would go a long way.',target:200},
+  {id:'restaurant',cat:'Experiences',emoji:'🍽',name:'Special dinner out',desc:'A memorable first restaurant meal together as a married couple in Zürich.',target:120},
+  // Other
+  {id:'other',cat:'Other',emoji:'🎁',name:'Something of your choosing',desc:'These are just suggestions — things we\'ll be buying for ourselves anyway. If you\'d like to put something towards our new life in Zürich more generally, we\'re grateful for every contribution, whatever it\'s for.',target:50},
+];
+
+let regFilter='All';
+let regContribs={};
+let regActiveId=null;
+let regUnsubscribes=[];
+
+function initRegistryListener(){
+  regUnsubscribes.forEach(u=>u());regUnsubscribes=[];
+  const{collection,onSnapshot,query,orderBy}=window._firebase;
+  REGISTRY_ITEMS.forEach(item=>{
+    const unsub=onSnapshot(query(collection(window._db,'registry_'+item.id),orderBy('ts','asc')),snap=>{
+      regContribs[item.id]=snap.docs.map(d=>({...d.data(),docId:d.id}));
+      if(document.getElementById('page-registry').classList.contains('active'))renderRegistry();
+    });
+    regUnsubscribes.push(unsub);
+  });
+}
+
+function renderRegistry(){
+  const cats=['All',...new Set(REGISTRY_ITEMS.map(i=>i.cat))];
+  const filterEl=document.getElementById('regCatFilter');
+  filterEl.innerHTML=cats.map(c=>`<button class="reg-filter-btn${regFilter===c?' active':''}" onclick="setRegFilter('${c}')">${c}</button>`).join('');
+  const grid=document.getElementById('regGrid');
+  const items=regFilter==='All'?REGISTRY_ITEMS:REGISTRY_ITEMS.filter(i=>i.cat===regFilter);
+  grid.innerHTML='';
+  items.forEach(item=>{
+    const contribs=regContribs[item.id]||[];
+    const raised=contribs.reduce((s,c)=>s+(Number(c.amount)||0),0);
+    const pct=Math.min(100,Math.round(raised/item.target*100));
+    const funded=raised>=item.target;
+    const card=document.createElement('div');
+    card.className='reg-card'+(funded?' funded':'');
+    const contribHtml=contribs.length?'<div class="reg-contrib-list">'+contribs.slice(-3).reverse().map(c=>{
+      const msg=c.message?` &mdash; <em>${esc(c.message)}</em>`:'';
+      return`<div class="reg-contrib-item"><strong>${esc(c.name)}</strong> put &pound;${Number(c.amount).toFixed(0)} towards this${msg}</div>`;
+    }).join('')+(contribs.length>3?`<p style="font-size:.7rem;color:var(--text-muted);margin-top:.3rem;">+ ${contribs.length-3} more contribution${contribs.length-3>1?'s':''}</p>`:'')+`</div>`:'';
+    card.innerHTML=`
+      <span class="reg-emoji">${item.emoji}</span>
+      <p class="reg-cat">${esc(item.cat)}</p>
+      <p class="reg-name">${esc(item.name)}</p>
+      <p class="reg-desc">${esc(item.desc)}</p>
+      ${contribHtml}
+      <div class="reg-bar-wrap"><div class="reg-bar" style="width:${pct}%"></div></div>
+      <div class="reg-amounts"><span>&pound;${raised.toFixed(0)} raised</span><span>Goal: &pound;${item.target}</span></div>
+      ${funded
+        ?'<button class="reg-btn funded-btn">&#10003; Fully funded &mdash; thank you!</button>'
+        :`<button class="reg-btn" onclick="openRegModal('${item.id}')">Contribute towards this &rarr;</button>`}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function setRegFilter(cat){regFilter=cat;renderRegistry();}
+
+function openRegModal(id){
+  const item=REGISTRY_ITEMS.find(i=>i.id===id);if(!item)return;
+  regActiveId=id;
+  document.getElementById('regModalCat').textContent=item.cat;
+  document.getElementById('regModalName').textContent=item.name;
+  document.getElementById('regModalDesc').textContent=item.desc;
+  const contribs=regContribs[id]||[];
+  const raised=contribs.reduce((s,c)=>s+(Number(c.amount)||0),0);
+  const pct=Math.min(100,Math.round(raised/item.target*100));
+  document.getElementById('regModalProgress').innerHTML=`
+    <div class="reg-bar-wrap"><div class="reg-bar" style="width:${pct}%"></div></div>
+    <div class="reg-amounts" style="margin-top:.35rem;"><span>&pound;${raised.toFixed(0)} of &pound;${item.target} raised</span><span>${pct}%</span></div>`;
+  if(currentGuest)document.getElementById('regContribName').value=currentGuest.name.split(' ')[0];
+  document.getElementById('regContribAmount').value='';
+  document.getElementById('regContribMsg').value='';
+  const modal=document.getElementById('regModal');modal.style.display='flex';
+}
+function closeRegModal(){document.getElementById('regModal').style.display='none';regActiveId=null;}
+
+function submitContrib(){
+  const name=document.getElementById('regContribName').value.trim();
+  const amount=parseFloat(document.getElementById('regContribAmount').value);
+  const message=document.getElementById('regContribMsg').value.trim();
+  if(!name){showToast('Please enter your name');return;}
+  if(!amount||amount<1){showToast('Please enter an amount');return;}
+  onFirebaseReady(async()=>{
+    const{collection,addDoc,serverTimestamp}=window._firebase;
+    await addDoc(collection(window._db,'registry_'+regActiveId),{name,amount,message,ts:Date.now(),addedAt:serverTimestamp()}).catch(e=>console.warn('Registry:',e));
+    closeRegModal();
+    showToast('Taking you to PayPal...');
+    setTimeout(()=>{window.open('https://www.paypal.com/paypalme/maikeschmidt346/'+amount,'_blank','noopener');},600);
+  });
+}
+
+document.getElementById('regModal').addEventListener('click',e=>{if(e.target===document.getElementById('regModal'))closeRegModal();});
+onFirebaseReady(()=>initRegistryListener());
+
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3200);}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+// FLOATING PHOTOS
+const PAGE_PHOTOS={};
+
+// Border positions around the .si content box (no top edge — overlaps title)
+// Anchored to .si (max-width 900px centered), so left/right offsets stay on screen
+const BORDER_POSITIONS=[
+  // left edge — top to bottom (7 photos)
+  {edge:'left', pct:8,  w:70, r:-6, anim:'floatA',dur:5.2},
+  {edge:'left', pct:22, w:66, r:5,  anim:'floatB',dur:4.8},
+  {edge:'left', pct:36, w:68, r:-4, anim:'floatC',dur:5.6},
+  {edge:'left', pct:50, w:72, r:7,  anim:'floatA',dur:6.0},
+  {edge:'left', pct:64, w:66, r:-5, anim:'floatB',dur:5.3},
+  {edge:'left', pct:78, w:70, r:4,  anim:'floatC',dur:4.9},
+  {edge:'left', pct:91, w:68, r:-7, anim:'floatA',dur:5.7},
+  // right edge — top to bottom (7 photos)
+  {edge:'right',pct:8,  w:68, r:6,  anim:'floatB',dur:5.4},
+  {edge:'right',pct:22, w:72, r:-5, anim:'floatC',dur:6.1},
+  {edge:'right',pct:36, w:66, r:4,  anim:'floatA',dur:5.0},
+  {edge:'right',pct:50, w:70, r:-7, anim:'floatB',dur:5.8},
+  {edge:'right',pct:64, w:68, r:5,  anim:'floatC',dur:4.7},
+  {edge:'right',pct:78, w:72, r:-4, anim:'floatA',dur:5.5},
+  {edge:'right',pct:91, w:66, r:6,  anim:'floatB',dur:6.2},
+  // bottom edge — left to right (6 photos)
+  {edge:'bottom',pct:8, w:68, r:-5, anim:'floatC',dur:5.1},
+  {edge:'bottom',pct:22,w:70, r:4,  anim:'floatA',dur:4.8},
+  {edge:'bottom',pct:38,w:66, r:-6, anim:'floatB',dur:5.9},
+  {edge:'bottom',pct:55,w:72, r:5,  anim:'floatC',dur:5.3},
+  {edge:'bottom',pct:72,w:68, r:-4, anim:'floatA',dur:6.0},
+  {edge:'bottom',pct:88,w:70, r:7,  anim:'floatB',dur:5.6},
+];
+
+function injectFloatingPhotos(pageId){
+  const page=document.getElementById(pageId);
+  if(!page)return;
+  page.querySelectorAll('.float-photo').forEach(el=>el.remove());
+  const photos=PAGE_PHOTOS[pageId]||[];
+  if(!photos.length)return;
+
+  // Anchor to the centered .si box so left/right photos don't go off-screen
+  const anchor=pageId==='page-photos'?(page.querySelector('.si')||page):page;
+  anchor.style.position='relative';
+
+  photos.forEach((src,i)=>{
+    const pos=BORDER_POSITIONS[i%BORDER_POSITIONS.length];
+    const el=document.createElement('div');
+    el.className='float-photo';
+    const off=pos.w*0.55; // how far outside the box edge to sit
+    let css=`position:absolute;width:${pos.w}px;z-index:4;pointer-events:none;--fr:${pos.r}deg;animation:${pos.anim} ${pos.dur}s ease-in-out infinite;`;
+    if(pos.edge==='left')  css+=`left:-${off}px;top:${pos.pct}%;transform:translateY(-50%) rotate(${pos.r}deg);`;
+    if(pos.edge==='right') css+=`right:-${off}px;top:${pos.pct}%;transform:translateY(-50%) rotate(${pos.r}deg);`;
+    if(pos.edge==='bottom')css+=`bottom:-${off}px;left:${pos.pct}%;transform:translateX(-50%) rotate(${pos.r}deg);`;
+    el.style.cssText=css;
+    el.innerHTML=`<img src="${src}" alt="" loading="lazy" style="width:100%;height:auto;display:block;">`;
+    anchor.appendChild(el);
+    // Use style directly so it overrides the class's opacity:0
+    setTimeout(()=>{ el.style.opacity='1'; el.style.transition='opacity .6s ease'; },300+i*100);
+  });
+}
+
+// Hook into navigate to inject photos on each page switch
+const _origNavigate=window.navigate;
+window.navigate=function(page){
+  _origNavigate(page);
+  injectFloatingPhotos('page-'+page);
+};
+// Inject on initial load
+injectFloatingPhotos('page-home');
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-app.js";
+import{getFirestore,collection,addDoc,onSnapshot,query,orderBy,doc,setDoc,getDoc,updateDoc,deleteDoc,serverTimestamp}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-firestore.js";
+import{getStorage,ref,uploadBytes,getDownloadURL,deleteObject}from"https://www.gstatic.com/firebasejs/12.14.0/firebase-storage.js";
+const app=initializeApp({apiKey:"AIzaSyDCbez-DBRVJx6RCgCDeolemXUyESrepp0",authDomain:"tommy-maike-wedding.firebaseapp.com",projectId:"tommy-maike-wedding",storageBucket:"tommy-maike-wedding.firebasestorage.app",messagingSenderId:"947053913620",appId:"1:947053913620:web:843fc010f224458457a901"});
+const db=getFirestore(app);
+const storage=getStorage(app);
+window._db=db;window._storage=storage;
+window._firebase={collection,addDoc,onSnapshot,query,orderBy,doc,setDoc,getDoc,updateDoc,deleteDoc,serverTimestamp,ref,uploadBytes,getDownloadURL,deleteObject};
+window._firebaseReady=true;
+document.dispatchEvent(new CustomEvent('firebase-ready'));
+</script>
+</body>
+</html>
