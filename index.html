@@ -1483,34 +1483,38 @@ function submitContrib(){
   const message=document.getElementById('regContribMsg').value.trim();
   if(!name){showToast('Please enter your name');return;}
   if(!amount||amount<1){showToast('Please enter an amount');return;}
+  const testMode=isAdmin();
   onFirebaseReady(async()=>{
-    const{collection,addDoc,serverTimestamp}=window._firebase;
-    await addDoc(collection(window._db,'registry_'+regActiveId),{name,amount,message,ts:Date.now(),addedAt:serverTimestamp()}).catch(e=>console.warn('Registry:',e));
     const item=REGISTRY_ITEMS.find(i=>i.id===regActiveId);
-    emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
-    emailjs.send(EMAILJS_SERVICE_ID,'template_2itanao',{contributor_name:name,item_name:item?item.name:'Unknown',amount:amount.toFixed(0),message:message||'No note left',to_email:'maikeschmidt906@gmail.com'}).catch(e=>console.warn('EmailJS contribution:',e));
-    // Save to guest profile
-    if(currentGuest){
-      const contribs=activity.contributions||[];
-      contribs.push({itemName:item?item.name:'Zürich Wishlist',amount:amount.toFixed(0),ts:Date.now()});
-      activity.contributions=contribs;
-      saveGuestActivity({contributions:contribs,photo:activity.photo,song:activity.song,rsvp:activity.rsvp});
-      updateActivity();
+    if(!testMode){
+      const{collection,addDoc,serverTimestamp}=window._firebase;
+      await addDoc(collection(window._db,'registry_'+regActiveId),{name,amount,message,ts:Date.now(),addedAt:serverTimestamp()}).catch(e=>console.warn('Registry:',e));
+      emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
+      emailjs.send(EMAILJS_SERVICE_ID,'template_2itanao',{contributor_name:name,item_name:item?item.name:'Unknown',amount:amount.toFixed(0),message:message||'No note left',to_email:'maikeschmidt906@gmail.com'}).catch(e=>console.warn('EmailJS contribution:',e));
+      if(currentGuest){
+        const contribs=activity.contributions||[];
+        contribs.push({itemName:item?item.name:'Zürich Wishlist',amount:amount.toFixed(0),ts:Date.now()});
+        activity.contributions=contribs;
+        saveGuestActivity({contributions:contribs,photo:activity.photo,song:activity.song,rsvp:activity.rsvp});
+        updateActivity();
+      }
     }
-    // Show thank you inside modal instead of closing
     const first=currentGuest?currentGuest.name.split(' ')[0]:name;
     const itemName=item?item.name:'our Zürich wishlist';
     document.querySelector('#regModal > div').innerHTML=`
       <div style="text-align:center;padding:1rem 0;">
+        ${testMode?'<p style="font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;background:var(--lemon);color:#333;padding:.25rem .75rem;display:inline-block;margin-bottom:1rem;">&#9888; Test mode &mdash; not saved</p>':''}
         <p style="font-size:2rem;margin-bottom:.75rem;">&#9829;</p>
-        <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.5rem;">Thank you, ${esc(first)}</p>
+        <p style="font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.5rem;">${testMode?'Preview':'Thank you'}, ${esc(first)}</p>
         <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--text-dark);margin-bottom:1rem;">You're wonderful.</h3>
         <p style="font-size:.9rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem;">Your contribution of <strong style="color:var(--olive);">£${amount.toFixed(0)}</strong> towards <strong>${esc(itemName)}</strong> means so much to us. We cannot wait to set up our little home in Zürich and think of you when we do.</p>
         <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--text-dark);margin-bottom:1.5rem;font-style:italic;">With so much love &mdash; Tommy &amp; Maike &#10084;</p>
-        <p style="font-size:.75rem;color:var(--text-muted);margin-bottom:1.25rem;">You're being taken to PayPal to complete your payment&hellip;</p>
+        ${testMode
+          ?'<p style="font-size:.75rem;color:var(--text-muted);margin-bottom:1.25rem;">PayPal redirect skipped in test mode.</p>'
+          :'<p style="font-size:.75rem;color:var(--text-muted);margin-bottom:1.25rem;">You\'re being taken to PayPal to complete your payment&hellip;</p>'}
         <button onclick="closeRegModal()" style="padding:.6rem 1.5rem;background:none;border:1px solid var(--olive-pale);color:var(--text-muted);font-family:'Jost',sans-serif;font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;">Close</button>
       </div>`;
-    setTimeout(()=>{window.open('https://www.paypal.com/paypalme/maikeschmidt346/'+amount,'_blank','noopener');},800);
+    if(!testMode)setTimeout(()=>{window.open('https://www.paypal.com/paypalme/maikeschmidt346/'+amount,'_blank','noopener');},800);
   });
 }
 
