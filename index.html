@@ -1467,6 +1467,9 @@ function submitContrib(){
   onFirebaseReady(async()=>{
     const{collection,addDoc,serverTimestamp}=window._firebase;
     await addDoc(collection(window._db,'registry_'+regActiveId),{name,amount,message,ts:Date.now(),addedAt:serverTimestamp()}).catch(e=>console.warn('Registry:',e));
+    const item=REGISTRY_ITEMS.find(i=>i.id===regActiveId);
+    emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});
+    emailjs.send(EMAILJS_SERVICE_ID,'template_2itanao',{contributor_name:name,item_name:item?item.name:'Unknown',amount:amount.toFixed(0),message:message||'No note left',to_email:'maikeschmidt906@gmail.com'}).catch(e=>console.warn('EmailJS contribution:',e));
     closeRegModal();
     showToast('Taking you to PayPal...');
     setTimeout(()=>{window.open('https://www.paypal.com/paypalme/maikeschmidt346/'+amount,'_blank','noopener');},600);
