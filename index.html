@@ -983,7 +983,7 @@ const INVITE_INFO={
   evening:{label:'Evening Invitation',timeNote:'Arrive from 7:00 pm - Evening reception, dancing & celebrations - Carriages at midnight',heroPill:'Evening guest - Arrive from 7:00 pm',pillClass:'evening',rsvpNote:"You're invited as an Evening guest - joining us from 7:00 pm.",rsvpColor:'rgba(196,154,60,.1)',rsvpBorder:'rgba(196,154,60,.3)',rsvpTextColor:'#8A6A1A'},
 };
 const ADMINS=['Tommy','Maike'];
-let currentGuest=null;
+let currentGuest=null;let sessionStart=null;
 const activity={rsvp:false,song:false,photo:false};
 let sealBroken=false;
 let songsUnsubscribe=null,galUnsubscribe=null;
@@ -1030,7 +1030,7 @@ function enterSite(){
   const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
   const match=GUESTS.find(g=>norm(g.name)===norm(raw));
   if(!match){errEl.textContent="We couldn't find that name. Please use your full name exactly as on your invitation, or contact Tommy or Maike.";return;}
-  errEl.textContent='';currentGuest=match;applyPersonalisation(match);
+  errEl.textContent='';currentGuest=match;sessionStart=Date.now();applyPersonalisation(match);
   const screen=document.getElementById('welcomeScreen');
   screen.classList.add('hiding');setTimeout(()=>screen.style.display='none',550);
 }
@@ -1317,7 +1317,7 @@ function renderPl(){
       body.appendChild(divRow);
     }
     const tr=document.createElement('tr');
-    const isNew=i<guestFiltered.length&&i===0;
+    const isNew=sessionStart&&s.addedAt&&s.addedAt.toMillis&&s.addedAt.toMillis()>sessionStart;
     tr.innerHTML='<td class="tr-num">'+(list.length-i)+'</td><td><span class="tr-title">'+esc(s.song)+'</span>'+(s.artist?'<span class="tr-artist">'+esc(s.artist)+'</span>':'')+'</td><td><span class="tr-moment">'+esc(s.moment)+'</span></td><td class="tr-by">'+esc(s.by)+(isNew?'&nbsp;<span style="font-size:.6rem;background:var(--olive);color:#fff;padding:.1rem .35rem;border-radius:2px;letter-spacing:.05em;vertical-align:middle;">new</span>':'')+'</td>';
     body.appendChild(tr);
   });
