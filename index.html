@@ -90,14 +90,13 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .profile-activity{font-size:.72rem;color:var(--text-muted);padding:.35rem 1.25rem}
 /* PAGES */
 .page-wrap{padding-top:var(--nav-h)}
-.page{display:block;position:relative;overflow:hidden}
-/* 3-panel photo background behind each section */
-.page-photo-bg{position:absolute;inset:0;display:flex;z-index:0;pointer-events:none;filter:grayscale(100%) contrast(1.06) brightness(.72)}
-.page-photo-bg>div{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
-.page-photo-bg>div>img{width:100%;flex:none;height:calc(100vh - var(--nav-h));object-fit:cover;display:block}
-.page .pf{display:none}
+.page{display:none;position:relative;overflow:hidden}
+.page.active{display:block}
+/* Tiled photo background behind each non-home section */
+.page-photo-bg{position:fixed;inset:0;z-index:-1;pointer-events:none;display:flex;flex-wrap:wrap;align-content:flex-start;filter:grayscale(100%) contrast(1.06) brightness(.6)}
+.page-photo-bg>img{width:33.333%;height:260px;object-fit:cover;flex:none}
 /* Content sections float as cards over the photo bg */
-.page:not(#page-home){padding:5rem 2rem}
+.page:not(#page-home){padding:5rem 2rem;min-height:calc(100vh - var(--nav-h))}
 .ps{padding:5rem 3rem 4rem;position:relative;z-index:1;max-width:860px;margin:0 auto;background:var(--cream);box-shadow:0 8px 60px rgba(0,0,0,.28)}
 .ps.alt{background:var(--warm-white)}
 .ps.mid{background:var(--cream-dark)}
@@ -1123,47 +1122,40 @@ function setNavActive(page){
   document.querySelectorAll('[data-submenu]').forEach(b=>b.classList.toggle('active',b.dataset.submenu===page));
 }
 function navigate(page){
+  document.querySelectorAll('.page-wrap > .page').forEach(p=>p.classList.remove('active'));
   const el=document.getElementById('page-'+page);
-  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
+  if(el){el.classList.add('active');window.scrollTo(0,0);}
   setNavActive(page);
   closePd();
   if(page==='photos')loadPhotoForm();
+  updatePageBg(page);
 }
 function handlePhotosClick(){document.getElementById('photosDd').classList.toggle('open');}
 
-// Scroll-spy: update nav as sections scroll into view
-(function(){
-  const pages=document.querySelectorAll('.page[id^="page-"]');
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){setNavActive(e.target.id.replace('page-',''));}});
-  },{rootMargin:'-40% 0px -40% 0px',threshold:0});
-  pages.forEach(p=>obs.observe(p));
-})();
-
-// Inject 3-panel B&W photo backgrounds inside each section (except home which has its own hero)
-(function(){
-  const photos=[
-    'photos/hero_festival.jpeg','photos/hero_tropical.jpeg','photos/fun_hiking.jpeg',
-    'photos/hero_oktoberfest.jpeg','photos/fun_snorkelling.jpeg','photos/hero_dressed.jpeg',
-    'photos/photobooth_strip.jpeg','photos/hero_milan.jpeg'
-  ];
-  function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-  const pool=shuffle(photos);
-  let pi=0;
-  document.querySelectorAll('.page-wrap > .page').forEach(page=>{
-    if(page.id==='page-home')return;
-    const bg=document.createElement('div');
-    bg.className='page-photo-bg';
-    for(let i=0;i<3;i++){
-      const panel=document.createElement('div');
-      const src=pool[(pi+i)%pool.length];
-      for(let r=0;r<6;r++){const img=document.createElement('img');img.src=src;img.alt='';panel.appendChild(img);}
-      bg.appendChild(panel);
-    }
-    pi=(pi+3)%pool.length;
-    page.prepend(bg);
-  });
-})();
+// Tiled B&W photo background (fixed, swapped per page)
+const bgPhotos=[
+  'photos/hero_festival.jpeg','photos/hero_tropical.jpeg','photos/fun_hiking.jpeg',
+  'photos/hero_oktoberfest.jpeg','photos/fun_snorkelling.jpeg','photos/hero_dressed.jpeg',
+  'photos/photobooth_strip.jpeg','photos/hero_milan.jpeg'
+];
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const bgDiv=document.createElement('div');bgDiv.className='page-photo-bg';bgDiv.style.display='none';document.body.appendChild(bgDiv);
+const bgPools={};
+function updatePageBg(page){
+  if(page==='home'){bgDiv.style.display='none';return;}
+  bgDiv.style.display='flex';
+  if(!bgPools[page]){bgPools[page]=shuffle([...bgPhotos]);}
+  const pool=bgPools[page];
+  bgDiv.innerHTML='';
+  // enough tiles to fill viewport: ~3 cols × rows needed
+  const rows=Math.ceil((window.innerHeight)/260)+1;
+  const count=3*rows;
+  for(let i=0;i<count;i++){
+    const img=document.createElement('img');
+    img.src=pool[i%pool.length];img.alt='';
+    bgDiv.appendChild(img);
+  }
+}
 function closePd(){document.getElementById('photosDd')?.classList.remove('open')}
 document.addEventListener('click',e=>{const dd=document.getElementById('photosDd');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
