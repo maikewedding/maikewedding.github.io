@@ -93,7 +93,9 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .page{display:block;position:relative;overflow:hidden}
 /* 3-panel photo background behind each section */
 .page-photo-bg{position:absolute;inset:0;display:flex;z-index:0;pointer-events:none;filter:grayscale(100%) contrast(1.06) brightness(.72)}
-.page-photo-bg>div{flex:1;background-size:cover;background-position:center}
+.page-photo-bg>div{flex:1;overflow:hidden;position:relative}
+.page-photo-bg>div>img{width:100%;height:100%;object-fit:cover;display:block}
+.page .pf{display:none}
 /* Content sections float as cards over the photo bg */
 .page:not(#page-home){padding:5rem 2rem}
 .ps{padding:5rem 3rem 4rem;position:relative;z-index:1;max-width:860px;margin:0 auto;background:var(--cream);box-shadow:0 8px 60px rgba(0,0,0,.28)}
@@ -1154,7 +1156,10 @@ function handlePhotosClick(){document.getElementById('photosDd').classList.toggl
     bg.className='page-photo-bg';
     for(let i=0;i<3;i++){
       const panel=document.createElement('div');
-      panel.style.backgroundImage=`url(${pool[(pi+i)%pool.length]})`;
+      const img=document.createElement('img');
+      img.src=pool[(pi+i)%pool.length];
+      img.alt='';
+      panel.appendChild(img);
       bg.appendChild(panel);
     }
     pi=(pi+3)%pool.length;
