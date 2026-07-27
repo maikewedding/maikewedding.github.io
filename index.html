@@ -89,10 +89,11 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .profile-dd-item.switch{border-top:1px solid var(--olive-pale);margin-top:.25rem;color:var(--terracotta);font-size:.72rem}
 .profile-activity{font-size:.72rem;color:var(--text-muted);padding:.35rem 1.25rem}
 /* PAGES */
-.page-wrap{padding-top:var(--nav-h);min-height:100vh}
-.page{display:none;animation:fadeIn .35s ease}
-.page.active{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.page-wrap{padding-top:var(--nav-h)}
+.page{display:block}
+.ps{box-shadow:0 2px 30px rgba(0,0,0,.07)}
+/* PHOTO DIVIDERS */
+.photo-divider{width:100%;height:60vh;background-size:cover;background-position:center;filter:grayscale(100%) contrast(1.08) brightness(.78)}
 .ps{padding:5rem 2rem 4rem}
 .ps.alt{background:var(--warm-white)}
 .ps.mid{background:var(--cream-dark)}
@@ -445,15 +446,15 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
   <div class="hero">
     <!-- Left panel -->
     <div class="hero-panel">
-      <img src="photos/hero_milan.jpeg" class="hero-photo hero-side-photo" alt="">
+      <img src="photos/hero_dressed.jpeg" class="hero-photo hero-side-photo" alt="">
     </div>
     <!-- Centre panel with overlay -->
     <div class="hero-panel hero-center-panel">
-      <img src="photos/hero_dressed.jpeg" class="hero-photo" alt="">
+      <img src="photos/hero_milan.jpeg" class="hero-photo" alt="">
       <div class="hero-overlay">
         <p class="hero-ey" id="heroEyebrow">You're invited</p>
         <h1 class="hero-n">
-          <span class="hero-name-serif">Tommy</span>
+          <span class="hero-name-script" style="font-weight:700;">Tommy</span>
           <span class="hero-amp">&amp;</span>
           <span class="hero-name-script">Maike</span>
         </h1>
@@ -474,15 +475,6 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
     <!-- Right panel -->
     <div class="hero-panel">
       <img src="photos/hero_oktoberfest.jpeg" class="hero-photo hero-side-photo" alt="">
-    </div>
-  </div>
-
-  <!-- Photobooth strip section -->
-  <div class="photobooth-section">
-    <img src="photos/photobooth_strip.jpeg" class="photobooth-img" alt="Tommy &amp; Maike engagement photobooth">
-    <div class="photobooth-text">
-      <span class="photobooth-caption">counting down to &ldquo;I do&rdquo;</span>
-      <span class="photobooth-subcap">15th May 2027 &middot; Thames Rowing Club &middot; Putney</span>
     </div>
   </div>
 
@@ -1119,15 +1111,48 @@ function switchGuest(){
 }
 
 const photoPages=['photohub','photos','gallery'];
-function navigate(page){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
+function setNavActive(page){
   document.querySelectorAll('[data-page]').forEach(b=>{const dp=b.dataset.page;b.classList.toggle('active',dp==='photohub'?photoPages.includes(page):dp===page);});
   document.querySelectorAll('[data-mob]').forEach(b=>b.classList.toggle('active',b.dataset.mob===page));
   document.querySelectorAll('[data-submenu]').forEach(b=>b.classList.toggle('active',b.dataset.submenu===page));
-  closePd();window.scrollTo(0,0);if(page==='photos')loadPhotoForm();if(page==='registry')renderRegistry();
 }
-function handlePhotosClick(){const cur=document.querySelector('.page.active')?.id?.replace('page-','');if(photoPages.includes(cur))document.getElementById('photosDd').classList.toggle('open');else navigate('photohub');}
+function navigate(page){
+  const el=document.getElementById('page-'+page);
+  if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
+  setNavActive(page);
+  closePd();
+  if(page==='photos')loadPhotoForm();
+}
+function handlePhotosClick(){document.getElementById('photosDd').classList.toggle('open');}
+
+// Scroll-spy: update nav as sections scroll into view
+(function(){
+  const pages=document.querySelectorAll('.page[id^="page-"]');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){setNavActive(e.target.id.replace('page-',''));}});
+  },{rootMargin:'-40% 0px -40% 0px',threshold:0});
+  pages.forEach(p=>obs.observe(p));
+})();
+
+// Inject randomised B&W photo dividers between every page section
+(function(){
+  const photos=[
+    'photos/hero_festival.jpeg','photos/hero_tropical.jpeg','photos/fun_hiking.jpeg',
+    'photos/hero_oktoberfest.jpeg','photos/fun_snorkelling.jpeg','photos/hero_dressed.jpeg',
+    'photos/photobooth_strip.jpeg'
+  ];
+  // shuffle
+  for(let i=photos.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[photos[i],photos[j]]=[photos[j],photos[i]];}
+  const pages=[...document.querySelectorAll('.page-wrap > .page')];
+  pages.forEach((page,i)=>{
+    if(i<pages.length-1){
+      const div=document.createElement('div');
+      div.className='photo-divider';
+      div.style.backgroundImage=`url(${photos[i%photos.length]})`;
+      page.after(div);
+    }
+  });
+})();
 function closePd(){document.getElementById('photosDd')?.classList.remove('open')}
 document.addEventListener('click',e=>{const dd=document.getElementById('photosDd');if(dd&&!dd.contains(e.target))dd.classList.remove('open');});
 function toggleMob(){document.getElementById('mobMenu').classList.toggle('open')}
@@ -1473,7 +1498,7 @@ function initRegistryListener(){
   REGISTRY_ITEMS.forEach(item=>{
     const unsub=onSnapshot(query(collection(window._db,'registry_'+item.id),orderBy('ts','asc')),snap=>{
       regContribs[item.id]=snap.docs.map(d=>({...d.data(),docId:d.id}));
-      if(document.getElementById('page-registry').classList.contains('active'))renderRegistry();
+      renderRegistry();
     });
     regUnsubscribes.push(unsub);
   });
