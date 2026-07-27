@@ -326,6 +326,20 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
   .inv-card{padding:2.5rem 1.5rem}
   .pl-table th:nth-child(3),.pl-table td:nth-child(3){display:none}
   .ps{padding:3.5rem 1.25rem 3rem}
+  /* Hero: hide side panels, centre fills full width */
+  .hero-panel:not(.hero-center-panel){display:none}
+  .hero-center-panel{flex:1}
+  .hero-name-script{font-size:clamp(2.8rem,14vw,4.5rem)}
+  .hero-amp{font-size:clamp(1rem,5vw,1.4rem)}
+  .hero-date{font-size:clamp(1rem,5vw,1.4rem)}
+  .hero-venue{font-size:.6rem}
+  .cd{gap:.75rem;max-width:280px}
+  .cd-num{font-size:2rem}
+  .hero-btn{padding:.7rem 2rem;font-size:.62rem}
+  /* Non-home pages: reduce padding */
+  .page:not(#page-home){padding:3rem 1rem}
+  /* Tiled bg: 2 columns on mobile */
+  .page-photo-bg>img{width:50%}
 }
 /* FLOATING PHOTOS */
 .float-photo{position:absolute;z-index:4;pointer-events:none;opacity:0;transition:opacity .6s ease;}
