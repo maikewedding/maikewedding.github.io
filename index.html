@@ -154,6 +154,10 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .tl-time{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.3rem}
 .tl-event{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:500;color:var(--olive);margin-bottom:.4rem}
 .tl-desc{font-size:.88rem;color:var(--text-muted);line-height:1.7;font-weight:300}
+.tl-note{background:var(--warm-white);border:1px solid var(--olive-pale);border-radius:14px 14px 14px 3px;padding:.85rem 1.1rem;margin-top:1rem;position:relative;font-size:.85rem;color:var(--text-mid);line-height:1.6;max-width:480px;box-shadow:0 2px 8px rgba(44,36,24,.06)}
+.tl-note::before{content:"";position:absolute;top:-9px;left:20px;width:16px;height:16px;background:var(--warm-white);border-left:1px solid var(--olive-pale);border-top:1px solid var(--olive-pale);transform:rotate(45deg)}
+.tl-note-icon{margin-right:.35rem}
+.tl-note-sign{display:block;margin-top:.5rem;font-family:"Dancing Script",cursive;font-size:1.15rem;color:var(--terracotta);text-align:right}
 /* DETAILS */
 .dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
 .dc{background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:2rem 1.75rem}
@@ -505,19 +509,25 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 <div class="page" id="page-itinerary">
   <div class="ps">
     <div class="si">
-      <div class="sh"><p class="se">The Day</p><h2 class="st">Itinerary</h2><p class="ss">Saturday 15th May 2027, Ceremony guests from 11:30 am &middot; Carriages at midnight</p><div class="orn"><span>&#9829;</span></div></div>
+      <div class="sh"><p class="se">The Day</p><h2 class="st">Itinerary</h2><p class="ss">Saturday 15th May 2027, Ceremony guests from 11:15 am &middot; Carriages at midnight</p><div class="orn"><span>&#9829;</span></div></div>
       <div class="tl">
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:15 am &ndash; 11:45 pm</p><h3 class="tl-event">Ceremony Guests Arrive</h3><p class="tl-desc">Please wait outside until ushered in by one of our team.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:45 pm</p><h3 class="tl-event">Guests Seated</h3><p class="tl-desc">Everyone takes their seats ahead of the ceremony.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 pm &ndash; 12:30 pm</p><h3 class="tl-event">Ceremony</h3><p class="tl-desc">The bit we've all been waiting for, we do the thing!</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:15 am &ndash; 11:45 am</p><h3 class="tl-event">Ceremony Guests Arrive</h3><p class="tl-desc">Please wait outside until ushered in by one of our team.</p>
+          <div class="tl-note"><span class="tl-note-icon">&#128172;</span>A PSA from the bride: I'm German, which means "on time" is basically already late in my book. Please be in your seats by 11:45 &mdash; I promise to arrive perfectly, precisely on time (Tommy, on the other hand, we make no such guarantees for).<span class="tl-note-sign">&mdash; Maike &#128536;</span></div>
+        </div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:45 am</p><h3 class="tl-event">Guests Seated</h3><p class="tl-desc">Everyone takes their seats ahead of the ceremony.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 pm &ndash; 12:30 pm</p><h3 class="tl-event">Ceremony</h3><p class="tl-desc">The bit we've all been waiting for, we do the thing!</p>
+          <div class="tl-note"><span class="tl-note-icon">&#128241;</span>One small favour: pop your phone on silent and pop it away for these 30 minutes. We'd love to walk up the aisle to smiling faces, not screens! We've got a wonderful photographer capturing every moment, so please, no photos or videos during the ceremony &mdash; just be there with us.<span class="tl-note-sign">&mdash; Tommy &amp; Maike &#128153;</span></div>
+        </div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:00 pm</p><h3 class="tl-event">Post-Ceremony Drinks</h3><p class="tl-desc">You've earned it, grab a drink and let the celebrations begin!</p></div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:30 pm</p><h3 class="tl-event">Balcony Walkout &amp; Group Photos</h3><p class="tl-desc">Gather on the balcony for the big walkout moment and group photos.</p></div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">2:00 pm</p><h3 class="tl-event">Day Guests Arrive</h3><p class="tl-desc">The party grows! Welcome to even more of our favourite people.</p></div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">3:00 pm</p><h3 class="tl-event">Food Starts</h3><p class="tl-desc">Pizza, pizza, and more pizza (with Italian nibbles to keep things going).</p><div style="display:flex;gap:.75rem;align-items:center;margin-top:.85rem;"><img src="photos/maike_pizza.png" alt="" style="height:80px;width:auto;opacity:.9;"><img src="photos/tommy_pizza.png" alt="" style="height:80px;width:auto;opacity:.9;"></div></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">5:30 pm</p><h3 class="tl-event">Speeches</h3><p class="tl-desc">Raise a glass, time to embarrass us (lovingly, of course).</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">5:30 pm</p><h3 class="tl-event">Speeches</h3><p class="tl-desc">Raise a glass, time to embarrass us (lovingly, of course).</p>
+          <div class="tl-note"><span class="tl-note-icon">&#128077;</span>Fair warning to our speech-givers: you've got 5 minutes. Go over, and the room is fully authorised (nay, encouraged) to start booing &mdash; looking at you especially, Danny.<span class="tl-note-sign">&mdash; Tommy &amp; Maike &#128514;</span></div>
+        </div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:00 pm</p><h3 class="tl-event">Evening Guests Arrive</h3><p class="tl-desc">More people, more fun. The evening crew has arrived, let's go.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:30 pm</p><h3 class="tl-event">Evening Platters</h3><p class="tl-desc">Fuel up, there's a lot of dancing ahead.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">8:30 pm</p><h3 class="tl-event">Cake Time</h3><p class="tl-desc">It's cake o'clock. Trust us, you don't want to miss this one.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:00 pm</p><h3 class="tl-event">Cake Time</h3><p class="tl-desc">It's cake o'clock. Trust us, you don't want to miss this one.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">8:30 pm</p><h3 class="tl-event">Evening Platters</h3><p class="tl-desc">Fuel up, there's a lot of dancing ahead.</p></div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 am</p><h3 class="tl-event">Carriages</h3><p class="tl-desc">All good things must end, but what a night. Thank you for being part of it. We love you all.</p></div>
       </div>
     </div>
@@ -1010,7 +1020,7 @@ const GUESTS=[
   {name:'Fulian',type:'day',plusOne:true},
 ];
 const INVITE_INFO={
-  ceremony:{label:'Ceremony Invitation',timeNote:'Arrive from 11:15 am - Please wait outside to be ushered in - Carriages at midnight',heroPill:'Ceremony guest - Arrive from 11:15 am',pillClass:'ceremony',rsvpNote:"You're invited as a Ceremony guest - arriving from 11:30 am.",rsvpColor:'rgba(155,58,40,.08)',rsvpBorder:'rgba(155,58,40,.25)',rsvpTextColor:'var(--terracotta)'},
+  ceremony:{label:'Ceremony Invitation',timeNote:'Arrive from 11:15 am - Please wait outside to be ushered in - Carriages at midnight',heroPill:'Ceremony guest - Arrive from 11:15 am',pillClass:'ceremony',rsvpNote:"You're invited as a Ceremony guest - arriving from 11:15 am.",rsvpColor:'rgba(155,58,40,.08)',rsvpBorder:'rgba(155,58,40,.25)',rsvpTextColor:'var(--terracotta)'},
   day:{label:'Day Invitation',timeNote:'Arrive from 2:00 pm - Celebrations from afternoon into the evening - Carriages at midnight',heroPill:'Day guest - Arrive from 2:00 pm',pillClass:'day',rsvpNote:"You're invited as a Day guest - joining us from 2:00 pm.",rsvpColor:'rgba(125,142,114,.08)',rsvpBorder:'rgba(125,142,114,.2)',rsvpTextColor:'var(--olive)'},
   evening:{label:'Evening Invitation',timeNote:'Arrive from 7:00 pm - Evening reception, dancing & celebrations - Carriages at midnight',heroPill:'Evening guest - Arrive from 7:00 pm',pillClass:'evening',rsvpNote:"You're invited as an Evening guest - joining us from 7:00 pm.",rsvpColor:'rgba(196,154,60,.1)',rsvpBorder:'rgba(196,154,60,.3)',rsvpTextColor:'#8A6A1A'},
 };
