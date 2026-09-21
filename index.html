@@ -154,10 +154,6 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .tl-time{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--terracotta);margin-bottom:.3rem}
 .tl-event{font-family:"Cormorant Garamond",serif;font-size:1.5rem;font-weight:500;color:var(--olive);margin-bottom:.4rem}
 .tl-desc{font-size:.88rem;color:var(--text-muted);line-height:1.7;font-weight:300}
-.tl-note{background:var(--warm-white);border:1px solid var(--olive-pale);border-radius:14px 14px 14px 3px;padding:.85rem 1.1rem;margin-top:1rem;position:relative;font-size:.85rem;color:var(--text-mid);line-height:1.6;max-width:480px;box-shadow:0 2px 8px rgba(44,36,24,.06)}
-.tl-note::before{content:"";position:absolute;top:-9px;left:20px;width:16px;height:16px;background:var(--warm-white);border-left:1px solid var(--olive-pale);border-top:1px solid var(--olive-pale);transform:rotate(45deg)}
-.tl-note-icon{margin-right:.35rem}
-.tl-note-sign{display:block;margin-top:.5rem;font-family:"Dancing Script",cursive;font-size:1.15rem;color:var(--terracotta);text-align:right}
 /* DETAILS */
 .dg{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
 .dc{background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:2rem 1.75rem}
@@ -176,6 +172,10 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .inv-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none}
 .inv-card{background:var(--warm-white);border:1px solid rgba(212,224,200,.35);padding:3.5rem 3rem;max-width:540px;width:100%;text-align:center;position:relative}
 .inv-card::before{content:"";position:absolute;inset:8px;border:1px solid var(--olive-pale);pointer-events:none}
+.inv-images{display:flex;gap:1.25rem;justify-content:center;margin-top:2rem;max-width:700px;width:100%}
+.inv-images img{width:calc(50% - .625rem);max-width:320px;box-shadow:0 8px 32px rgba(44,36,24,.18);display:block}
+.inv-guest-name{font-family:"Dancing Script",cursive;font-size:clamp(1.6rem,5vw,2.4rem);color:var(--cream);text-align:center;margin-bottom:1.25rem;display:none}
+@media(max-width:600px){.inv-images{flex-direction:column;align-items:center}.inv-images img{width:100%;max-width:340px}}
 .inv-greet{font-family:"Cormorant Garamond",serif;font-size:1rem;font-style:italic;color:var(--text-muted);margin-bottom:1.5rem}
 .inv-names{font-family:"Cormorant Garamond",serif;font-size:clamp(2.8rem,7vw,3.6rem);font-weight:300;color:var(--olive);line-height:1}
 .inv-names .amp{font-style:italic;color:var(--terracotta);font-size:.7em;display:block;margin:.3rem 0}
@@ -474,7 +474,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
     </div>
     <!-- Centre panel with overlay -->
     <div class="hero-panel hero-center-panel">
-      <img src="photos/hero_milan.jpeg" class="hero-photo" alt="">
+      <img src="photos/hero_oktoberfest.jpeg" class="hero-photo" alt="">
       <div class="hero-overlay">
         <p class="hero-ey" id="heroEyebrow">You're invited</p>
         <h1 class="hero-n">
@@ -498,7 +498,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
     </div>
     <!-- Right panel -->
     <div class="hero-panel">
-      <img src="photos/hero_oktoberfest.jpeg" class="hero-photo hero-side-photo" alt="">
+      <img src="photos/hero_milan.jpeg" class="hero-photo hero-side-photo" alt="">
     </div>
   </div>
 
@@ -509,26 +509,18 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 <div class="page" id="page-itinerary">
   <div class="ps">
     <div class="si">
-      <div class="sh"><p class="se">The Day</p><h2 class="st">Itinerary</h2><p class="ss">Saturday 15th May 2027, Ceremony guests from 11:15 am &middot; Carriages at midnight</p><div class="orn"><span>&#9829;</span></div></div>
+      <div class="sh"><p class="se">The Day</p><h2 class="st">Itinerary</h2><p class="ss">Saturday 15th May 2027, Ceremony guests by 11:30 am &middot; Carriages at midnight</p><div class="orn"><span>&#9829;</span></div></div>
       <div class="tl">
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:15 am &ndash; 11:45 am</p><h3 class="tl-event">Ceremony Guests Arrive</h3><p class="tl-desc">Please wait outside until ushered in by one of our team.</p>
-          <div class="tl-note"><span class="tl-note-icon">&#128172;</span>A PSA from the bride: I'm German, which means "on time" is basically already late in my book. Please be in your seats by 11:45, I promise to arrive perfectly, precisely on time (Tommy, on the other hand, we make no such guarantees for).<span class="tl-note-sign">&mdash; Maike &#128536;</span></div>
-        </div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">11:45 am</p><h3 class="tl-event">Guests Seated</h3><p class="tl-desc">Everyone takes their seats ahead of the ceremony.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 pm &ndash; 12:30 pm</p><h3 class="tl-event">Ceremony</h3><p class="tl-desc">The bit we've all been waiting for, we do the thing!</p>
-          <div class="tl-note"><span class="tl-note-icon">&#128241;</span>One small favour: put your phone on silent and pop it away for these 30 minutes. We'd love to walk up the aisle to smiling faces, not screens! We've got a wonderful photographer capturing every moment, so please, no photos or videos during the ceremony &mdash; just be there with us.<span class="tl-note-sign">&mdash; Tommy &amp; Maike &#128153;</span></div>
-        </div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:00 pm</p><h3 class="tl-event">Post-Ceremony Drinks</h3><p class="tl-desc">You've earned it, grab a drink and let the celebrations begin!</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:30 pm</p><h3 class="tl-event">Balcony Walkout &amp; Group Photos</h3><p class="tl-desc">Gather on the balcony for the big walkout moment and group photos.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">2:00 pm</p><h3 class="tl-event">Day Guests Arrive</h3><p class="tl-desc">The party grows! Welcome to even more of our favourite people.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">By 11:30 am</p><h3 class="tl-event">Ceremony Guests Arrive</h3><p class="tl-desc">Please arrive by 11:30 am and wait outside to be ushered in by one of our team.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 pm</p><h3 class="tl-event">Guests Seated</h3><p class="tl-desc">Everyone takes their seats ahead of the ceremony.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:30 pm &ndash; 1:15 pm</p><h3 class="tl-event">Ceremony</h3><p class="tl-desc">The bit we've all been waiting for, we do the thing!</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">1:15 pm</p><h3 class="tl-event">Photos, Celebrations &amp; the Fun Begins</h3><p class="tl-desc">Grab a drink, gather on the balcony for the big walkout moment, group photographs, and let the celebrations begin!</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">2:00 pm</p><h3 class="tl-event">Day Guests Arrive</h3><p class="tl-desc">The party grows! Welcome to the rest of our favourite people.</p></div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">3:00 pm</p><h3 class="tl-event">Food Starts</h3><p class="tl-desc">Pizza, pizza, and more pizza (with Italian nibbles to keep things going).</p><div style="display:flex;gap:.75rem;align-items:center;margin-top:.85rem;"><img src="photos/maike_pizza.png" alt="" style="height:80px;width:auto;opacity:.9;"><img src="photos/tommy_pizza.png" alt="" style="height:80px;width:auto;opacity:.9;"></div></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">5:30 pm</p><h3 class="tl-event">Speeches</h3><p class="tl-desc">Raise a glass, time to embarrass us (lovingly, of course).</p>
-          <div class="tl-note"><span class="tl-note-icon">&#128077;</span>Fair warning to our speech-givers: you've got 5 minutes. Go over, and the room is fully authorised (nay, encouraged) to start booing &mdash; looking at you especially, Danny.<span class="tl-note-sign">&mdash; Tommy &amp; Maike &#128514;</span></div>
-        </div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">5:30 pm</p><h3 class="tl-event">Speeches</h3><p class="tl-desc">Raise a glass, time to embarrass us (lovingly, of course).</p></div>
         <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:00 pm</p><h3 class="tl-event">Evening Guests Arrive</h3><p class="tl-desc">More people, more fun. The evening crew has arrived, let's go.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:00 pm</p><h3 class="tl-event">Cake Time</h3><p class="tl-desc">It's cake o'clock. Trust us, you don't want to miss this one.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">8:30 pm</p><h3 class="tl-event">Evening Platters</h3><p class="tl-desc">Fuel up, there's a lot of dancing ahead.</p></div>
-        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 am</p><h3 class="tl-event">Carriages</h3><p class="tl-desc">All good things must end, but what a night. Thank you for being part of it. We love you all.</p></div>
+        <div class="tl-item"><div class="tl-dot"></div><p class="tl-time">7:30 pm</p><h3 class="tl-event">Evening Platters</h3><p class="tl-desc">Fuel up, there's a lot of dancing ahead.</p></div>
+<div class="tl-item"><div class="tl-dot"></div><p class="tl-time">12:00 am</p><h3 class="tl-event">Carriages</h3><p class="tl-desc">All good things must end, but what a night. Thank you for being part of it. We love you all.</p></div>
       </div>
     </div>
   </div>
@@ -542,7 +534,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
       <div class="sh"><p class="se">Everything you need</p><h2 class="st">Details</h2><div class="orn"><span>&#9829;</span></div></div>
       <div class="dg">
         <div class="dc"><div class="di">&#128205;</div><h3 class="dh">Venue</h3><p class="dt">Thames Rowing Club<br>Mortlake High Street<br>London SW15 1LB<br><br><a href="https://maps.google.com/?q=Thames+Rowing+Club+Mortlake" target="_blank">Open in Google Maps &rarr;</a></p></div>
-        <div class="dc green"><div class="di">&#128647;</div><h3 class="dh">Getting There</h3><p class="dt">By rail: Barnes station is a 12-min walk (South Western Railway from Waterloo).<br><br>By tube: Putney Bridge station (District Line) is a 20-min walk or short taxi ride.<br><br>By bus: Routes 33, 337 stop nearby.<br><br>By car: No on-site parking only small residential side roads (we recommend Asda Putney car park, 5 min walk).</p><span class="dtag" style="background:rgba(232,200,64,.2);color:var(--lemon);">Pre-book taxis home!</span></div>
+        <div class="dc green"><div class="di">&#128647;</div><h3 class="dh">Getting There</h3><p class="dt">By rail: Barnes station is a 12-min walk (South Western Railway from Waterloo).<br><br>By tube: Putney Bridge station (District Line) is a 20-min walk or short taxi ride.<br><br>By bus: Routes 33, 337 stop nearby.<br><br>By car: Limited parking on site (we recommend Asda Putney car park, 5 min walk).</p><span class="dtag" style="background:rgba(232,200,64,.2);color:var(--lemon);">Pre-book taxis home!</span></div>
         <div class="dc"><div class="di">&#128247;</div><h3 class="dh">Dress Code</h3><p class="dt">No strict dress code here, we just want everyone feeling good and having fun! Think colour, texture, and summer vibes. Linen suits, flowy dresses, bold prints (whatever makes you feel great). Wear what you're comfortable in and come ready to celebrate.<br><br>The only request: please avoid <strong>white</strong> and <strong>sage green</strong>, which are reserved for the bridal party.</p><span class="dtag">No white or sage green please</span></div>
         <div class="dc green"><div class="di">&#127869;</div><h3 class="dh">Dietary Needs</h3><p class="dt">The menu will include options for:<br><br>&#127807; <strong style="color:var(--lemon);">Vegetarian</strong><br>&#129382; <strong style="color:var(--lemon);">Vegan</strong><br>&#127806; <strong style="color:var(--lemon);">Gluten free</strong><br><br>Please let us know of any other requirements when you RSVP.</p></div>
         <div class="dc" style="grid-column:1/-1"><div class="di">&#9998;</div><h3 class="dh">A note about the ceremony</h3><p class="dt">We have chosen to keep our ceremony small and intimate, and if you're joining us as a day or evening guest, we hope you'll understand that this is in no way a reflection of how much you mean to us. The truth is, we have so many wonderful people in our lives that we wanted to make sure that when we say our vows, we are fully present in that moment (just the two of us, taking it all in, without feeling the weight of too many eyes on us).<br><br>We are so grateful to have every single one of you as part of our big day, the celebration would not be the same without you, and we cannot wait to share it with you.<br><br><em>With all our love, Maike &amp; Tommy &#9829;</em></p></div>
@@ -554,8 +546,9 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 
 <!-- INVITATION -->
 <div class="page" id="page-invitation">
-  <div class="inv-wrap">
+  <div class="inv-wrap" style="flex-direction:column;gap:2rem;">
     <div class="inv-pattern"></div>
+    <p id="invGuestHeading" class="inv-guest-name"></p>
     <div class="inv-card">
       <div id="inviteTypeBanner" class="inv-pill" style="display:none;"></div>
       <p class="inv-greet">Together with our families</p>
@@ -568,6 +561,10 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
       <div class="inv-div"><span class="inv-heart">&#9829;</span></div>
       <button class="rsvp-btn" onclick="document.getElementById('rsvpModal').classList.add('active')">RSVP Now</button>
       <p class="rsvp-note">Kindly reply by 1st February 2027</p>
+    </div>
+    <div class="inv-images" id="inviteImages" style="display:none;">
+      <img id="inviteImg1" src="" alt="Your invitation">
+      <img id="inviteImg2" src="" alt="Your invitation">
     </div>
   </div>
 </div>
@@ -642,7 +639,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
       <div style="background:rgba(212,224,200,.15);border:1px solid var(--olive-pale);padding:1.5rem 1.75rem;margin-bottom:2.5rem;text-align:center;max-width:620px;margin-left:auto;margin-right:auto;">
         <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text-dark);margin-bottom:.75rem;font-style:italic;">A note from us</p>
         <p style="font-size:.88rem;color:var(--text-muted);line-height:1.8;max-width:540px;margin:0 auto .75rem;">Having you there on the day is more than enough, and please know we do not expect a single thing. We have shared a wishlist and a honeymoon fund purely because people have asked, and because we thought it was nicer than a generic list. But truly, your presence is the greatest gift of all.</p>
-        <p style="font-size:.88rem;color:var(--text-muted);line-height:1.8;max-width:540px;margin:0 auto;">If you would like to contribute, anything at all will be received with so much love and gratitude, but we mean it when we say every single one of you being there is what makes the day. &#9829;</p>
+        <p style="font-size:.88rem;color:var(--text-muted);line-height:1.8;max-width:540px;margin:0 auto;">If you would like to contribute, anything at all will be received with so much love and gratitude. The ottoman bed frame is top of the list (Maike has waited long enough), but we mean it when we say every single one of you being there is what makes the day. &#9829;</p>
         <p style="margin-top:1rem;font-size:.8rem;color:var(--text-muted);font-style:italic;">With all our love, Maike &amp; Tommy</p>
       </div>
       <div class="gifts-grid">
@@ -1020,7 +1017,7 @@ const GUESTS=[
   {name:'Fulian',type:'day',plusOne:true},
 ];
 const INVITE_INFO={
-  ceremony:{label:'Ceremony Invitation',timeNote:'Arrive from 11:15 am - Please wait outside to be ushered in - Carriages at midnight',heroPill:'Ceremony guest - Arrive from 11:15 am',pillClass:'ceremony',rsvpNote:"You're invited as a Ceremony guest - arriving from 11:15 am.",rsvpColor:'rgba(155,58,40,.08)',rsvpBorder:'rgba(155,58,40,.25)',rsvpTextColor:'var(--terracotta)'},
+  ceremony:{label:'Ceremony Invitation',timeNote:'Arrive by 11:30 am - Please wait outside to be ushered in - Carriages at midnight',heroPill:'Ceremony guest - Arrive by 11:30 am',pillClass:'ceremony',rsvpNote:"You're invited as a Ceremony guest - please arrive by 11:30 am.",rsvpColor:'rgba(155,58,40,.08)',rsvpBorder:'rgba(155,58,40,.25)',rsvpTextColor:'var(--terracotta)'},
   day:{label:'Day Invitation',timeNote:'Arrive from 2:00 pm - Celebrations from afternoon into the evening - Carriages at midnight',heroPill:'Day guest - Arrive from 2:00 pm',pillClass:'day',rsvpNote:"You're invited as a Day guest - joining us from 2:00 pm.",rsvpColor:'rgba(125,142,114,.08)',rsvpBorder:'rgba(125,142,114,.2)',rsvpTextColor:'var(--olive)'},
   evening:{label:'Evening Invitation',timeNote:'Arrive from 7:00 pm - Evening reception, dancing & celebrations - Carriages at midnight',heroPill:'Evening guest - Arrive from 7:00 pm',pillClass:'evening',rsvpNote:"You're invited as an Evening guest - joining us from 7:00 pm.",rsvpColor:'rgba(196,154,60,.1)',rsvpBorder:'rgba(196,154,60,.3)',rsvpTextColor:'#8A6A1A'},
 };
@@ -1089,6 +1086,13 @@ function applyPersonalisation(guest){
   document.getElementById('inviteGuestName').textContent=guest.name;
   document.getElementById('inviteTimeNote').textContent=info.timeNote;
   const tb=document.getElementById('inviteTypeBanner');tb.textContent=info.label;tb.className='inv-pill '+info.pillClass;tb.style.display='block';
+  // Show invite images and guest name heading
+  const gh=document.getElementById('invGuestHeading');gh.textContent=guest.name;gh.style.display='block';
+  const invImgs=document.getElementById('inviteImages');
+  const imgBase={'ceremony':'invites/ceremony_guest','day':'invites/day_guest','evening':'invites/evening_guest'}[guest.type]||'invites/day_guest';
+  document.getElementById('inviteImg1').src=imgBase+'_1.png';
+  document.getElementById('inviteImg2').src=imgBase+'_2.png';
+  invImgs.style.display='flex';
   const rn=document.getElementById('rsvpInviteNote');rn.textContent=info.rsvpNote;rn.style.display='block';
   rn.style.background=info.rsvpColor;rn.style.border='1px solid '+info.rsvpBorder;rn.style.color=info.rsvpTextColor;
   document.getElementById('rsvpName').value=guest.name;
@@ -1129,6 +1133,7 @@ function switchGuest(){
   document.getElementById('profileBtn').classList.remove('visible');document.getElementById('profileDd').classList.remove('open');document.getElementById('profileActivity').innerHTML='';
   document.getElementById('heroEyebrow').textContent="You're invited";document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
   document.getElementById('inviteGuestName').textContent='';document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
+  document.getElementById('invGuestHeading').style.display='none';document.getElementById('inviteImages').style.display='none';
   document.getElementById('rsvpInviteNote').style.display='none';document.getElementById('rsvpName').value='';
   document.getElementById('rsvpForm').style.display='';document.getElementById('rsvpSuccess').classList.remove('active');document.getElementById('rsvpModal').classList.remove('active');
   document.getElementById('rsvpAttSec').style.display='none';document.getElementById('rsvpPlusSec').style.display='none';document.getElementById('rsvpAddSec').style.display='none';
