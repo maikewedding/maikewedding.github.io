@@ -317,6 +317,37 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .pf-date{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.4)}
 /* TOAST */
 .toast{position:fixed;bottom:2rem;right:2rem;background:var(--olive);color:white;padding:.85rem 1.5rem;font-size:.82rem;z-index:600;opacity:0;transform:translateY(8px);transition:.3s;pointer-events:none}
+/* TUTORIAL OFFER MODAL */
+#tutorialOffer{position:fixed;inset:0;z-index:990;background:var(--olive);display:none;align-items:center;justify-content:center;padding:2rem}
+#tutorialOffer.active{display:flex}
+.tof-card{background:var(--warm-white);max-width:480px;width:100%;padding:3rem 2.5rem;text-align:center;box-shadow:0 16px 60px rgba(44,36,24,.3)}
+.tof-icon{font-size:2.4rem;display:block;margin-bottom:1.25rem}
+.tof-title{font-family:"Cormorant Garamond",serif;font-size:2rem;font-weight:400;color:var(--olive);margin-bottom:.75rem}
+.tof-body{font-size:.88rem;color:var(--text-muted);line-height:1.75;margin-bottom:2rem}
+.tof-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.tof-btn-yes{padding:.8rem 2rem;background:var(--olive);color:white;border:none;cursor:pointer;font-family:"Jost",sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;transition:background .2s}
+.tof-btn-yes:hover{background:#5a7050}
+.tof-btn-no{padding:.8rem 2rem;background:transparent;color:var(--text-mid);border:1px solid var(--olive-pale);cursor:pointer;font-family:"Jost",sans-serif;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;transition:.2s}
+.tof-btn-no:hover{border-color:var(--olive);color:var(--olive)}
+/* TUTORIAL TOOLTIPS */
+.tt{position:fixed;z-index:980;max-width:300px;width:calc(100vw - 2rem);background:var(--olive);color:var(--cream);padding:1.1rem 1.25rem 1rem;box-shadow:0 8px 32px rgba(44,36,24,.35);display:none;pointer-events:auto}
+.tt.active{display:block}
+.tt::before{content:'';position:absolute;width:0;height:0}
+.tt.arrow-top::before{border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:9px solid var(--olive);top:-9px;left:50%;transform:translateX(-50%)}
+.tt.arrow-bottom::before{border-left:9px solid transparent;border-right:9px solid transparent;border-top:9px solid var(--olive);bottom:-9px;left:50%;transform:translateX(-50%)}
+.tt.arrow-left::before{border-top:9px solid transparent;border-bottom:9px solid transparent;border-right:9px solid var(--olive);left:-9px;top:1.2rem}
+.tt-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.55);margin-bottom:.35rem}
+.tt-text{font-size:.82rem;line-height:1.6}
+.tt-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.85rem;gap:.5rem}
+.tt-next{background:var(--terracotta);color:white;border:none;cursor:pointer;font-family:"Jost",sans-serif;font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;padding:.4rem .9rem;transition:background .2s}
+.tt-next:hover{background:#7A2C1A}
+.tt-skip{background:none;border:none;cursor:pointer;font-size:.68rem;color:rgba(245,240,232,.55);font-family:"Jost",sans-serif;letter-spacing:.1em;text-transform:uppercase;padding:.2rem 0}
+.tt-skip:hover{color:var(--cream)}
+.tt-count{font-size:.65rem;color:rgba(245,240,232,.45);white-space:nowrap}
+/* Highlight pulse for tutorial targets */
+.tt-highlight{outline:2px solid var(--terracotta)!important;outline-offset:3px;animation:ttPulse 1.4s ease-in-out infinite}
+@keyframes ttPulse{0%,100%{outline-color:var(--terracotta)}50%{outline-color:rgba(155,58,40,.3)}}
+@media(max-width:600px){.tt{max-width:calc(100vw - 2rem);left:1rem!important;right:1rem!important;transform:none!important}}
 .toast.show{opacity:1;transform:translateY(0)}
 /* RESPONSIVE */
 @media(max-width:700px){
@@ -413,6 +444,28 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
   </div>
 </div>
 
+<!-- TUTORIAL OFFER -->
+<div id="tutorialOffer">
+  <div class="tof-card">
+    <span class="tof-icon">&#127807;</span>
+    <h2 class="tof-title" id="tofTitle">Welcome!</h2>
+    <p class="tof-body">Would you like a quick tour of the website? We'll walk you through your invitation, how to RSVP (including for a plus one or family member), submitting photos for the day, the wedding gallery, and everything else on here.</p>
+    <div class="tof-btns">
+      <button class="tof-btn-yes" onclick="startTutorial()">Yes, show me around</button>
+      <button class="tof-btn-no" onclick="skipTutorial()">No thanks, take me in</button>
+    </div>
+  </div>
+</div>
+<!-- TUTORIAL TOOLTIP -->
+<div class="tt" id="tutTip">
+  <p class="tt-label" id="ttLabel"></p>
+  <p class="tt-text" id="ttText"></p>
+  <div class="tt-footer">
+    <button class="tt-skip" onclick="endTutorial()">Exit tour</button>
+    <span class="tt-count" id="ttCount"></span>
+    <button class="tt-next" id="ttNextBtn" onclick="ttNext()">Next &rarr;</button>
+  </div>
+</div>
 <!-- NAV -->
 <nav class="top-banner">
   <span class="brand" onclick="navigate('home')">Tommy <span class="amp">&amp;</span> Maike</span>
@@ -1061,7 +1114,142 @@ function enterSite(){
   if(!match){errEl.textContent="We couldn't find that name. Please use your full name exactly as on your invitation, or contact Tommy or Maike.";return;}
   errEl.textContent='';currentGuest=match;sessionStart=Date.now();applyPersonalisation(match);
   const screen=document.getElementById('welcomeScreen');
-  screen.classList.add('hiding');setTimeout(()=>screen.style.display='none',550);
+  screen.classList.add('hiding');
+  setTimeout(()=>{
+    screen.style.display='none';
+    // Show tutorial offer instead of going straight to home
+    const first=match.name.split(' ')[0];
+    document.getElementById('tofTitle').textContent='Welcome, '+first+'! \u{1F33F}';
+    document.getElementById('tutorialOffer').classList.add('active');
+  },550);
+}
+
+// ── TUTORIAL ────────────────────────────────────────────────
+let tutorialActive=false;
+let ttIndex=0;
+
+// Each step: {page, targetId, label, text, arrow, offsetX, offsetY}
+// offsetX/Y adjust tooltip position relative to target (px, may be negative)
+const TT_STEPS=[
+  {page:'home',targetId:'heroInviteTime',label:'Your invitation',
+   text:'This shows your guest type and arrival time. Click "View my invitation" below to go straight to your personal invite.',
+   arrow:'arrow-bottom',ox:0,oy:-12},
+  {page:'invitation',targetId:'inviteTypeBanner',label:'Your invitation page',
+   text:'This is your personal invitation. It shows your guest type and what time to arrive.',
+   arrow:'arrow-top',ox:0,oy:12},
+  {page:'invitation',targetId:null,label:'RSVP for others too',
+   text:'When you click RSVP Now, you can also add your plus one or any family members coming with you — just fill in their names and dietary requirements one by one. For example, if Maike was filling this in, she could add Tommy\'s RSVP at the same time.',
+   arrow:null,ox:0,oy:0},
+  {page:'invitation',targetId:'rsvpModal',label:'Dietary requirements',
+   text:'Make sure to include any dietary requirements for yourself and anyone you\'re RSVPing for — we want everyone to be well fed!',
+   arrow:null,ox:0,oy:0},
+  {page:'photos',targetId:null,label:'Our Story So Far — photos',
+   text:'We\'ll have a projector running throughout the day displaying a slideshow of photos from our story. We want everyone involved! Please upload any photo of yourself with Tommy or Maike — from childhood all the way to now. With the bride only, the groom only, or both of you together.',
+   arrow:null,ox:0,oy:0},
+  {page:'gallery',targetId:null,label:'Wedding Day Gallery',
+   text:'On the day itself, use this page to upload your photos — speeches, dancing, the quiet moments, everything. We\'ll go through them all on the honeymoon flight and share our favourites with everyone afterwards.',
+   arrow:null,ox:0,oy:0},
+  {page:'itinerary',targetId:null,label:'Itinerary',
+   text:'Here you\'ll find the full timeline for the day so you know exactly what\'s happening and when.',
+   arrow:null,ox:0,oy:0},
+  {page:'details',targetId:null,label:'Details',
+   text:'Everything practical — venue address, travel, accommodation, dress code, and a note about the ceremony.',
+   arrow:null,ox:0,oy:0},
+  {page:'gifts',targetId:null,label:'Gifts',
+   text:'We don\'t expect anything at all, but if you\'d like to contribute we have a wishlist and a honeymoon fund here. Every little bit is received with so much love.',
+   arrow:null,ox:0,oy:0},
+  {page:'playlist',targetId:null,label:'Playlist',
+   text:'Suggest a song for the wedding! We want the dance floor full all night, so add anything you\'d love to hear.',
+   arrow:null,ox:0,oy:0},
+  {page:'contact',targetId:null,label:'Contact',
+   text:'Any questions at all — reach out here. We\'re so excited to celebrate with you. ♥',
+   arrow:null,ox:0,oy:0},
+];
+
+function skipTutorial(){
+  document.getElementById('tutorialOffer').classList.remove('active');
+  navigate('home');
+}
+
+function startTutorial(){
+  document.getElementById('tutorialOffer').classList.remove('active');
+  tutorialActive=true;
+  ttIndex=0;
+  navigate('home');
+  setTimeout(()=>showTTStep(0),400);
+}
+
+function showTTStep(i){
+  if(i>=TT_STEPS.length){endTutorial();return;}
+  ttIndex=i;
+  const step=TT_STEPS[i];
+  const tip=document.getElementById('tutTip');
+
+  // Remove previous highlight
+  document.querySelectorAll('.tt-highlight').forEach(el=>el.classList.remove('tt-highlight'));
+
+  // Navigate to the right page if needed
+  const currentPage=document.querySelector('.page.active');
+  if(!currentPage||currentPage.id!=='page-'+step.page){
+    navigate(step.page);
+  }
+
+  // Populate text
+  document.getElementById('ttLabel').textContent=step.label;
+  document.getElementById('ttText').textContent=step.text;
+  document.getElementById('ttCount').textContent=(i+1)+' / '+TT_STEPS.length;
+
+  // Last step
+  const nextBtn=document.getElementById('ttNextBtn');
+  nextBtn.textContent=i===TT_STEPS.length-1?'Finish ✓':' Next → ';
+
+  // Position the tooltip
+  tip.className='tt active';
+  if(step.arrow)tip.classList.add(step.arrow);
+
+  const target=step.targetId?document.getElementById(step.targetId):null;
+  if(target&&target.offsetParent!==null){
+    target.classList.add('tt-highlight');
+    positionTip(tip,target,step);
+  } else {
+    // Centre bottom of screen
+    tip.style.bottom='5rem';tip.style.top='auto';
+    tip.style.left='50%';tip.style.transform='translateX(-50%)';
+    tip.style.right='auto';
+  }
+}
+
+function positionTip(tip,target,step){
+  const tr=target.getBoundingClientRect();
+  const tw=tip.offsetWidth||300;
+  tip.style.transform='none';tip.style.right='auto';
+
+  if(step.arrow==='arrow-bottom'){
+    // Tooltip sits above target
+    tip.style.top='auto';
+    tip.style.bottom=(window.innerHeight-tr.top+8+step.oy)+'px';
+    tip.style.left=Math.max(8,Math.min(tr.left+tr.width/2-tw/2+step.ox,window.innerWidth-tw-8))+'px';
+  } else if(step.arrow==='arrow-top'){
+    tip.style.top=(tr.bottom+8+step.oy)+'px';
+    tip.style.bottom='auto';
+    tip.style.left=Math.max(8,Math.min(tr.left+tr.width/2-tw/2+step.ox,window.innerWidth-tw-8))+'px';
+  } else if(step.arrow==='arrow-left'){
+    tip.style.top=(tr.top+step.oy)+'px';
+    tip.style.bottom='auto';
+    tip.style.left=(tr.right+8+step.ox)+'px';
+  } else {
+    tip.style.top=(tr.bottom+12+step.oy)+'px';
+    tip.style.bottom='auto';
+    tip.style.left=Math.max(8,Math.min(tr.left+step.ox,window.innerWidth-tw-8))+'px';
+  }
+}
+
+function ttNext(){showTTStep(ttIndex+1);}
+
+function endTutorial(){
+  tutorialActive=false;
+  document.getElementById('tutTip').classList.remove('active');
+  document.querySelectorAll('.tt-highlight').forEach(el=>el.classList.remove('tt-highlight'));
 }
 
 function applyPersonalisation(guest){
