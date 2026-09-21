@@ -168,24 +168,24 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .dt a:hover{text-decoration:underline}
 .dtag{display:inline-block;margin-top:.8rem;padding:.28rem .75rem;background:var(--olive-pale);color:var(--olive);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:500}
 /* INVITATION */
-.inv-wrap{position:relative;min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;padding:4rem 2rem;background:var(--olive);gap:0}
+.inv-wrap{position:relative;min-height:calc(100vh - var(--nav-h));display:flex;align-items:center;justify-content:center;padding:4rem 2rem;background:var(--olive)}
 .inv-pattern{position:absolute;inset:0;opacity:.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px;pointer-events:none}
-/* Digital invitation card */
-.inv-digital-card{max-width:400px;width:100%;box-shadow:0 16px 64px rgba(44,36,24,.35);overflow:hidden;position:relative;z-index:1}
-.inv-digital-dear{font-family:"Dancing Script",cursive;font-size:clamp(1.5rem,5vw,2.1rem);color:#4e7044;padding:1.4rem 2rem .9rem;text-align:center;background:#f5f0e5;border-bottom:1px solid rgba(125,142,114,.2)}
-.inv-digital-img{width:100%;display:block}
-.inv-digital-footer{padding:1.5rem 2rem 2rem;background:#f5f0e5;text-align:center;border-top:1px solid rgba(125,142,114,.2)}
-.inv-digital-pill{display:inline-block;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;font-weight:500;padding:.28rem .9rem;margin-bottom:1rem;border-radius:2px}
-.inv-digital-time{font-size:.8rem;color:#6b6456;margin-bottom:1.4rem;line-height:1.7}
-.inv-nologin{text-align:center;padding:3rem 2rem;color:rgba(245,240,232,.65);font-family:"Cormorant Garamond",serif;font-size:1.15rem;font-style:italic;position:relative;z-index:1}
-/* keep legacy classes used elsewhere */
+.inv-card{background:var(--warm-white);border:1px solid rgba(212,224,200,.35);padding:3.5rem 3rem;max-width:540px;width:100%;text-align:center;position:relative}
+.inv-card::before{content:"";position:absolute;inset:8px;border:1px solid var(--olive-pale);pointer-events:none}
+.inv-greet{font-family:"Cormorant Garamond",serif;font-size:1rem;font-style:italic;color:var(--text-muted);margin-bottom:1.5rem}
+.inv-names{font-family:"Cormorant Garamond",serif;font-size:clamp(2.8rem,7vw,3.6rem);font-weight:300;color:var(--olive);line-height:1}
+.inv-names .amp{font-style:italic;color:var(--terracotta);font-size:.7em;display:block;margin:.3rem 0}
 .inv-div{display:flex;align-items:center;gap:1rem;margin:1.25rem auto;max-width:220px}
 .inv-div::before,.inv-div::after{content:"";flex:1;height:1px;background:var(--olive-pale)}
 .inv-heart{font-size:.65rem;color:var(--terracotta)}
+.inv-req{font-size:.88rem;color:var(--text-muted);line-height:1.85;font-weight:300;margin:1.25rem 0}
+.inv-date{font-family:"Cormorant Garamond",serif;font-size:1.6rem;color:var(--terracotta);letter-spacing:.08em;margin:.8rem 0 .4rem}
+.inv-date sup{font-size:.5em;vertical-align:super}
+.inv-venue{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--olive-light);margin-bottom:.75rem}
 .inv-time{font-size:.82rem;color:var(--text-muted);margin-bottom:1.5rem}
 .rsvp-btn{display:inline-block;padding:.85rem 2.5rem;background:var(--terracotta);color:white;border:none;cursor:pointer;font-family:"Jost",sans-serif;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;transition:background .2s}
 .rsvp-btn:hover{background:#7A2C1A}
-.rsvp-note{margin-top:.85rem;font-size:.77rem;color:#8a7f72}
+.rsvp-note{margin-top:.85rem;font-size:.77rem;color:var(--text-muted)}
 /* HUB */
 .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:680px;margin:0 auto}
 .hub-card{background:var(--warm-white);border:1px solid rgba(212,224,200,.5);padding:2.5rem 2rem;text-align:center;cursor:pointer;transition:border-color .2s,background .2s}
@@ -544,18 +544,18 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 <div class="page" id="page-invitation">
   <div class="inv-wrap">
     <div class="inv-pattern"></div>
-    <!-- Not logged in -->
-    <p class="inv-nologin" id="invNotLoggedIn">Please log in with your name to view your personal invitation.</p>
-    <!-- Digital invitation card (shown once logged in) -->
-    <div class="inv-digital-card" id="invDigitalCard" style="display:none;">
-      <div class="inv-digital-dear" id="invDearName"></div>
-      <img id="invDigitalImg" src="" alt="Your invitation" class="inv-digital-img">
-      <div class="inv-digital-footer">
-        <div id="inviteTypeBanner" class="inv-digital-pill" style="display:none;"></div>
-        <p class="inv-digital-time" id="inviteTimeNote"></p>
-        <button class="rsvp-btn" onclick="document.getElementById('rsvpModal').classList.add('active')">RSVP Now</button>
-        <p class="rsvp-note">Kindly reply by 1st February 2027</p>
-      </div>
+    <div class="inv-card">
+      <div id="inviteTypeBanner" class="inv-pill" style="display:none;"></div>
+      <p class="inv-greet">Together with our families</p>
+      <div class="inv-names">Tommy<span class="amp">&amp;</span>Maike</div>
+      <p class="inv-req">joyfully invite<br><strong id="inviteGuestName" style="font-family:'Cormorant Garamond',serif;font-size:1.1em;font-weight:400;color:var(--olive);"></strong><br>to celebrate their marriage</p>
+      <div class="inv-div"><span class="inv-heart">&#9829;</span></div>
+      <p class="inv-date">Saturday, 15<sup>th</sup> May 2027</p>
+      <p class="inv-venue">Thames Rowing Club &middot; Putney &middot; London</p>
+      <p class="inv-time" id="inviteTimeNote"></p>
+      <div class="inv-div"><span class="inv-heart">&#9829;</span></div>
+      <button class="rsvp-btn" onclick="document.getElementById('rsvpModal').classList.add('active')">RSVP Now</button>
+      <p class="rsvp-note">Kindly reply by 1st February 2027</p>
     </div>
   </div>
 </div>
@@ -1074,17 +1074,9 @@ function applyPersonalisation(guest){
   const wEl=document.getElementById('heroWelcome');wEl.textContent="We're so glad you can join us.";wEl.style.display='block';
   const pWrap=document.getElementById('heroInviteTime');pWrap.style.display='block';
   const pSpan=pWrap.querySelector('span');pSpan.textContent=info.heroPill;pSpan.className='inv-pill '+info.pillClass;pSpan.style.marginTop='0';
-  // Digital invitation card
-  const imgBase={'ceremony':'invites/ceremony_guest','day':'invites/day_guest','evening':'invites/evening_guest'}[guest.type]||'invites/day_guest';
-  document.getElementById('invDearName').textContent='Dear '+guest.name+',';
-  document.getElementById('invDigitalImg').src=imgBase+'_1.png';
+  document.getElementById('inviteGuestName').textContent=guest.name;
   document.getElementById('inviteTimeNote').textContent=info.timeNote;
-  const tb=document.getElementById('inviteTypeBanner');
-  tb.textContent=info.label;
-  tb.className='inv-digital-pill inv-pill '+info.pillClass;
-  tb.style.display='inline-block';
-  document.getElementById('invNotLoggedIn').style.display='none';
-  document.getElementById('invDigitalCard').style.display='block';
+  const tb=document.getElementById('inviteTypeBanner');tb.textContent=info.label;tb.className='inv-pill '+info.pillClass;tb.style.display='block';
   const rn=document.getElementById('rsvpInviteNote');rn.textContent=info.rsvpNote;rn.style.display='block';
   rn.style.background=info.rsvpColor;rn.style.border='1px solid '+info.rsvpBorder;rn.style.color=info.rsvpTextColor;
   document.getElementById('rsvpName').value=guest.name;
@@ -1124,8 +1116,7 @@ function switchGuest(){
   const screen=document.getElementById('welcomeScreen');screen.style.display='flex';screen.classList.remove('hiding');
   document.getElementById('profileBtn').classList.remove('visible');document.getElementById('profileDd').classList.remove('open');document.getElementById('profileActivity').innerHTML='';
   document.getElementById('heroEyebrow').textContent="You're invited";document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
-  document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
-  document.getElementById('invDigitalCard').style.display='none';document.getElementById('invNotLoggedIn').style.display='block';
+  document.getElementById('inviteGuestName').textContent='';document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
   document.getElementById('rsvpInviteNote').style.display='none';document.getElementById('rsvpName').value='';
   document.getElementById('rsvpForm').style.display='';document.getElementById('rsvpSuccess').classList.remove('active');document.getElementById('rsvpModal').classList.remove('active');
   document.getElementById('rsvpAttSec').style.display='none';document.getElementById('rsvpPlusSec').style.display='none';document.getElementById('rsvpAddSec').style.display='none';
