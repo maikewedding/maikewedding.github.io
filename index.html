@@ -794,8 +794,8 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
             <select class="fi" id="suggMoment" style="cursor:pointer;">
               <option value="">Select a moment...</option>
               <option>Bride getting ready</option><option>Groom getting ready</option><option>Ceremony</option>
-              <option>Drinks reception</option><option>First dance</option><option>Bangers &amp; Classics</option>
-              <option>Must hear at least once</option><option>End of the night</option>
+              <option>Drinks reception</option><option>Bangers &amp; Classics</option>
+              <option>Must hear at least once</option>
             </select>
           </div>
           <div><label class="fl">Your name</label><input class="fi" type="text" id="suggName" placeholder="e.g. Sarah"></div>
@@ -809,10 +809,8 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
         <button class="mf" data-m="Groom getting ready" onclick="filterPl('Groom getting ready')">Groom getting ready</button>
         <button class="mf" data-m="Ceremony" onclick="filterPl('Ceremony')">Ceremony</button>
         <button class="mf" data-m="Drinks reception" onclick="filterPl('Drinks reception')">Drinks reception</button>
-        <button class="mf" data-m="First dance" onclick="filterPl('First dance')">First dance</button>
         <button class="mf" data-m="Bangers &amp; Classics" onclick="filterPl('Bangers &amp; Classics')">Bangers &amp; Classics</button>
         <button class="mf" data-m="Must hear at least once" onclick="filterPl('Must hear at least once')">Must hear at least once</button>
-        <button class="mf" data-m="End of the night" onclick="filterPl('End of the night')">End of the night</button>
       </div>
       <div style="max-height:420px;overflow-y:auto;border:1px solid var(--olive-pale);border-radius:4px;">
       <table class="pl-table" style="margin:0;">
@@ -1599,7 +1597,7 @@ document.getElementById('lightbox').addEventListener('touchend',e=>{if(lbTouchX=
 const SONGS=[
   {song:'Fly Me to the Moon',artist:'Frank Sinatra',moment:'Ceremony',by:'Tommy & Maike',ts:1},
   {song:'Use Somebody',artist:'Kings of Leon',moment:'Ceremony',by:'Tommy & Maike',ts:2},
-  {song:'Waltzer',artist:'Provinz',moment:'First dance',by:'Tommy & Maike',ts:3},
+  {song:'Waltzer',artist:'Provinz',moment:'Must hear at least once',by:'Tommy & Maike',ts:3},
   {song:'Give a Little Love',artist:'Gizmo Varillas',moment:'Drinks reception',by:'Tommy & Maike',ts:4},
   {song:'Not High on Drugs',artist:'Benjamin Amaru',moment:'Drinks reception',by:'Tommy & Maike',ts:5},
   {song:'In Case I Fall for You',artist:'Black Sea Dahu',moment:'Drinks reception',by:'Tommy & Maike',ts:6},
