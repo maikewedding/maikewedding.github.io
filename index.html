@@ -1611,18 +1611,31 @@ const SONGS=[
   {song:'Mr Brightside',artist:'The Killers',moment:'Bangers & Classics',by:'Tommy & Maike',ts:12},
 ];
 let plFilter='all';
+function buildDeduped(songs){
+  // Deduplicate by normalised title; keep earliest entry, accumulate suggesters & count
+  const seen=new Map();
+  [...songs].sort((a,b)=>a.ts-b.ts).forEach(s=>{
+    const key=s.song.trim().toLowerCase();
+    if(seen.has(key)){
+      const e=seen.get(key);
+      e.count++;
+      if(s.by&&s.by!==e.by&&!e.suggesters.includes(s.by))e.suggesters.push(s.by);
+      if(s.addedAt&&(!e.latestAt||s.addedAt>e.latestAt))e.latestAt=s.addedAt;
+    } else {
+      seen.set(key,{...s,count:1,suggesters:[s.by||''],latestAt:s.addedAt||null});
+    }
+  });
+  return [...seen.values()].sort((a,b)=>b.ts-a.ts);
+}
 function renderPl(){
   const body=document.getElementById('playlistBody'),empty=document.getElementById('plEmpty');
-  const guestSongs=[...firestoreSongs].sort((a,b)=>b.ts-a.ts);
+  const deduped=buildDeduped(firestoreSongs);
   const curatedSongs=[...SONGS];
   const filterFn=s=>plFilter==='all'||s.moment===plFilter;
-  const guestFiltered=guestSongs.filter(filterFn);
+  const guestFiltered=deduped.filter(filterFn);
   const curatedFiltered=curatedSongs.filter(filterFn);
   const list=[...guestFiltered,...curatedFiltered];
   body.innerHTML='';if(!list.length){empty.style.display='block';return;}empty.style.display='none';
-  // Count how many times each song title appears across ALL guest songs
-  const allTitles=firestoreSongs.map(s=>s.song.trim().toLowerCase());
-  const titleCount={};allTitles.forEach(t=>{titleCount[t]=(titleCount[t]||0)+1;});
   list.forEach((s,i)=>{
     if(i===guestFiltered.length&&guestFiltered.length>0&&curatedFiltered.length>0){
       const divRow=document.createElement('tr');
@@ -1630,11 +1643,12 @@ function renderPl(){
       body.appendChild(divRow);
     }
     const tr=document.createElement('tr');
-    const isNew=sessionStart&&s.addedAt&&s.addedAt.toMillis&&s.addedAt.toMillis()>sessionStart;
-    const cnt=titleCount[s.song.trim().toLowerCase()]||0;
+    const isNew=sessionStart&&s.latestAt&&s.latestAt.toMillis&&s.latestAt.toMillis()>sessionStart;
+    const cnt=s.count||1;
     const popBadge=cnt>1?'&nbsp;<span style="font-size:.6rem;background:var(--terracotta);color:#fff;padding:.1rem .4rem;border-radius:2px;letter-spacing:.04em;vertical-align:middle;">&#9829; '+cnt+' want this!</span>':'';
     const newBadge=isNew?'&nbsp;<span style="font-size:.6rem;background:var(--olive);color:#fff;padding:.1rem .35rem;border-radius:2px;letter-spacing:.05em;vertical-align:middle;">new</span>':'';
-    tr.innerHTML='<td class="tr-num">'+(list.length-i)+'</td><td><span class="tr-title">'+esc(s.song)+'</span>'+popBadge+(s.artist?'<span class="tr-artist">'+esc(s.artist)+'</span>':'')+'</td><td><span class="tr-moment">'+esc(s.moment)+'</span></td><td class="tr-by">'+esc(s.by)+newBadge+'</td>';
+    const byText=cnt>1?(s.suggesters.slice(0,3).join(', ')+(s.suggesters.length>3?' +more':'')):esc(s.by||'');
+    tr.innerHTML='<td class="tr-num">'+(list.length-i)+'</td><td><span class="tr-title">'+esc(s.song)+'</span>'+popBadge+(s.artist?'<span class="tr-artist">'+esc(s.artist)+'</span>':'')+'</td><td><span class="tr-moment">'+esc(s.moment)+'</span></td><td class="tr-by">'+byText+newBadge+'</td>';
     body.appendChild(tr);
   });
 }
@@ -1656,9 +1670,11 @@ function addSong(){
 function filterPl(m){plFilter=m;document.querySelectorAll('.mf').forEach(b=>b.classList.toggle('active',b.dataset.m===m));renderPl();}
 onFirebaseReady(()=>initSongsListener());
 function dlPlaylist(){
-  const allSongs=[...SONGS,...firestoreSongs];
-  const hdrs=['Song','Artist','Moment','Suggested by'],rows=[...allSongs].sort((a,b)=>b.ts-a.ts).map(s=>[s.song,s.artist,s.moment,s.by]);
-  const csv=[hdrs,...rows].map(r=>r.map(c=>'"'+(c||'').replace(/"/g,'""')+'"').join(',')).join('\n');
+  const deduped=buildDeduped(firestoreSongs);
+  const allSongs=[...deduped,...SONGS];
+  const hdrs=['Song','Artist','Moment','Suggested by','Times suggested'];
+  const rows=allSongs.map(s=>[s.song,s.artist||'',s.moment,s.count>1?(s.suggesters||[]).join('; '):(s.by||''),s.count||1]);
+  const csv=[hdrs,...rows].map(r=>r.map(c=>'"'+(String(c||'')).replace(/"/g,'""')+'"').join(',')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='tommy-maike-songs.csv';a.click();URL.revokeObjectURL(a.href);
 }
 renderPl();
