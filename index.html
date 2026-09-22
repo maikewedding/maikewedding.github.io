@@ -122,7 +122,8 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .hero-photo{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(100%) contrast(1.08) brightness(.88);transition:filter .5s}
 .hero-side-photo{filter:grayscale(100%) contrast(1.05) brightness(.65)}
 .hero-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.32);padding:2rem 1.5rem;text-align:center}
-.hero-ey{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(245,240,232,.65);margin-bottom:1.4rem}
+.hero-ey{font-size:.65rem;letter-spacing:.32em;text-transform:uppercase;color:rgba(245,240,232,.65);margin-bottom:1.4rem;transition:font-size .3s,color .3s,letter-spacing .3s}
+.hero-ey.personalised{font-size:clamp(1rem,2.8vw,1.4rem);letter-spacing:.12em;color:rgba(245,240,232,.95);text-shadow:0 2px 8px rgba(0,0,0,.35);font-family:'Dancing Script',cursive;text-transform:none}
 .hero-n{line-height:1;margin-bottom:.25rem}
 .hero-name-serif{font-family:"Cormorant Garamond",serif;font-size:clamp(2.6rem,7vw,5rem);font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:white;display:block}
 .hero-name-script{font-family:"Dancing Script",cursive;font-size:clamp(3.2rem,8.5vw,6rem);font-weight:400;color:white;display:block;line-height:1.1}
@@ -348,6 +349,18 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 /* Highlight pulse for tutorial targets */
 .tt-highlight{outline:2px solid var(--terracotta)!important;outline-offset:3px;animation:ttPulse 1.4s ease-in-out infinite}
 @keyframes ttPulse{0%,100%{outline-color:var(--terracotta)}50%{outline-color:rgba(155,58,40,.3)}}
+#tourNavOverlay{position:fixed;inset:0;z-index:970;pointer-events:none;display:none;}
+#tourNavOverlay.active{display:block;}
+#tourNavOverlay .tno-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);}
+#tourNavOverlay .tno-msg{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--olive);color:var(--cream);padding:1.5rem 2rem;text-align:center;max-width:340px;width:calc(100vw - 2rem);box-shadow:0 8px 32px rgba(44,36,24,.4);}
+#tourNavOverlay .tno-msg h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;margin-bottom:.5rem;}
+#tourNavOverlay .tno-msg p{font-size:.85rem;line-height:1.6;opacity:.85;margin-bottom:1rem;}
+#tourNavOverlay .tno-close{padding:.6rem 1.8rem;background:var(--cream);color:var(--olive);border:none;font-family:'Jost',sans-serif;font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;pointer-events:auto;}
+.tno-arrow{position:absolute;top:100%;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:12px solid var(--terracotta);filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));animation:bounceDown .9s ease-in-out infinite;}
+@keyframes bounceDown{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+.tno-nav-arrow{position:absolute;display:flex;flex-direction:column;align-items:center;pointer-events:none;}
+.tno-nav-arrow span{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cream);background:var(--terracotta);padding:.2rem .5rem;margin-top:.3rem;white-space:nowrap;opacity:.9;}
+@keyframes bounceUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
 @media(max-width:600px){.tt{max-width:calc(100vw - 2rem);left:1rem!important;right:1rem!important;transform:none!important}}
 .toast.show{opacity:1;transform:translateY(0)}
 /* RESPONSIVE */
@@ -457,6 +470,15 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
     </div>
   </div>
 </div>
+<!-- TOUR END NAV OVERLAY -->
+<div id="tourNavOverlay">
+  <div class="tno-backdrop" onclick="closeTourNavOverlay()"></div>
+  <div class="tno-msg">
+    <h3>You're all set! ♥</h3>
+    <p>Use the navigation bar above to explore. Here's where everything lives:</p>
+    <button class="tno-close" onclick="closeTourNavOverlay()">Got it, let's go!</button>
+  </div>
+</div>
 <!-- TUTORIAL TOOLTIP -->
 <div class="tt" id="tutTip">
   <p class="tt-label" id="ttLabel"></p>
@@ -535,7 +557,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
         <div class="hero-div"><span style="color:rgba(232,200,64,.7);font-size:.8rem;">&#9829;</span></div>
         <p class="hero-date">15<sup>th</sup> May 2027</p>
         <p class="hero-venue">Thames Rowing Club &middot; Putney, London</p>
-        <div id="heroWelcome" style="margin-top:1.2rem;font-family:'Dancing Script',cursive;font-size:1.6rem;color:rgba(245,240,232,.92);display:none;"></div>
+        <div id="heroWelcome" style="margin-top:1.2rem;font-family:'Dancing Script',cursive;font-size:clamp(2rem,5.5vw,3rem);color:rgba(245,240,232,.97);display:none;text-shadow:0 2px 12px rgba(0,0,0,.4);line-height:1.2;"></div>
         <div id="heroInviteTime" style="margin-top:.75rem;display:none;"><span style="font-size:.78rem;letter-spacing:.15em;text-transform:uppercase;padding:.55rem 1.4rem;display:inline-block;background:rgba(245,240,232,.15);border:1px solid rgba(245,240,232,.5);color:var(--cream);border-radius:2px;font-weight:500;"></span></div>
         <div class="cd" id="countdown">
           <div class="cd-item"><span class="cd-num" id="cd-days">&mdash;</span><span class="cd-lbl">Days</span></div>
@@ -607,7 +629,8 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
       <p class="inv-venue">Thames Rowing Club &middot; Putney &middot; London</p>
       <p class="inv-time" id="inviteTimeNote"></p>
       <div class="inv-div"><span class="inv-heart">&#9829;</span></div>
-      <button class="rsvp-btn" onclick="document.getElementById('rsvpModal').classList.add('active')">RSVP Now</button>
+      <span id="rsvp-btn-anchor" style="display:block;height:0;overflow:hidden;"></span>
+      <button class="rsvp-btn" id="rsvpOpenBtn" onclick="document.getElementById('rsvpModal').classList.add('active')">RSVP Now</button>
       <p class="rsvp-note">Kindly reply by 1st February 2027</p>
     </div>
   </div>
@@ -898,6 +921,12 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
         <button class="fsuccess-btn" onclick="document.getElementById('rsvpModal').classList.remove('active');navigate('playlist');">&#127925; &nbsp; Head to the <strong>Playlist</strong> page to suggest a song</button>
         <button class="fsuccess-btn" onclick="document.getElementById('rsvpModal').classList.remove('active');navigate('photohub');">&#128247; &nbsp; <strong>Share your photos</strong> for the gallery or slideshow</button>
       </div>
+      <div style="margin-top:1.25rem;text-align:center;" id="changeRsvpArea">
+        <button onclick="changeRsvp()" style="background:none;border:none;font-family:'Jost',sans-serif;font-size:.72rem;letter-spacing:.1em;color:var(--text-muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px;">Change your mind?</button>
+      </div>
+      <div id="changeRsvpWarning" style="display:none;margin-top:.75rem;background:rgba(155,58,40,.08);border:1px solid rgba(155,58,40,.3);padding:.8rem 1rem;font-size:.8rem;color:var(--terracotta);line-height:1.6;text-align:center;border-radius:2px;">
+        The RSVP deadline has passed (1st February 2027). Please contact <strong>Tommy or Maike</strong> directly to change your RSVP.
+      </div>
     </div>
   </div>
 </div>
@@ -1132,23 +1161,17 @@ let ttIndex=0;
 // Each step: {page, targetId, label, text, arrow, offsetX, offsetY}
 // offsetX/Y adjust tooltip position relative to target (px, may be negative)
 const TT_STEPS=[
-  {page:'home',targetId:'heroInviteTime',label:'Your invitation',
-   text:'This shows your guest type and arrival time. Click "View my invitation" below to go straight to your personal invite.',
-   arrow:'arrow-bottom',ox:0,oy:-12},
-  {page:'invitation',targetId:'inviteTypeBanner',label:'Your invitation page',
-   text:'This is your personal invitation. It shows your guest type and what time to arrive.',
+  {page:'invitation',targetId:'inviteTypeBanner',label:'Your invitation',
+   text:'This is your personal invitation — it shows your guest type and arrival time. Everything on this page is personalised just for you.',
    arrow:'arrow-top',ox:0,oy:12},
-  {page:'invitation',targetId:null,label:'RSVP for others too',
-   text:'When you click RSVP Now, you can also add your plus one or any family members coming with you — just fill in their names and dietary requirements one by one. For example, if Maike was filling this in, she could add Tommy\'s RSVP at the same time.',
-   arrow:null,ox:0,oy:0},
-  {page:'invitation',targetId:'rsvpModal',label:'Dietary requirements',
-   text:'Make sure to include any dietary requirements for yourself and anyone you\'re RSVPing for — we want everyone to be well fed!',
-   arrow:null,ox:0,oy:0},
+  {page:'invitation',targetId:'rsvp-btn-anchor',label:'RSVP — and for others too!',
+   text:'Hit RSVP Now to confirm your attendance. You can also RSVP for a plus one or anyone coming with you in the same form — for example if Maike was filling this in she could add Tommy\'s RSVP at the same time. Make sure to fill in dietary requirements for everyone!',
+   arrow:'arrow-bottom',ox:0,oy:-8},
   {page:'photos',targetId:null,label:'Our Story So Far — photos',
-   text:'We\'ll have a projector running throughout the day displaying a slideshow of photos from our story. We want everyone involved! Please upload any photo of yourself with Tommy or Maike — from childhood all the way to now. With the bride only, the groom only, or both of you together.',
+   text:'We\'ll have a projector running throughout the day displaying a slideshow of photos from our story. We want everyone involved! Upload any photo of yourself with Tommy or Maike — from childhood all the way to now. With the bride only, the groom only, or both together.',
    arrow:null,ox:0,oy:0},
   {page:'gallery',targetId:null,label:'Wedding Day Gallery',
-   text:'On the day itself, use this page to upload your photos — speeches, dancing, the quiet moments, everything. We\'ll go through them all on the honeymoon flight and share our favourites with everyone afterwards.',
+   text:'On the day itself, use this page to upload your photos — speeches, dancing, quiet moments, everything. We\'ll go through them all on the honeymoon flight and share our favourites with everyone afterwards.',
    arrow:null,ox:0,oy:0},
   {page:'itinerary',targetId:null,label:'Itinerary',
    text:'Here you\'ll find the full timeline for the day so you know exactly what\'s happening and when.',
@@ -1157,7 +1180,7 @@ const TT_STEPS=[
    text:'Everything practical — venue address, travel, accommodation, dress code, and a note about the ceremony.',
    arrow:null,ox:0,oy:0},
   {page:'gifts',targetId:null,label:'Gifts',
-   text:'We don\'t expect anything at all, but if you\'d like to contribute we have a wishlist and a honeymoon fund here. Every little bit is received with so much love.',
+   text:'We genuinely do not expect gifts — please don\'t feel any pressure. If you would like to give something, the options here are just one of many ways to do so. You are absolutely welcome to give money, a physical gift, or anything else you\'d like — this page is purely here for those who have asked.',
    arrow:null,ox:0,oy:0},
   {page:'playlist',targetId:null,label:'Playlist',
    text:'Suggest a song for the wedding! We want the dance floor full all night, so add anything you\'d love to hear.',
@@ -1211,7 +1234,8 @@ function showTTStep(i){
   const target=step.targetId?document.getElementById(step.targetId):null;
   if(target&&target.offsetParent!==null){
     target.classList.add('tt-highlight');
-    positionTip(tip,target,step);
+    target.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>positionTip(tip,target,step),350);
   } else {
     // Centre bottom of screen
     tip.style.bottom='5rem';tip.style.top='auto';
@@ -1251,6 +1275,30 @@ function endTutorial(){
   tutorialActive=false;
   document.getElementById('tutTip').classList.remove('active');
   document.querySelectorAll('.tt-highlight').forEach(el=>el.classList.remove('tt-highlight'));
+  navigate('home');
+  setTimeout(showTourNavOverlay,400);
+}
+function showTourNavOverlay(){
+  const overlay=document.getElementById('tourNavOverlay');
+  overlay.classList.add('active');
+  // Build per-button arrows pointing down at each nav item
+  document.querySelectorAll('.tno-nav-arrow').forEach(el=>el.remove());
+  const nav=document.querySelector('nav.top-banner');
+  if(!nav)return;
+  const navRect=nav.getBoundingClientRect();
+  const btns=nav.querySelectorAll('li > button[data-page]');
+  btns.forEach(btn=>{
+    const r=btn.getBoundingClientRect();
+    const arrow=document.createElement('div');
+    arrow.className='tno-nav-arrow';
+    arrow.style.cssText='left:'+(r.left+r.width/2)+'px;top:'+(navRect.bottom+4)+'px;';
+    arrow.innerHTML='<div style="width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:9px solid var(--terracotta);animation:bounceUp .9s ease-in-out infinite;"></div><span>'+btn.textContent.trim()+'</span>';
+    overlay.appendChild(arrow);
+  });
+}
+function closeTourNavOverlay(){
+  document.getElementById('tourNavOverlay').classList.remove('active');
+  document.querySelectorAll('.tno-nav-arrow').forEach(el=>el.remove());
 }
 
 function applyPersonalisation(guest){
@@ -1258,7 +1306,7 @@ function applyPersonalisation(guest){
   document.getElementById('profileBtn').classList.add('visible');
   document.getElementById('profileName').textContent=guest.name;
   document.getElementById('profileType').textContent=info.label;
-  document.getElementById('heroEyebrow').innerHTML='Welcome, '+first+' &#127807;';
+  const eyEl=document.getElementById('heroEyebrow');eyEl.innerHTML='Welcome, '+first+' &#127807;';eyEl.classList.add('personalised');
   const wEl=document.getElementById('heroWelcome');wEl.textContent="We're so glad you can join us.";wEl.style.display='block';
   const pWrap=document.getElementById('heroInviteTime');pWrap.style.display='block';
   const pSpan=pWrap.querySelector('span');pSpan.textContent=info.heroPill;pSpan.className='inv-pill '+info.pillClass;pSpan.style.marginTop='0';
@@ -1303,7 +1351,7 @@ function switchGuest(){
   document.getElementById('welcomeInput').value='';document.getElementById('welcomeError').textContent='';
   const screen=document.getElementById('welcomeScreen');screen.style.display='flex';screen.classList.remove('hiding');
   document.getElementById('profileBtn').classList.remove('visible');document.getElementById('profileDd').classList.remove('open');document.getElementById('profileActivity').innerHTML='';
-  document.getElementById('heroEyebrow').textContent="You're invited";document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
+  const ey2=document.getElementById('heroEyebrow');ey2.textContent="You're invited";ey2.classList.remove('personalised');document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
   document.getElementById('inviteGuestName').textContent='';document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
   document.getElementById('rsvpInviteNote').style.display='none';document.getElementById('rsvpName').value='';
   document.getElementById('rsvpForm').style.display='';document.getElementById('rsvpSuccess').classList.remove('active');document.getElementById('rsvpModal').classList.remove('active');
@@ -1572,6 +1620,9 @@ function renderPl(){
   const curatedFiltered=curatedSongs.filter(filterFn);
   const list=[...guestFiltered,...curatedFiltered];
   body.innerHTML='';if(!list.length){empty.style.display='block';return;}empty.style.display='none';
+  // Count how many times each song title appears across ALL guest songs
+  const allTitles=firestoreSongs.map(s=>s.song.trim().toLowerCase());
+  const titleCount={};allTitles.forEach(t=>{titleCount[t]=(titleCount[t]||0)+1;});
   list.forEach((s,i)=>{
     if(i===guestFiltered.length&&guestFiltered.length>0&&curatedFiltered.length>0){
       const divRow=document.createElement('tr');
@@ -1580,7 +1631,10 @@ function renderPl(){
     }
     const tr=document.createElement('tr');
     const isNew=sessionStart&&s.addedAt&&s.addedAt.toMillis&&s.addedAt.toMillis()>sessionStart;
-    tr.innerHTML='<td class="tr-num">'+(list.length-i)+'</td><td><span class="tr-title">'+esc(s.song)+'</span>'+(s.artist?'<span class="tr-artist">'+esc(s.artist)+'</span>':'')+'</td><td><span class="tr-moment">'+esc(s.moment)+'</span></td><td class="tr-by">'+esc(s.by)+(isNew?'&nbsp;<span style="font-size:.6rem;background:var(--olive);color:#fff;padding:.1rem .35rem;border-radius:2px;letter-spacing:.05em;vertical-align:middle;">new</span>':'')+'</td>';
+    const cnt=titleCount[s.song.trim().toLowerCase()]||0;
+    const popBadge=cnt>1?'&nbsp;<span style="font-size:.6rem;background:var(--terracotta);color:#fff;padding:.1rem .4rem;border-radius:2px;letter-spacing:.04em;vertical-align:middle;">&#9829; '+cnt+' want this!</span>':'';
+    const newBadge=isNew?'&nbsp;<span style="font-size:.6rem;background:var(--olive);color:#fff;padding:.1rem .35rem;border-radius:2px;letter-spacing:.05em;vertical-align:middle;">new</span>':'';
+    tr.innerHTML='<td class="tr-num">'+(list.length-i)+'</td><td><span class="tr-title">'+esc(s.song)+'</span>'+popBadge+(s.artist?'<span class="tr-artist">'+esc(s.artist)+'</span>':'')+'</td><td><span class="tr-moment">'+esc(s.moment)+'</span></td><td class="tr-by">'+esc(s.by)+newBadge+'</td>';
     body.appendChild(tr);
   });
 }
@@ -1624,6 +1678,7 @@ async function loadGuestProfile(guest){
         document.getElementById('rsvpForm').style.display='none';
         document.getElementById('rsvpSuccessMsg').textContent="We've already received your RSVP — can't wait to celebrate with you!";
         document.getElementById('rsvpSuccess').classList.add('active');
+        document.getElementById('changeRsvpArea').style.display='block';
       }
     }
   }catch(e){console.warn('loadGuestProfile:',e);}
@@ -1636,6 +1691,17 @@ function saveGuestActivity(patch){
     if(patch.rsvp)updates.rsvpDone=true;
     setDoc(doc(window._db,'guests',normId(currentGuest.name)),updates,{merge:true}).catch(e=>console.warn('saveGuestActivity:',e));
   });
+}
+
+function changeRsvp(){
+  const deadline=new Date('2027-02-01T00:00:00');
+  if(new Date()>deadline){
+    document.getElementById('changeRsvpWarning').style.display='block';
+    return;
+  }
+  document.getElementById('rsvpSuccess').classList.remove('active');
+  document.getElementById('rsvpForm').style.display='';
+  document.getElementById('changeRsvpWarning').style.display='none';
 }
 
 // HONEYMOON MODAL
