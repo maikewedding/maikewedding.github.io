@@ -706,15 +706,15 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
       <div style="background:rgba(212,224,200,.15);border:1px solid var(--olive-pale);padding:1.5rem 1.75rem;margin-bottom:2.5rem;text-align:center;max-width:620px;margin-left:auto;margin-right:auto;">
         <p style="font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--text-dark);margin-bottom:.75rem;font-style:italic;">A note from us</p>
         <p style="font-size:.88rem;color:var(--text-muted);line-height:1.8;max-width:540px;margin:0 auto .75rem;">Having you there on the day is more than enough, and please know we do not expect a single thing. We have shared a wishlist and a honeymoon fund purely because people have asked, and because we thought it was nicer than a generic list. But truly, your presence is the greatest gift of all.</p>
-        <p style="font-size:.88rem;color:var(--text-muted);line-height:1.8;max-width:540px;margin:0 auto;">If you would like to contribute, anything at all will be received with so much love and gratitude. The ottoman bed frame is top of the list (Maike has waited long enough), but we mean it when we say every single one of you being there is what makes the day. &#9829;</p>
+        <p id="giftsNoteExtra" style="font-size:.88rem;color:var(--text-muted);line-height:1.8;max-width:540px;margin:0 auto;">If you would like to contribute, anything at all will be received with so much love and gratitude. The ottoman bed frame is top of the list (Maike has waited long enough), but we mean it when we say every single one of you being there is what makes the day. &#9829;</p>
         <p style="margin-top:1rem;font-size:.8rem;color:var(--text-muted);font-style:italic;">With all our love, Maike &amp; Tommy</p>
       </div>
       <div class="gifts-grid">
-        <div class="gift-card" style="background:var(--olive);border-color:var(--olive);">
-          <span class="gift-emoji">&#127464;&#127469;</span>
-          <h3 class="gift-title" style="color:var(--cream);">Z&uuml;rich Wishlist</h3>
-          <p class="gift-desc" style="color:rgba(245,240,232,.75);">We&rsquo;re setting up our first home together in Z&uuml;rich and have put together a wishlist of things we&rsquo;ll be buying for the apartment, from kitchen essentials to the cosy touches that&rsquo;ll make it feel like ours. Have a browse and pick anything you&rsquo;d like to put towards.</p>
-          <button class="gift-btn" style="border-color:var(--lemon);color:var(--lemon);" onmouseover="this.style.background='rgba(232,200,64,.15)'" onmouseout="this.style.background='none'" onclick="navigate('registry')">&#127968; Browse the wishlist &rarr;</button>
+        <div class="gift-card" id="wishlistCard" style="background:var(--olive);border-color:var(--olive);">
+          <span class="gift-emoji" id="wishlistEmoji">&#127464;&#127469;</span>
+          <h3 class="gift-title" id="wishlistTitle" style="color:var(--cream);">Z&uuml;rich Wishlist</h3>
+          <p class="gift-desc" id="wishlistDesc" style="color:rgba(245,240,232,.75);">We&rsquo;re setting up our first home together in Z&uuml;rich and have put together a wishlist of things we&rsquo;ll be buying for the apartment, from kitchen essentials to the cosy touches that&rsquo;ll make it feel like ours. Have a browse and pick anything you&rsquo;d like to put towards.</p>
+          <button class="gift-btn" id="wishlistBtn" style="border-color:var(--lemon);color:var(--lemon);" onmouseover="this.style.background='rgba(232,200,64,.15)'" onmouseout="this.style.background='none'" onclick="navigate('registry')">&#127968; Browse the wishlist &rarr;</button>
         </div>
         <div class="gift-card" style="background:var(--olive);border-color:var(--olive);">
           <span class="gift-emoji">&#127474;&#127485;</span>
@@ -1098,9 +1098,9 @@ const GUESTS=[
   {name:'Ellis Maddison',type:'day'},
   {name:'Lisa Palmer',type:'day'},
   {name:'Karl Palmer',type:'day'},
-  {name:'Adam Cooper',type:'day'},
-  {name:'Frankie Merchant',type:'day'},
-  {name:'Beth Daubeny',type:'day'},
+  {name:'Adam Cooper',type:'day',work:true},
+  {name:'Frankie Merchant',type:'day',work:true},
+  {name:'Beth Daubeny',type:'day',work:true},
   // Groom — Evening
   {name:'Kidus',type:'evening'},
   {name:'Mickey Temesgen',type:'evening'},
@@ -1111,15 +1111,15 @@ const GUESTS=[
   {name:'Daragh O\'Malley',type:'evening'},
   {name:'Joe Riley',type:'evening'},
   {name:'Gaby',type:'evening'},
-  {name:'Greg Ritchie',type:'evening'},
-  {name:'George Gladwin',type:'evening'},
-  {name:'Raheem Hunter',type:'evening'},
-  {name:'Ademidun Malomo',type:'evening'},
-  {name:'Dammi Malomo',type:'evening'},
-  {name:'Charlotte Doyle',type:'evening'},
-  {name:'Abul Kahar',type:'evening'},
-  {name:'Jake Wilmott',type:'evening'},
-  {name:'Adam Willingham',type:'evening'},
+  {name:'Greg Ritchie',type:'evening',work:true},
+  {name:'George Gladwin',type:'evening',work:true},
+  {name:'Raheem Hunter',type:'evening',work:true},
+  {name:'Ademidun Malomo',type:'evening',work:true},
+  {name:'Dammi Malomo',type:'evening',work:true},
+  {name:'Charlotte Doyle',type:'evening',work:true},
+  {name:'Abul Kahar',type:'evening',work:true},
+  {name:'Jake Wilmott',type:'evening',work:true},
+  {name:'Adam Willingham',type:'evening',work:true},
 ];
 const INVITE_INFO={
   ceremony:{label:'Ceremony Invitation',timeNote:'Arrive by 11:30 am - Please wait outside to be ushered in - Carriages at midnight',heroPill:'Ceremony guest - Arrive by 11:30 am',pillClass:'ceremony',rsvpNote:"You're invited as a Ceremony guest - please arrive by 11:30 am.",rsvpColor:'rgba(155,58,40,.08)',rsvpBorder:'rgba(155,58,40,.25)',rsvpTextColor:'var(--terracotta)'},
@@ -1348,6 +1348,12 @@ function applyPersonalisation(guest){
   const rn=document.getElementById('rsvpInviteNote');rn.textContent=info.rsvpNote;rn.style.display='block';
   rn.style.background=info.rsvpColor;rn.style.border='1px solid '+info.rsvpBorder;rn.style.color=info.rsvpTextColor;
   document.getElementById('rsvpName').value=guest.name;
+  if(guest.work){
+    document.getElementById('wishlistEmoji').textContent='🏡';
+    document.getElementById('wishlistTitle').textContent='New Home Wishlist';
+    document.getElementById('wishlistDesc').textContent='We\'ve put together a wishlist of things for our new home — from kitchen essentials to the cosy touches that\'ll make it feel like ours. Have a browse and pick anything you\'d like to put towards.';
+    document.getElementById('giftsNoteExtra').style.display='none';
+  }
   onFirebaseReady(()=>{loadGuestProfile(guest);initGalleryListener();});
 }
 
@@ -1386,6 +1392,7 @@ function switchGuest(){
   const ey2=document.getElementById('heroEyebrow');ey2.textContent="You're invited";ey2.classList.remove('personalised');document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
   document.getElementById('inviteGuestName').textContent='';document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
   document.getElementById('rsvpInviteNote').style.display='none';document.getElementById('rsvpName').value='';
+  document.getElementById('wishlistEmoji').textContent='🇨🇭';document.getElementById('wishlistTitle').textContent='Zürich Wishlist';document.getElementById('wishlistDesc').textContent='We\'re setting up our first home together in Zürich and have put together a wishlist of things we\'ll be buying for the apartment, from kitchen essentials to the cosy touches that\'ll make it feel like ours. Have a browse and pick anything you\'d like to put towards.';document.getElementById('giftsNoteExtra').style.display='';
   document.getElementById('rsvpForm').style.display='';document.getElementById('rsvpSuccess').classList.remove('active');document.getElementById('rsvpModal').classList.remove('active');
   document.getElementById('rsvpAttSec').style.display='none';document.getElementById('rsvpPlusSec').style.display='none';document.getElementById('rsvpAddSec').style.display='none';
   document.getElementById('addContainer').innerHTML='';document.getElementById('addCount').value='';
