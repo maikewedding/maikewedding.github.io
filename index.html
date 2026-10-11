@@ -1350,12 +1350,17 @@ function applyPersonalisation(guest){
   document.getElementById('rsvpName').value=guest.name;
   if(guest.work){
     document.getElementById('wishlistEmoji').textContent='🗺️';
-    document.getElementById('wishlistTitle').textContent='Adventures';
+    document.getElementById('wishlistTitle').textContent='New Adventures';
     document.getElementById('wishlistDesc').textContent='We\'ve put together a wishlist of experiences and adventures we\'d love to have — from day trips to weekend getaways. Have a browse and pick anything you\'d like to put towards.';
     document.getElementById('giftsNoteExtra').style.display='none';
     document.getElementById('registryEyebrow').textContent='Our new chapter';
-    document.getElementById('registryTitle').textContent='Adventures';
+    document.getElementById('registryTitle').textContent='New Adventures';
     document.getElementById('registrySubtitle').textContent='A little peek at the experiences and adventures on our list.';
+    const adv=REGISTRY_ITEMS.find(r=>r.id==='adventures');
+    if(adv){adv.name='Adventures';adv.desc='Coffee and matcha crawls, a ski day in the Alps, a special dinner out as a married couple, a day trip somewhere new. Tell us what you\'d like us to do and we\'ll send you a photo from it.';}
+    const oth=REGISTRY_ITEMS.find(r=>r.id==='other');
+    if(oth){oth.desc='These are simply suggestions of things we\'ll be buying for ourselves anyway. If you\'d like to put something towards our new life together more generally, every contribution means the world. Leave us a note and we\'ll make sure it goes towards something you\'d approve of.';}
+    renderRegistry();
   }
   onFirebaseReady(()=>{loadGuestProfile(guest);initGalleryListener();});
 }
@@ -1395,7 +1400,10 @@ function switchGuest(){
   const ey2=document.getElementById('heroEyebrow');ey2.textContent="You're invited";ey2.classList.remove('personalised');document.getElementById('heroWelcome').style.display='none';document.getElementById('heroInviteTime').style.display='none';
   document.getElementById('inviteGuestName').textContent='';document.getElementById('inviteTimeNote').textContent='';document.getElementById('inviteTypeBanner').style.display='none';
   document.getElementById('rsvpInviteNote').style.display='none';document.getElementById('rsvpName').value='';
-  document.getElementById('wishlistEmoji').textContent='🇨🇭';document.getElementById('wishlistTitle').textContent='Zürich Wishlist';document.getElementById('wishlistDesc').textContent='We’re setting up our first home together in Zürich and have put together a wishlist of things we’ll be buying for the apartment, from kitchen essentials to the cosy touches that’ll make it feel like ours. Have a browse and pick anything you’d like to put towards.';document.getElementById('giftsNoteExtra').style.display='';document.getElementById('registryTitle').textContent='Zürich Wishlist';document.getElementById('registrySubtitle').textContent='A little peek at the things we’ll be buying for our new home in Zürich.';
+  document.getElementById(‘wishlistEmoji’).textContent=’🇨🇭’;document.getElementById(‘wishlistTitle’).textContent=’Zürich Wishlist’;document.getElementById(‘wishlistDesc’).textContent=’We’re setting up our first home together in Zürich and have put together a wishlist of things we’ll be buying for the apartment, from kitchen essentials to the cosy touches that’ll make it feel like ours. Have a browse and pick anything you’d like to put towards.’;document.getElementById(‘giftsNoteExtra’).style.display=’’;document.getElementById(‘registryTitle’).textContent=’Zürich Wishlist’;document.getElementById(‘registrySubtitle’).textContent=’A little peek at the things we’ll be buying for our new home in Zürich.’;
+  const advR=REGISTRY_ITEMS.find(r=>r.id===’adventures’);if(advR){advR.name=’Zürich Adventures’;advR.desc=’Coffee and matcha crawls, a day at Lake Zürich, a ski day in the Alps (we’ll be an hour from the slopes), a special dinner out as a married couple. Tell us what you’d like us to do and we’ll send you a photo from it.’;}
+  const othR=REGISTRY_ITEMS.find(r=>r.id===’other’);if(othR){othR.desc=’These are simply suggestions of things we’ll be buying for ourselves anyway. If you’d like to put something towards our new life in Zürich more generally, every contribution means the world. Leave us a note and we’ll make sure it goes towards something you’d approve of.’;}
+  renderRegistry();
   document.getElementById('rsvpForm').style.display='';document.getElementById('rsvpSuccess').classList.remove('active');document.getElementById('rsvpModal').classList.remove('active');
   document.getElementById('rsvpAttSec').style.display='none';document.getElementById('rsvpPlusSec').style.display='none';document.getElementById('rsvpAddSec').style.display='none';
   document.getElementById('addContainer').innerHTML='';document.getElementById('addCount').value='';
