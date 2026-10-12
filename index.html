@@ -94,7 +94,9 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .page.active{display:block}
 /* Tiled photo background behind each non-home section */
 .page-photo-bg{position:absolute;inset:0;z-index:0;pointer-events:none;display:flex;flex-wrap:wrap;align-content:flex-start;filter:grayscale(100%) contrast(1.0) brightness(.55)}
-.page-photo-bg>img{width:33.333%;height:260px;object-fit:cover;flex:none;display:block}
+.page-photo-bg>img{object-fit:cover;flex:none;display:block}
+.page-photo-bg>img.tile-p{width:25%;height:220px}
+.page-photo-bg>img.tile-l{width:50%;height:220px}
 .page-photo-bg::after{content:'';position:absolute;inset:0;background:rgba(125,142,114,.45);pointer-events:none}
 /* Content sections float as cards over the photo bg */
 .page:not(#page-home){padding:5rem 2rem;min-height:calc(100vh - var(--nav-h))}
@@ -384,7 +386,8 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
   /* Non-home pages: reduce padding */
   .page:not(#page-home){padding:3rem 1rem}
   /* Tiled bg: 2 columns on mobile */
-  .page-photo-bg>img{width:50%}
+  .page-photo-bg>img.tile-p{width:50%;height:200px}
+  .page-photo-bg>img.tile-l{width:100%;height:200px}
 }
 /* FLOATING PHOTOS */
 .float-photo{position:absolute;z-index:4;pointer-events:none;opacity:0;transition:opacity .6s ease;}
@@ -542,11 +545,11 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
   <div class="hero">
     <!-- Left panel -->
     <div class="hero-panel">
-      <img src="photos/hero_dressed.jpeg" class="hero-photo hero-side-photo" alt="">
+      <img src="photos/hero_dressed_p.jpeg" class="hero-photo hero-side-photo" alt="">
     </div>
     <!-- Centre panel with overlay -->
     <div class="hero-panel hero-center-panel">
-      <img src="photos/hero_oktoberfest.jpeg" class="hero-photo" alt="">
+      <img src="photos/hero_oktoberfest_p.jpeg" class="hero-photo" alt="">
       <div class="hero-overlay">
         <p class="hero-ey" id="heroEyebrow">You're invited</p>
         <h1 class="hero-n">
@@ -570,7 +573,7 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
     </div>
     <!-- Right panel -->
     <div class="hero-panel">
-      <img src="photos/hero_milan.jpeg" class="hero-photo hero-side-photo" alt="">
+      <img src="photos/hero_milan_p.jpeg" class="hero-photo hero-side-photo" alt="">
     </div>
   </div>
 
@@ -1433,17 +1436,18 @@ function handlePhotosClick(){document.getElementById('photosDd').classList.toggl
 
 // Tiled B&W photo background — injected inside each page so it scrolls with content
 const bgPhotos=[
-  'photos/hero_festival.jpeg','photos/hero_tropical.jpeg','photos/hero_hiking_2.jpeg',
-  'photos/hero_beach_day.jpeg','photos/hero_christmas.jpg',
-  'photos/hero_christmas_market.jpeg','photos/hero_cinque_terre.jpeg','photos/hero_clean_teeth.JPG',
-  'photos/hero_cocktails.jpeg','photos/hero_colleseum.jpeg','photos/hero_como.jpeg',
-  'photos/hero_como_2.jpeg','photos/hero_dinner.jpeg','photos/hero_face_mask.JPG',
-  'photos/hero_florence.jpeg','photos/hero_grad_2.jpg','photos/hero_grad_3.jpg',
-  'photos/hero_grad_4.jpeg','photos/hero_graduation.jpeg','photos/hero_hiking_3.jpeg',
-  'photos/hero_icecream.jpeg','photos/hero_krakow.jpeg','photos/hero_marathon.jpeg',
-  'photos/hero_night_hike.jpeg','photos/hero_ocean.jpeg','photos/hero_pisa.jpeg',
-  'photos/hero_running.jpg','photos/hero_skiing.jpeg','photos/hero_swiss_mountains.jpeg',
-  'photos/hero_tent.jpeg','photos/hero_tropical.jpeg','photos/hero_tuscany.jpeg'
+  'photos/hero_festival_p.jpeg','photos/hero_tropical_p.jpeg','photos/hero_hiking_2_p.jpeg',
+  'photos/hero_beach_day_l.jpeg','photos/hero_christmas_p.jpg',
+  'photos/hero_christmas_market_p.jpeg','photos/hero_cinque_terre_p.jpeg','photos/hero_clean_teeth_p.JPG',
+  'photos/hero_cocktails_p.jpeg','photos/hero_colleseum_p.jpeg','photos/hero_como_p.jpeg',
+  'photos/hero_como_2_p.jpeg','photos/hero_dinner_p.jpeg','photos/hero_face_mask_l.JPG',
+  'photos/hero_florence_p.jpeg','photos/hero_grad_2_p.jpg','photos/hero_grad_3_p.jpg',
+  'photos/hero_grad_4_p.jpeg','photos/hero_graduation_p.jpeg','photos/hero_hiking_3_l.jpeg',
+  'photos/hero_icecream_p.jpeg','photos/hero_krakow_p.jpeg','photos/hero_marathon_p.jpeg',
+  'photos/hero_night_hike_p.jpeg','photos/hero_ocean_p.jpeg','photos/hero_pisa_p.jpeg',
+  'photos/hero_running_p.jpg','photos/hero_skiing_p.jpeg','photos/hero_swiss_mountains_p.jpeg',
+  'photos/hero_tent_p.jpeg','photos/hero_tuscany_p.jpeg',
+  'photos/fun_hiking_p.jpeg','photos/fun_snorkelling_p.jpeg',
 ];
 function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
 const bgPools={};
@@ -1457,8 +1461,10 @@ function injectPageBg(page){
   const bg=document.createElement('div');bg.className='page-photo-bg';
   // fill generously — CSS absolute so it covers however tall the page grows
   for(let i=0;i<60;i++){
+    const src=pool[i%pool.length];
     const img=document.createElement('img');
-    img.src=pool[i%pool.length];img.alt='';
+    img.src=src;img.alt='';
+    img.className=src.match(/_l\.[^.]+$/)? 'tile-l':'tile-p';
     bg.appendChild(img);
   }
   el.prepend(bg);
