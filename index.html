@@ -94,9 +94,10 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
 .page.active{display:block}
 /* Tiled photo background behind each non-home section */
 .page-photo-bg{position:absolute;inset:0;z-index:0;pointer-events:none;display:flex;flex-wrap:wrap;align-content:flex-start;filter:grayscale(100%) contrast(1.0) brightness(.55)}
+.page-photo-bg{overflow:hidden}
 .page-photo-bg>img{object-fit:cover;flex:none;display:block}
-.page-photo-bg>img.tile-p{width:22%;aspect-ratio:3/4}
-.page-photo-bg>img.tile-l{width:44%;aspect-ratio:4/3}
+.page-photo-bg>img.tile-p{width:16.6667%;aspect-ratio:3/4}
+.page-photo-bg>img.tile-l{width:33.3333%;aspect-ratio:4/3}
 .page-photo-bg::after{content:'';position:absolute;inset:0;background:rgba(125,142,114,.45);pointer-events:none}
 /* Content sections float as cards over the photo bg */
 .page:not(#page-home){padding:5rem 2rem;min-height:calc(100vh - var(--nav-h))}
@@ -386,8 +387,8 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
   /* Non-home pages: reduce padding */
   .page:not(#page-home){padding:3rem 1rem}
   /* Tiled bg: 2 columns on mobile */
-  .page-photo-bg>img.tile-p{width:50%;aspect-ratio:3/4}
-  .page-photo-bg>img.tile-l{width:100%;aspect-ratio:4/3}
+  .page-photo-bg>img.tile-p{width:33.3333%;aspect-ratio:3/4}
+  .page-photo-bg>img.tile-l{width:66.6667%;aspect-ratio:4/3}
 }
 /* FLOATING PHOTOS */
 .float-photo{position:absolute;z-index:4;pointer-events:none;opacity:0;transition:opacity .6s ease;}
