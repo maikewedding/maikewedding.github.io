@@ -1874,21 +1874,12 @@ function renderRegistry(){
   const grid=document.getElementById('regGrid');
   grid.innerHTML='';
   REGISTRY_ITEMS.forEach(item=>{
-    const contribs=regContribs[item.id]||[];
-    const raised=contribs.reduce((s,c)=>s+(Number(c.amount)||0),0);
     const card=document.createElement('div');
     card.className='reg-card';
-    const contribHtml=contribs.length?'<div class="reg-contrib-list">'+contribs.slice(-3).reverse().map(c=>{
-      const msg=c.message?` (${esc(c.message)})`:'';
-      return`<div class="reg-contrib-item"><strong>${esc(c.name)}</strong> contributed &pound;${Number(c.amount).toFixed(0)}${msg}</div>`;
-    }).join('')+(contribs.length>3?`<p style="font-size:.7rem;color:var(--text-muted);margin-top:.3rem;">+ ${contribs.length-3} more contribution${contribs.length-3>1?'s':''}</p>`:'')+`</div>`:'';
-    const tallyHtml=raised>0?`<p style="font-size:.8rem;color:var(--olive);font-weight:600;margin-bottom:.75rem;">&pound;${raised.toFixed(0)} contributed so far</p>`:'';
     card.innerHTML=`
       <span class="reg-emoji">${item.emoji}</span>
       <p class="reg-name">${esc(item.name)}</p>
       <p class="reg-desc">${esc(item.desc)}</p>
-      ${contribHtml}
-      ${tallyHtml}
       <button class="reg-btn" onclick="openRegModal('${item.id}')">Contribute towards this &rarr;</button>
     `;
     grid.appendChild(card);
@@ -1901,12 +1892,7 @@ function openRegModal(id){
   document.getElementById('regModalCat').textContent=item.cat;
   document.getElementById('regModalName').textContent=item.name;
   document.getElementById('regModalDesc').textContent=item.desc;
-  const contribs=regContribs[id]||[];
-  const raised=contribs.reduce((s,c)=>s+(Number(c.amount)||0),0);
-  const pct=Math.min(100,Math.round(raised/item.target*100));
-  document.getElementById('regModalProgress').innerHTML=`
-    <div class="reg-bar-wrap"><div class="reg-bar" style="width:${pct}%"></div></div>
-    <div class="reg-amounts" style="margin-top:.35rem;"><span>&pound;${raised.toFixed(0)} of &pound;${item.target} raised</span><span>${pct}%</span></div>`;
+  document.getElementById('regModalProgress').innerHTML='';
   if(currentGuest)document.getElementById('regContribName').value=currentGuest.name.split(' ')[0];
   document.getElementById('regContribAmount').value='';
   document.getElementById('regContribMsg').value='';
