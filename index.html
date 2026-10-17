@@ -1663,7 +1663,6 @@ document.getElementById('lightbox').addEventListener('touchstart',e=>{lbTouchX=e
 document.getElementById('lightbox').addEventListener('touchend',e=>{if(lbTouchX===null)return;const dx=e.changedTouches[0].clientX-lbTouchX;if(Math.abs(dx)>50){dx<0?lbNext():lbPrev();}lbTouchX=null;},{passive:true});
 
 const SONGS=[
-  {song:'Fly Me to the Moon',artist:'Frank Sinatra',moment:'Ceremony',by:'Tommy & Maike',ts:1},
   {song:'Use Somebody',artist:'Kings of Leon',moment:'Ceremony',by:'Tommy & Maike',ts:2},
   {song:'Waltzer',artist:'Provinz',moment:'Must hear at least once',by:'Tommy & Maike',ts:3},
   {song:'Give a Little Love',artist:'Gizmo Varillas',moment:'Drinks reception',by:'Tommy & Maike',ts:4},
@@ -1673,7 +1672,6 @@ const SONGS=[
   {song:'Mia & Keira',artist:'Giant Rooks',moment:'Drinks reception',by:'Tommy & Maike',ts:8},
   {song:'Volare',artist:'Gipsy Kings',moment:'Drinks reception',by:'Tommy & Maike',ts:9},
   {song:'September',artist:'Earth, Wind & Fire',moment:'Bangers & Classics',by:'Tommy & Maike',ts:10},
-  {song:'Con te partir\u00f2',artist:'Andrea Bocelli',moment:'Ceremony',by:'Tommy & Maike',ts:11},
   {song:'Mr Brightside',artist:'The Killers',moment:'Bangers & Classics',by:'Tommy & Maike',ts:12},
 ];
 let plFilter='all';
