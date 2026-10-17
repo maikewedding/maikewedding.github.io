@@ -1466,7 +1466,8 @@ function injectPageBg(page){
   if(!el||page==='home')return;
   // remove old bg if present
   const old=el.querySelector('.page-photo-bg');if(old)old.remove();
-  const pool=bgPhotos; // fixed order — no shuffle
+  if(!bgPools[page]){bgPools[page]=shuffle([...bgPhotos]);}
+  const pool=bgPools[page];
   const bg=document.createElement('div');bg.className='page-photo-bg';
   // fill generously — CSS absolute so it covers however tall the page grows
   for(let i=0;i<60;i++){
@@ -1474,7 +1475,6 @@ function injectPageBg(page){
     const img=document.createElement('img');
     img.src=src;img.alt='';
     img.className=src.match(/_l\.[^.]+$/)? 'tile-l':'tile-p';
-    img.title=(i+1)+': '+src.split('/').pop(); // hover to see filename & position
     bg.appendChild(img);
   }
   el.prepend(bg);
