@@ -1179,7 +1179,7 @@ function enterSite(){
   const raw=document.getElementById('welcomeInput').value.trim();
   const errEl=document.getElementById('welcomeError');
   if(!raw){errEl.textContent='Please enter your full name to continue.';return;}
-  const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();
+  const norm=s=>s.toLowerCase().replace(/[‘’‚‛′`]/g,"'").replace(/\s+/g,' ').trim();
   const match=GUESTS.find(g=>norm(g.name)===norm(raw));
   if(!match){errEl.textContent="We couldn't find that name. Please use your full name exactly as on your invitation, or contact Tommy or Maike.";return;}
   errEl.textContent='';currentGuest=match;sessionStart=Date.now();applyPersonalisation(match);
@@ -1522,7 +1522,7 @@ function buildChildrenUI(n){
   for(let i=1;i<=n;i++){
     const d=document.createElement('div');
     d.style.cssText='border:1px solid var(--olive-pale);padding:1.25rem;margin-bottom:1rem;background:rgba(212,224,200,.08);';
-    d.innerHTML='<p style="font-size:1rem;color:var(--olive);margin-bottom:.85rem;">Child '+i+'</p>'
+    d.innerHTML='<div class="fg"><label class="fl">Child '+i+'’s name</label><input class="fi" type="text" id="childName'+i+'" placeholder="Their first name"></div>'
       +'<div class="fg"><label class="fl">Will they be joining?</label>'
       +'<div class="fr-grp"><label class="fr"><input type="radio" name="childAtt'+i+'" value="yes" onchange="onChildAtt('+i+')"> Yes</label>'
       +'<label class="fr"><input type="radio" name="childAtt'+i+'" value="no" onchange="onChildAtt('+i+')"> No</label></div></div>'
@@ -1557,7 +1557,7 @@ function buildAdd(){
       +'</div><textarea class="fi" id="addDietOther'+i+'" rows="2" placeholder="Describe..." style="display:none;margin-top:.6rem;"></textarea></div>';
     c.appendChild(d);}
 }
-function chkName(i){const v=document.getElementById('addName'+i).value.trim(),m=document.getElementById('addMsg'+i);if(!v){m.textContent='';return;}const norm=s=>s.toLowerCase().replace(/\s+/g,' ').trim();const found=GUESTS.find(g=>norm(g.name)===norm(v));if(found){m.style.color='var(--olive)';m.textContent='Found on list';}else{m.style.color='var(--terracotta)';m.textContent='Not found - check spelling.';}}
+function chkName(i){const v=document.getElementById('addName'+i).value.trim(),m=document.getElementById('addMsg'+i);if(!v){m.textContent='';return;}const norm=s=>s.toLowerCase().replace(/[‘’‚‛′`]/g,"'").replace(/\s+/g,' ').trim();const found=GUESTS.find(g=>norm(g.name)===norm(v));if(found){m.style.color='var(--olive)';m.textContent='Found on list';}else{m.style.color='var(--terracotta)';m.textContent='Not found - check spelling.';}}
 
 function submitRSVP(){
   const att=document.querySelector('input[name="attending"]:checked')?.value;
@@ -1566,7 +1566,7 @@ function submitRSVP(){
   const dietChecked=[...document.querySelectorAll('input[name="diet"]:checked')].map(c=>c.value),dietOtherVal=document.getElementById('rsvpDietOther')?.value||'',dietary=dietChecked.join(', ')+(dietOtherVal?' - '+dietOtherVal:'');
   const plusOneName=document.getElementById('plusOneName')?.value||'',poDiet=[...document.querySelectorAll('input[name="poDiet"]:checked')].map(c=>c.value).join(', '),poDietOther=document.getElementById('poDietOther')?.value||'',plusOneDiet=poDiet+(poDietOther?' - '+poDietOther:'');
   const numChildren=currentGuest?.children||0;let childrenLines='';
-  for(let i=1;i<=numChildren;i++){const att=document.querySelector('input[name="childAtt'+i+'"]:checked')?.value||'';if(att){const cDiet=[...document.querySelectorAll('input[name="childDiet'+i+'"]:checked')].map(c=>c.value).join(', '),cDietOther=document.getElementById('childDietOther'+i)?.value||'';childrenLines+='\nChild '+i+': '+(att==='yes'?'Joining | Diet: '+(cDiet+(cDietOther?' - '+cDietOther:'')||'None'):'Not joining');}}
+  for(let i=1;i<=numChildren;i++){const att=document.querySelector('input[name="childAtt'+i+'"]:checked')?.value||'',cName=document.getElementById('childName'+i)?.value.trim()||('Child '+i);if(att){const cDiet=[...document.querySelectorAll('input[name="childDiet'+i+'"]:checked')].map(c=>c.value).join(', '),cDietOther=document.getElementById('childDietOther'+i)?.value||'';childrenLines+='\n'+cName+': '+(att==='yes'?'Joining | Diet: '+(cDiet+(cDietOther?' - '+cDietOther:'')||'None'):'Not joining');}}
   const addCount=parseInt(document.getElementById('addCount')?.value)||0;let additionalLines='';
   for(let i=1;i<=addCount;i++){const gName=document.getElementById('addName'+i)?.value||'',gDiet=[...document.querySelectorAll('input[name="addDiet'+i+'"]:checked')].map(c=>c.value).join(', '),gDietOther=document.getElementById('addDietOther'+i)?.value||'';if(gName)additionalLines+='\nGuest '+i+': '+gName+' | Diet: '+gDiet+(gDietOther?' - '+gDietOther:'');}
   const msg=document.getElementById('rsvpMsg')?.value||'';
