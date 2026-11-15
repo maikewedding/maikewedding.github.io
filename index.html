@@ -903,6 +903,12 @@ body{font-family:"Jost",sans-serif;background:var(--cream);color:var(--text-dark
             </div>
           </div>
         </div>
+        <div id="rsvpChildSec" style="display:none;">
+          <div style="border-top:1px solid var(--olive-pale);margin:1.25rem 0 0;padding-top:1.25rem;">
+            <p style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:var(--olive);margin-bottom:.75rem;">Your little ones</p>
+            <div id="childContainer"></div>
+          </div>
+        </div>
         <div class="fg" style="border-top:1px solid var(--olive-pale);padding-top:1.25rem;margin-top:.25rem;"><label class="fl">Are you RSVP-ing for anyone else?</label><div class="fr-grp"><label class="fr"><input type="radio" name="forOthers" value="yes" onchange="onOthers()"> Yes</label><label class="fr"><input type="radio" name="forOthers" value="no" onchange="onOthers()"> No, just me</label></div></div>
         <div id="rsvpAddSec" style="display:none;">
           <div class="fg"><label class="fl">How many other people?</label><select class="fi" id="addCount" onchange="buildAdd()" style="cursor:pointer;"><option value="">Select...</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
@@ -1009,7 +1015,7 @@ const GUESTS=[
   {name:'John Hunt',type:'day'},
   {name:'Katheryn Wannell',type:'day'},
   {name:'Mark Wannell',type:'day'},
-  {name:'Fulian Dong',type:'day'},
+  {name:'Fulian Dong',type:'day',children:2},
   {name:'Amie Dong',type:'day'},
   // Bride — Evening
   {name:'Sahitya Pruvadda',type:'evening'},
@@ -1034,15 +1040,15 @@ const GUESTS=[
   {name:'Arlo',type:'ceremony'},
   {name:'Uncle Liam',type:'ceremony'},
   {name:'Auntie Sue',type:'ceremony'},
-  {name:'Susie Flynn',type:'ceremony'},
+  {name:'Susie Flynn',type:'ceremony',children:2},
   {name:'Micheal Flynn',type:'ceremony'},
-  {name:'Kevin O’Brien',type:'ceremony'},
+  {name:'Kevin O’Brien',type:'ceremony',children:2},
   {name:'Trilby O’Brien',type:'ceremony'},
   {name:'Uncle Raymond',type:'ceremony'},
-  {name:'Dennis O’Brien',type:'ceremony',plusOne:true},
-  {name:'Emma O’Brien',type:'ceremony',plusOne:true},
+  {name:'Dennis O’Brien',type:'ceremony',plusOne:true,children:2},
+  {name:'Emma O’Brien',type:'ceremony',plusOne:true,children:2},
   {name:'Auntie Valerie',type:'ceremony'},
-  {name:'Sarah Clarke',type:'ceremony'},
+  {name:'Sarah Clarke',type:'ceremony',children:2},
   {name:'Maureen',type:'ceremony'},
   {name:'Uncle Lawrence',type:'ceremony'},
   {name:'Chris Fay',type:'ceremony'},
@@ -1055,7 +1061,7 @@ const GUESTS=[
   {name:'Declan Flynn',type:'ceremony',plusOne:true},
   {name:'Joe Sellick',type:'ceremony',plusOne:true},
   {name:'Connor Callaghan',type:'ceremony',plusOne:true},
-  {name:'Ciaran Slevin',type:'ceremony',plusOne:true},
+  {name:'Ciaran Slevin',type:'ceremony',plusOne:true,children:2},
   {name:'Ben Shaw',type:'ceremony'},
   {name:'Tom Barret',type:'ceremony'},
   {name:'Sean O’Malley',type:'ceremony'},
@@ -1069,12 +1075,12 @@ const GUESTS=[
   // Groom — Day
   {name:'Karen Taylor',type:'day'},
   {name:'Mark Taylor',type:'day'},
-  {name:'Aaron Taylor',type:'day',plusOne:true},
-  {name:'Carly Taylor',type:'day'},
+  {name:'Aaron Taylor',type:'day',plusOne:true,children:1},
+  {name:'Carly Taylor',type:'day',children:2},
   {name:'Ellie Taylor',type:'day',plusOne:true},
   {name:'Stevie Taylor',type:'day'},
   {name:'Marion Curd',type:'day'},
-  {name:'Kerry Curd',type:'day',plusOne:true},
+  {name:'Kerry Curd',type:'day',plusOne:true,children:2},
   {name:'John Curd',type:'day',plusOne:true},
   {name:'Brenda Scott',type:'day'},
   {name:'Martin Scott',type:'day'},
@@ -1503,7 +1509,38 @@ function tick(){
 }
 tick();setInterval(tick,1000);
 
-function onAtt(){const yes=document.querySelector('input[name="attending"]:checked')?.value==='yes';document.getElementById('rsvpAttSec').style.display=yes?'block':'none';document.getElementById('rsvpPlusSec').style.display=(yes&&currentGuest?.plusOne)?'block':'none';}
+function onAtt(){
+  const yes=document.querySelector('input[name="attending"]:checked')?.value==='yes';
+  document.getElementById('rsvpAttSec').style.display=yes?'block':'none';
+  document.getElementById('rsvpPlusSec').style.display=(yes&&currentGuest?.plusOne)?'block':'none';
+  const childSec=document.getElementById('rsvpChildSec');
+  if(yes&&currentGuest?.children>0){buildChildrenUI(currentGuest.children);childSec.style.display='block';}
+  else{childSec.style.display='none';}
+}
+function buildChildrenUI(n){
+  const c=document.getElementById('childContainer');c.innerHTML='';
+  for(let i=1;i<=n;i++){
+    const d=document.createElement('div');
+    d.style.cssText='border:1px solid var(--olive-pale);padding:1.25rem;margin-bottom:1rem;background:rgba(212,224,200,.08);';
+    d.innerHTML='<p style="font-size:1rem;color:var(--olive);margin-bottom:.85rem;">Child '+i+'</p>'
+      +'<div class="fg"><label class="fl">Will they be joining?</label>'
+      +'<div class="fr-grp"><label class="fr"><input type="radio" name="childAtt'+i+'" value="yes" onchange="onChildAtt('+i+')"> Yes</label>'
+      +'<label class="fr"><input type="radio" name="childAtt'+i+'" value="no" onchange="onChildAtt('+i+')"> No</label></div></div>'
+      +'<div id="childDietSec'+i+'" style="display:none;">'
+      +'<div class="fg"><label class="fl">Dietary requirements</label>'
+      +'<div class="diet-opts" id="childDietOpts'+i+'">'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="None" onchange="dietNone(this,\'childDietOpts'+i+'\')"> None</label>'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="Gluten Free"> Gluten Free</label>'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="Nut Allergy"> Nut Allergy</label>'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="Veggie"> Vegetarian</label>'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="No Dairy"> No Dairy</label>'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="Vegan"> Vegan</label>'
+      +'<label class="diet-check"><input type="checkbox" name="childDiet'+i+'" value="Other" onchange="dietOther(this,\'childDietOther'+i+'\')"> Other</label>'
+      +'</div><textarea class="fi" id="childDietOther'+i+'" rows="2" placeholder="Describe..." style="display:none;margin-top:.6rem;"></textarea></div></div>';
+    c.appendChild(d);
+  }
+}
+function onChildAtt(i){const yes=document.querySelector('input[name="childAtt'+i+'"]:checked')?.value==='yes';document.getElementById('childDietSec'+i).style.display=yes?'block':'none';}
 function onOthers(){const yes=document.querySelector('input[name="forOthers"]:checked')?.value==='yes';document.getElementById('rsvpAddSec').style.display=yes?'block':'none';if(!yes){document.getElementById('addCount').value='';document.getElementById('addContainer').innerHTML='';}}
 function buildAdd(){
   const n=parseInt(document.getElementById('addCount').value)||0,c=document.getElementById('addContainer');c.innerHTML='';
@@ -1528,12 +1565,14 @@ function submitRSVP(){
   const name=document.getElementById('rsvpName').value,attending=att==='yes'?'Joyfully accepts':'Regretfully declines',invType=currentGuest?INVITE_INFO[currentGuest.type]?.label:'';
   const dietChecked=[...document.querySelectorAll('input[name="diet"]:checked')].map(c=>c.value),dietOtherVal=document.getElementById('rsvpDietOther')?.value||'',dietary=dietChecked.join(', ')+(dietOtherVal?' - '+dietOtherVal:'');
   const plusOneName=document.getElementById('plusOneName')?.value||'',poDiet=[...document.querySelectorAll('input[name="poDiet"]:checked')].map(c=>c.value).join(', '),poDietOther=document.getElementById('poDietOther')?.value||'',plusOneDiet=poDiet+(poDietOther?' - '+poDietOther:'');
+  const numChildren=currentGuest?.children||0;let childrenLines='';
+  for(let i=1;i<=numChildren;i++){const att=document.querySelector('input[name="childAtt'+i+'"]:checked')?.value||'';if(att){const cDiet=[...document.querySelectorAll('input[name="childDiet'+i+'"]:checked')].map(c=>c.value).join(', '),cDietOther=document.getElementById('childDietOther'+i)?.value||'';childrenLines+='\nChild '+i+': '+(att==='yes'?'Joining | Diet: '+(cDiet+(cDietOther?' - '+cDietOther:'')||'None'):'Not joining');}}
   const addCount=parseInt(document.getElementById('addCount')?.value)||0;let additionalLines='';
   for(let i=1;i<=addCount;i++){const gName=document.getElementById('addName'+i)?.value||'',gDiet=[...document.querySelectorAll('input[name="addDiet'+i+'"]:checked')].map(c=>c.value).join(', '),gDietOther=document.getElementById('addDietOther'+i)?.value||'';if(gName)additionalLines+='\nGuest '+i+': '+gName+' | Diet: '+gDiet+(gDietOther?' - '+gDietOther:'');}
   const msg=document.getElementById('rsvpMsg')?.value||'';
-  const fullSummary=['RSVP: '+name,'Type: '+invType,'Attending: '+attending,'Dietary: '+(dietary||'None'),plusOneName?'Plus-one: '+plusOneName+' Diet: '+(plusOneDiet||'None'):'',additionalLines?'Others:'+additionalLines:'',msg?'Message: '+msg:''].filter(Boolean).join('\n');
-  if(EMAILJS_SERVICE_ID!=='YOUR_SERVICE_ID'){emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,{guest_name:name,attending,invite_type:invType,dietary:dietary||'None',plus_one:plusOneName||'N/A',plus_one_diet:plusOneDiet||'N/A',additional_guests:additionalLines||'None',message:msg||'',full_summary:fullSummary,to_email:'maikeschmidt906@gmail.com'}).catch(err=>console.warn('EmailJS:',err));}
-  onFirebaseReady(()=>{const{doc,setDoc,serverTimestamp}=window._firebase;setDoc(doc(window._db,'rsvps',normId(name)),{name,attending,inviteType:invType,dietary:dietary||'',plusOne:plusOneName||'',plusOneDiet:plusOneDiet||'',additionalGuests:additionalLines||'',message:msg||'',updatedAt:serverTimestamp()}).catch(e=>console.warn('Firestore RSVP:',e));saveGuestActivity({rsvp:true});});
+  const fullSummary=['RSVP: '+name,'Type: '+invType,'Attending: '+attending,'Dietary: '+(dietary||'None'),plusOneName?'Plus-one: '+plusOneName+' Diet: '+(plusOneDiet||'None'):'',childrenLines?'Children:'+childrenLines:'',additionalLines?'Others:'+additionalLines:'',msg?'Message: '+msg:''].filter(Boolean).join('\n');
+  if(EMAILJS_SERVICE_ID!=='YOUR_SERVICE_ID'){emailjs.init({publicKey:EMAILJS_PUBLIC_KEY});emailjs.send(EMAILJS_SERVICE_ID,EMAILJS_TEMPLATE_ID,{guest_name:name,attending,invite_type:invType,dietary:dietary||'None',plus_one:plusOneName||'N/A',plus_one_diet:plusOneDiet||'N/A',children:childrenLines||'N/A',additional_guests:additionalLines||'None',message:msg||'',full_summary:fullSummary,to_email:'maikeschmidt906@gmail.com'}).catch(err=>console.warn('EmailJS:',err));}
+  onFirebaseReady(()=>{const{doc,setDoc,serverTimestamp}=window._firebase;setDoc(doc(window._db,'rsvps',normId(name)),{name,attending,inviteType:invType,dietary:dietary||'',plusOne:plusOneName||'',plusOneDiet:plusOneDiet||'',children:childrenLines||'',additionalGuests:additionalLines||'',message:msg||'',updatedAt:serverTimestamp()}).catch(e=>console.warn('Firestore RSVP:',e));saveGuestActivity({rsvp:true});});
   activity.rsvp=true;updateActivity();
   document.getElementById('rsvpForm').style.display='none';
   document.getElementById('rsvpSuccessMsg').textContent=att==='no'?"We're so sorry you can't make it, but we appreciate you letting us know. You'll be missed!":"We've received your RSVP and can't wait to celebrate with you. See you on 15th May 2027!";
